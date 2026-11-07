@@ -4,6 +4,8 @@
 > **Curso:** Estructuras de Concreto Reforzado · Tercer Examen Parcial (2026) · ACI 318-19
 >
 > **Hoja interactiva:** [abrir en GitHub Pages](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/) · **Procedimiento técnico:** [procedimiento-columna-L.md](procedimiento-columna-L.md) · **Versión para Obsidian:** [obsidian/](../obsidian/)
+>
+> **Versión web en español:** [manual-P3-ECR-columna-L.html](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/docs/manual-P3-ECR-columna-L.html). Si en esta página ves palabras como "incógnita" o "gramo" dentro de las fórmulas, es el traductor del navegador: usa la versión web o desactiva la traducción para github.com.
 
 
 Este manual resuelve el Tercer Examen Parcial de Estructuras de Concreto Reforzado paso a paso, en el mismo orden que la hoja interactiva **Diagrama de Interacción · Columna L** (v5.1). En cada paso explica qué dato se usa, de dónde sale cada fórmula, por qué se hace así y qué significa el resultado. Todos los números salen del mismo motor de cálculo de la hoja.
@@ -473,7 +475,7 @@ Las barras con la misma profundidad forman una **capa** $`A_i`$ (todas tienen la
 Para cualquier $`c`$ se hace lo mismo (Figura 7 muestra el punto B):
 
 1. **Bloque:** $`a = \min(\beta_1 c,\ D)`$.
-2. **Área comprimida:** de cada rectángulo $`j`$ (con profundidades de $`v_{0j}`$ a $`v_{1j}`$) se toma la parte entre 0 y $`a`$:
+2. **Área comprimida:** de cada rectángulo $`j`$ (con profundidades de $`v_{0j}`$ a $`v_{1j}`$) se toma la parte entre 0 y $`a`$ (explicación completa en [§7.2](#72-área-comprimida-en-la-l)):
 
    $`\displaystyle h_j = \max\!\big(0,\ \min(v_{1j}, a) - v_{0j}\big) \qquad A_c = \sum b_j h_j \qquad v_c = \frac{\sum b_j h_j\,(v_{0j} + h_j/2)}{A_c}`$
 
@@ -523,6 +525,26 @@ flowchart LR
 
 ### 7.2 Área comprimida en la L
 
+**Hoja: sección 5** (tabla de rectángulos comprimidos de cada punto) y vistas *Planta* y *Perfil de cálculo*.
+
+Este es el paso que más cambia respecto a la columna rectangular. Conviene entenderlo antes de calcular los puntos, porque de él salen la fuerza del concreto, su brazo y el momento inducido.
+
+#### 7.2.1 Qué es el área comprimida
+
+El esfuerzo real del concreto comprimido no es uniforme: vale cero en el eje neutro y crece, en forma casi parabólica, hasta la fibra más comprimida. Integrar esa curva sobre una L sería engorroso. ACI 318-19 permite reemplazarla por un **bloque rectangular equivalente** (bloque de Whitney): un esfuerzo constante de $`0.85f'_c`$ desde la fibra más comprimida hasta la profundidad $`a = \beta_1 c`$. El bloque está calibrado para que su fuerza total y la posición de su resultante sean prácticamente las del esfuerzo real.
+
+Con el bloque, todo el concreto se resume en dos datos geométricos:
+
+- **Cuánta área** queda dentro de la franja $`0 \le v \le a`$. Es el área comprimida $`A_c`$, y la fuerza del concreto es $`P_c = 0.85 f'_c A_c`$.
+- **Dónde está el centroide** de esa área: $`v_c`$ (profundidad) y $`x_c`$ (posición a lo largo del eje neutro). Ahí actúa $`P_c`$.
+
+En una rectangular de ancho $`b`$ esto es inmediato: $`A_c = b\,a`$ y $`v_c = a/2`$. En la L el ancho cambia con la profundidad (80 cm en el ala, 45 cm en el alma), así que no hay un solo $`b`$: el área se calcula rectángulo por rectángulo. La Figura 8 muestra los casos posibles según el bloque llegue o no a la otra pata.
+
+> [!NOTE]
+> **ACI 318-19, 22.2.2.4.1 y Tabla 22.2.2.4.3**
+>
+> Esfuerzo $`0.85 f'_c`$ uniforme en la zona limitada por una línea paralela al eje neutro, a la distancia $`a = \beta_1 c`$ de la fibra de máxima compresión. Para $`f'_c`$ = 5,000 psi, $`\beta_1`$ = 0.80. Fuera del bloque el concreto no aporta, y por 22.2.2.2 tampoco resiste tensión.
+
 ![Figura 8](img/P3-08-bloque.svg)
 
 En $`+M_x`$ el bloque baja desde la cara superior del ala:
@@ -532,6 +554,84 @@ a \le t_f:\quad A_c = B\,a,\quad v_c = \frac{a}{2} \qquad\qquad a > t_f:\quad A_
 ```
 
 En $`-M_x`$ el bloque sube desde el pie del alma: $`A_c = t_w\,a`$ mientras $`a \le H - t_f`$, y luego se suma el ala. En $`\pm M_y`$ pasa lo mismo con los papeles de las patas intercambiados.
+
+#### 7.2.2 Qué significa cada valor
+
+| Símbolo | Qué es | Para qué sirve | En $`+M_x`$ |
+|---|---|---|---|
+| $`v`$ | Profundidad medida desde la fibra más comprimida hacia la opuesta | Todas las medidas del bloque se toman desde esa fibra | 0 en la cara superior del ala, $`D`$ = 39.370 in en el pie del alma |
+| $`b_j`$ | Ancho del rectángulo $`j`$, medido paralelo al eje neutro | Es el "ancho de viga" de ese pedazo | R1 (ala) 31.496 in · R2 (alma) 17.717 in |
+| $`v_{0j}`$, $`v_{1j}`$ | Profundidad del borde superior y del borde inferior del rectángulo $`j`$ | Dicen en qué tramo de profundidad está el rectángulo | R1 de 0 a 17.717 in · R2 de 17.717 a 39.370 in |
+| $`a`$ | Profundidad del bloque, $`\beta_1 c`$ (como máximo $`D`$) | Marca hasta dónde llega el esfuerzo $`0.85f'_c`$ | Cambia en cada punto |
+| $`h_j`$ | Altura del rectángulo $`j`$ que queda dentro del bloque | Es la parte del rectángulo que trabaja | §7.2.3 |
+| $`A_j = b_j h_j`$ | Área comprimida del rectángulo $`j`$ | Sumadas dan $`A_c`$ | Tabla de §7.2.5 |
+| $`v_j = v_{0j} + h_j/2`$ | Profundidad del centroide de esa área | Ahí empuja ese pedazo | Tabla de §7.2.5 |
+| $`A_c = \sum A_j`$ | Área comprimida total | Da la fuerza $`P_c = 0.85f'_c A_c`$ | Tabla de §7.2.5 |
+| $`v_c = \sum A_j v_j / A_c`$ | Profundidad del centroide de $`A_c`$ | Ahí actúa $`P_c`$; con ella sale el brazo | Tabla de §7.2.5 |
+| $`\bar v`$ | Profundidad de $`G`$ | Los momentos se toman respecto a $`G`$ | 16.878 in |
+| $`\bar v - v_c`$ | Brazo de $`P_c`$ respecto a $`G`$ | Da el aporte del concreto a $`M_n`$ | Tabla de §7.2.5 |
+| $`x_c`$, $`\bar x`$ | Posición a lo largo del eje neutro del centroide de $`A_c`$ y de $`G`$ | Si no coinciden aparece $`M_\perp`$ | $`\bar x`$ = 12.941 in |
+
+#### 7.2.3 Cómo se recorta cada rectángulo
+
+```math
+h_j = \max\!\big(0,\ \min(v_{1j}, a) - v_{0j}\big)
+```
+
+Se lee de adentro hacia afuera:
+
+1. $`\min(v_{1j}, a)`$ es la profundidad más baja del rectángulo que todavía está dentro del bloque. El bloque no puede contar más allá del borde inferior del rectángulo.
+2. Al restarle $`v_{0j}`$ queda cuánto del rectángulo está dentro del bloque.
+3. Si el resultado es negativo, el bloque ni siquiera llegó al rectángulo; el $`\max(0, \ldots)`$ lo deja en cero.
+
+Por eso solo hay tres casos:
+
+| Caso | Condición | $`h_j`$ | Dónde pasa en $`+M_x`$ |
+|---|---|---|---|
+| No alcanza | $`a \le v_{0j}`$ | $`0`$ | R2 en B, C y D (el bloque no sale del ala); R1 y R2 en F |
+| Parcial | $`v_{0j} \lt  a \lt  v_{1j}`$ | $`a - v_{0j}`$ | R1 en B, C y D; R2 en E |
+| Completo | $`a \ge v_{1j}`$ | $`v_{1j} - v_{0j}`$ | R1 en E y A; R2 en A |
+
+> [!NOTE]
+> **Por qué funciona**
+>
+> 1. **El recorte de un rectángulo es otro rectángulo.** El eje neutro es paralelo a los lados de los rectángulos, así que la línea $`v = a`$ corta cada uno paralela a sus lados. Lo que queda dentro del bloque es un rectángulo de $`b_j \times h_j`$: su área y su centroide son exactos, sin integrales.
+> 2. **No se cuenta nada dos veces.** Los rectángulos no se traslapan y juntos forman la L, así que la suma de las partes es exactamente el área comprimida de la L.
+> 3. **La resultante está en el centroide.** El esfuerzo es el mismo en todo el bloque, así que cada parte empuja con $`0.85f'_c A_j`$ en su centroide $`v_j`$. La suma actúa en el promedio ponderado por área, $`v_c = \sum A_j v_j / A_c`$. Es el mismo cálculo del centroide de una sección compuesta del Paso 2, pero solo con la parte comprimida.
+> 4. **Es la viga T de siempre.** Mientras $`a \le t_f`$ el bloque es un rectángulo de ancho $`B`$; cuando pasa del ala, se suma la parte del alma.
+
+#### 7.2.4 Cómo entra el bloque en $`P_n`$ y $`M_n`$
+
+- **Fuerza.** $`P_c = 0.85 f'_c A_c`$ se suma a las fuerzas del acero: $`P_n = P_c + \sum C_{si}`$.
+- **Momento.** Respecto a $`G`$, $`P_c`$ tiene brazo $`\bar v - v_c`$, positivo cuando $`P_c`$ está más cerca de la fibra comprimida que $`G`$: $`M_n = P_c(\bar v - v_c) + \sum C_{si}(\bar v - d_i)`$.
+- **Concreto desplazado.** $`A_c`$ es área bruta: incluye el espacio que ocupan las barras dentro del bloque ($`d_i \le a`$). Ese concreto no existe, así que a esas barras se les resta $`0.85f'_c`$: $`C_{si} = A_{si}(f_{si} - 0.85 f'_c)`$. Las barras fuera del bloque no restan nada aunque estén comprimidas (entre $`a`$ y $`c`$), porque ahí el bloque ya no pone esfuerzo.
+- **Momento perpendicular.** Si el centroide de $`A_c`$ no está en la misma vertical que $`G`$ ($`x_c \ne \bar x`$), $`P_c`$ también da momento en la otra dirección: $`P_c(\bar x - x_c)`$. En una rectangular simétrica $`x_c = \bar x`$ y no pasa. En la L, mientras el bloque está solo en el ala, $`x_c = B/2`$ = 15.748 in y $`\bar x`$ = 12.941 in.
+
+#### 7.2.5 Cómo cambia el bloque de un punto a otro
+
+![Figura 8.1](img/P3-08-1-area-vs-a.svg)
+
+- **$`A_c`$ (izquierda).** Mientras el bloque está en el ala, cada pulgada de $`a`$ agrega 31.496 in²: la pendiente es el ancho del ala. Al pasar $`t_f`$ = 17.717 in entra al alma y cada pulgada agrega solo 17.717 in². En una rectangular sería una sola recta.
+- **$`v_c`$ (centro).** En el ala $`v_c = a/2`$, como en la rectangular. Al entrar al alma, el área nueva es angosta y está abajo, así que $`v_c`$ crece más despacio que $`a/2`$. La flecha entre $`v_c`$ y $`\bar v`$ es el brazo: se achica al bajar el bloque y vale 0 en A.
+- **Aporte del concreto (derecha).** Es fuerza por brazo. Con el bloque en el ala vale $`0.85f'_c\,B\,a\,(\bar v - a/2)`$, que es máximo cuando su derivada es cero, en $`a = \bar v`$: el bloque llega justo a la altura de $`G`$. En el P3, $`\bar v`$ = 16.878 in y $`a_B`$ = 17.358 in, por eso B queda casi en el máximo: 19,050.7 kip·in contra 19,066.1 kip·in.
+
+Los seis puntos de $`+M_x`$, de mayor a menor $`c`$:
+
+| Punto | $`c`$ (in) | $`a`$ (in) | R1 · ala: caso · $`h_1`$ | R2 · alma: caso · $`h_2`$ | $`A_c`$ (in²) | $`v_c`$ (in) | $`P_c`$ (kip) | $`\bar v - v_c`$ (in) | $`P_c(\bar v - v_c)`$ (kip·in) | Capas dentro del bloque |
+|:-:|--:|--:|---|---|--:|--:|--:|--:|--:|---|
+| **A** | ∞ | 39.370 | completo · 17.717 | completo · 21.654 | 941.627 | 16.878 | 4,001.914 | 0.000 | 0.0 | A1, A2, A3, A4, A5, A6 |
+| **E** | 39.370 | 31.496 | completo · 17.717 | parcial · 13.780 | 802.127 | 13.651 | 3,409.038 | 3.227 | 11,000.8 | A1, A2, A3, A4, A5 |
+| **B** | 21.697 | 17.358 | parcial · 17.358 | no alcanza · 0.000 | 546.693 | 8.679 | 2,323.447 | 8.199 | 19,050.7 | A1, A2, A3 |
+| **C** | 13.630 | 10.904 | parcial · 10.904 | no alcanza · 0.000 | 343.436 | 5.452 | 1,459.602 | 11.426 | 16,677.5 | A1, A2 |
+| **D** | 5.632 | 4.506 | parcial · 4.506 | no alcanza · 0.000 | 141.907 | 2.253 | 603.106 | 14.625 | 8,820.6 | A1 |
+| **F** | ≤ 0 | 0.000 | no alcanza · 0.000 | no alcanza · 0.000 | 0.000 | — | 0.000 | — | 0 | — |
+
+Al bajar de A a D el bloque se adelgaza: $`A_c`$ y $`P_c`$ disminuyen, pero el brazo $`\bar v - v_c`$ crece. El producto sube hasta B y luego baja; F no tiene concreto comprimido. Las Figuras 8.2 a 8.7 muestran cada punto en §7.3.
+
+> [!TIP]
+> **En la hoja**
+>
+> La vista *Planta* dibuja el bloque sobre la sección real con su valor de $`a`$, y la tabla de rectángulos comprimidos de la sección 5 muestra $`v_{0j}`$, $`v_{1j}`$, $`h_j`$, $`A_j`$ y $`v_j`$ del punto elegido. En el *Perfil de cálculo*, con *c libre*, mueve el control de $`c`$ para ver cómo el bloque pasa del ala al alma.
 
 ### 7.3 Desarrollo completo en $`+M_x`$
 
@@ -551,7 +651,13 @@ El momento no es exactamente cero porque el acero no es simétrico respecto a $`
 M_{nA} = \sum A_{si}(f_y - 0.85f'_c)(\bar v - d_i) = 55.75\,[5.81(14.168) + 2.00(8.020) + 4.81(1.871) + 2.00(-5.346) + 2.00(-12.564) + 3.54(-19.782)] = 84.08\ \text{kip}\cdot\text{in}
 ```
 
-$`M_y`$ inducido = -455.1 kip·in. **Carga axial máxima** (excentricidad accidental, ACI 22.4.2.1):
+$`M_y`$ inducido = -455.1 kip·in.
+
+En A el bloque cubre toda la sección (Figura 8.2): $`A_c = A_g`$ y $`v_c = \bar v`$, así que $`P_c`$ = 4,001.914 kip actúa en $`G`$ y el concreto no da momento. Las seis capas están dentro del bloque y restan $`0.85f'_c`$; por eso $`P_o`$ usa $`A_g - A_{st}`$.
+
+![Figura 8.2](img/P3-08-2-area-A.svg)
+
+**Carga axial máxima** (excentricidad accidental, ACI 22.4.2.1):
 
 ```math
 P_{n,máx} = 0.80\,P_o = 4{,}100.667\ \text{kip} \qquad \phi P_{n,máx} = 0.65\cdot4{,}100.667 = \mathbf{2{,}665.434}\ \text{kip}
@@ -577,6 +683,10 @@ A_c = \sum b_j h_j = 31.496\cdot17.717 + 17.717\cdot13.780 = 802.127\ \text{in}^
 ```math
 P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot802.127 = 3{,}409.038\ \text{kip}
 ```
+
+Recorte del bloque en este punto (Figura 8.3):
+
+![Figura 8.3](img/P3-08-3-area-E.svg)
 
 <details>
 <summary><b>Tablas del punto E en +<i>M</i><sub>x</sub> (bloque de compresión y capas)</b></summary>
@@ -641,6 +751,10 @@ A_c = \sum b_j h_j = 31.496\cdot17.358 = 546.693\ \text{in}^2 \qquad v_c = \frac
 ```math
 P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot546.693 = 2{,}323.447\ \text{kip}
 ```
+
+Recorte del bloque en este punto (Figura 8.4):
+
+![Figura 8.4](img/P3-08-4-area-B.svg)
 
 <details>
 <summary><b>Tablas del punto B en +<i>M</i><sub>x</sub> (bloque de compresión y capas)</b></summary>
@@ -736,6 +850,10 @@ A_c = \sum b_j h_j = 31.496\cdot10.904 = 343.436\ \text{in}^2 \qquad v_c = \frac
 P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot343.436 = 1{,}459.602\ \text{kip}
 ```
 
+Recorte del bloque en este punto (Figura 8.5):
+
+![Figura 8.5](img/P3-08-5-area-C.svg)
+
 <details>
 <summary><b>Tablas del punto C en +<i>M</i><sub>x</sub> (bloque de compresión y capas)</b></summary>
 
@@ -800,6 +918,10 @@ A_c = \sum b_j h_j = 31.496\cdot4.506 = 141.907\ \text{in}^2 \qquad v_c = \frac{
 P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot141.907 = 603.106\ \text{kip}
 ```
 
+Recorte del bloque en este punto (Figura 8.6):
+
+![Figura 8.6](img/P3-08-6-area-D.svg)
+
 <details>
 <summary><b>Tablas del punto D en +<i>M</i><sub>x</sub> (bloque de compresión y capas)</b></summary>
 
@@ -855,6 +977,10 @@ P_{nF} = -f_y A_{st} = -60\cdot20.16 = \mathbf{-1{,}209.600}\ \text{kip} \qquad 
 ```math
 M_{nF} = \sum(-f_y A_{si})(\bar v - d_i) = -90.49\ \text{kip}\cdot\text{in}
 ```
+
+Con $`c \le 0`$ no hay bloque: $`A_c = 0`$ y $`P_c = 0`$ (Figura 8.7). Toda la resistencia es el acero en tensión.
+
+![Figura 8.7](img/P3-08-7-area-F.svg)
 
 #### Resumen de la rama +Mx
 
@@ -1632,7 +1758,10 @@ No controla (9 cm < 45.0 cm).
 | $`\bar v`$ | Profundidad del punto de referencia (G); en la rectangular es $`h/2`$ | tablas §6 |
 | $`c`$ | Profundidad del eje neutro | variable |
 | $`a`$ | Profundidad del bloque equivalente de Whitney, $`a = \beta_1 c`$ | variable |
+| $`b_j`$, $`v_{0j}`$, $`v_{1j}`$ | Ancho del rectángulo $`j`$ y profundidades de su borde superior e inferior | R1, R2 · §7.2 |
+| $`h_j`$, $`A_j`$, $`v_j`$ | Altura, área y profundidad del centroide de la parte del rectángulo $`j`$ dentro del bloque | variable · §7.2 |
 | $`A_c`$, $`v_c`$ | Área comprimida de concreto y profundidad de su centroide | variable |
+| $`x_c`$ | Posición del centroide de $`A_c`$ a lo largo del eje neutro; con $`\bar x`$ da $`M_\perp`$ | variable |
 | $`P_c`$ | Fuerza del concreto, $`0.85 f'_c A_c`$ | variable |
 | $`\varepsilon_{si}`$, $`f_{si}`$, $`C_{si}`$ | Deformación, esfuerzo y fuerza de la capa $`i`$ (compresión positiva en $`f`$ y $`C`$) | variable |
 | $`P_n`$, $`M_n`$ | Resistencias nominales (sin φ) | variable |

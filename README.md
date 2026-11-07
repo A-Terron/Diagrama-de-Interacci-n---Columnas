@@ -15,12 +15,15 @@ Hoja de cálculo interactiva para construir el diagrama de interacción **P–M*
 
 ## Documentación
 
-| Documento | Contenido |
-|---|---|
-| [**Hoja interactiva**](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/) · [`index.html`](index.html) | Entradas, puntos A–F con todas las sustituciones, diagramas en ±X y ±Y, revisión de combinaciones y cortante. |
-| [**Procedimiento técnico**](docs/procedimiento-columna-L.md) | Supuestos, tipo de análisis, procedimiento paso a paso, secciones de ACI 318-19 usadas, diferencias con la columna rectangular y validación. |
-| [**Manual P3-ECR**](docs/manual-P3-ECR-columna-L.md) | Solución completa de un examen con columna en L: cada fórmula, por qué se aplica, qué significa cada resultado y 15 figuras. |
-| [**Manual para Obsidian**](obsidian/) | El mismo manual con callouts, incrustaciones `![[...]]` y enlaces internos de Obsidian. |
+| Documento | Versión web | En GitHub | Contenido |
+|---|---|---|---|
+| **Hoja interactiva** | [abrir](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/) | [`index.html`](index.html) | Entradas, puntos A–F con todas las sustituciones, diagramas en ±X y ±Y, revisión de combinaciones y cortante. |
+| **Procedimiento técnico** | [leer](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/docs/procedimiento-columna-L.html) | [Markdown](docs/procedimiento-columna-L.md) | Supuestos, tipo de análisis, procedimiento paso a paso, secciones de ACI 318-19 usadas, diferencias con la columna rectangular y validación. |
+| **Manual P3-ECR** | [leer](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/docs/manual-P3-ECR-columna-L.html) | [Markdown](docs/manual-P3-ECR-columna-L.md) | Solución completa de un examen con columna en L: cada fórmula, por qué se aplica, qué significa cada resultado y 22 figuras, con el área comprimida punto por punto. |
+| **Manual para Obsidian** | — | [obsidian/](obsidian/) | El mismo manual con callouts, incrustaciones `![[...]]` y enlaces internos de Obsidian. |
+
+> [!TIP]
+> Las versiones web están en español y tienen las fórmulas renderizadas, así que el navegador no intenta traducirlas. Si lees el Markdown en github.com con el traductor de Chrome activado, las fórmulas pueden salir con palabras como "incógnita" (por $`x`$), "gramo" (por $`g`$) o "en" (por in). Usa la versión web, o en Chrome elige **Mostrar original** y **No traducir nunca este sitio**.
 
 ## Qué hace la hoja
 
@@ -53,7 +56,7 @@ Columna en L de 0.80 × 1.00 m (ala y alma de 0.45 m), $`f'_c`$ = 5,000 psi, gra
 | Revisión de 6 combinaciones | Todas cumplen · D/C máximo 89.6 % (caso 6, eje Y) |
 | Refuerzo transversal | #4 @ 9 cm: 2 estribos + 1 eslabón en el ala + 2 eslabones en el alma |
 
-El desarrollo completo está en el [manual](docs/manual-P3-ECR-columna-L.md).
+El desarrollo completo está en el [manual](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/docs/manual-P3-ECR-columna-L.html) ([versión Markdown](docs/manual-P3-ECR-columna-L.md)).
 
 ## Alcance y limitaciones
 
@@ -72,6 +75,7 @@ El desarrollo completo está en el [manual](docs/manual-P3-ECR-columna-L.md).
 ├── docs/
 │   ├── procedimiento-columna-L.md    Procedimiento técnico
 │   ├── manual-P3-ECR-columna-L.md    Manual del P3-ECR (formato GitHub)
+│   ├── *.html                        Versiones web en español de los dos documentos
 │   └── img/                          Figuras SVG y captura de la hoja
 ├── obsidian/
 │   └── Manual P3-ECR - Columna L.md  Manual del P3-ECR (formato Obsidian)

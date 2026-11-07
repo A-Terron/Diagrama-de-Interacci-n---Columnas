@@ -6,7 +6,7 @@ Es la **versión 5** de la hoja de columnas del curso. La versión 4 solo resolv
 
 `ACI 318-19` · `kip · in · ksi` · `compatibilidad de deformaciones` · `flexión uniaxial ±X, ±Y` · `caso de prueba: P3-ECR`
 
-**Hoja en línea:** [abrir en GitHub Pages](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/) · archivo [`index.html`](../index.html) en la raíz del repositorio. Abre con el ejemplo del P3 cargado; los botones de la barra superior cargan el P3 o el ejemplo de clase 80×80. La solución completa del P3 paso a paso está en el [manual](manual-P3-ECR-columna-L.md).
+**Hoja en línea:** [abrir en GitHub Pages](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/) · archivo [`index.html`](../index.html) en la raíz del repositorio. Abre con el ejemplo del P3 cargado; los botones de la barra superior cargan el P3 o el ejemplo de clase 80×80. La solución completa del P3 paso a paso está en el [manual](manual-P3-ECR-columna-L.md). Versión web en español: [procedimiento-columna-L.html](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/docs/procedimiento-columna-L.html).
 
 ---
 
@@ -61,13 +61,14 @@ La hoja ya no lleva párrafos de instrucciones: todo lo que explica el procedimi
 ├── docs/
 │   ├── procedimiento-columna-L.md   Este documento
 │   ├── manual-P3-ECR-columna-L.md   Solución del P3-ECR paso a paso
+│   ├── *.html                       Versiones web en español de estos dos documentos (GitHub Pages)
 │   └── img/
 │       ├── fig1-seccion-L.svg            Geometría, barras, segmentos y signos
 │       ├── fig2-bloque-compresion.svg    Zona comprimida en las 4 direcciones
 │       ├── fig3-deformaciones.svg        Compatibilidad de deformaciones (+Mx, punto B)
 │       ├── fig4-diagramas-P3.svg         Diagramas X y Y del caso de prueba
 │       ├── fig5-rectangular-vs-L.svg     Diferencias con la sección rectangular
-│       └── P3-01 … P3-15                 Figuras del manual
+│       └── P3-01 … P3-15                 Figuras del manual (P3-08-1 … P3-08-7: área comprimida)
 └── obsidian/
     └── Manual P3-ECR - Columna L.md      Manual en formato Obsidian
 ```
