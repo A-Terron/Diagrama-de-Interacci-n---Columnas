@@ -484,7 +484,7 @@ Para cualquier $`c`$ se hace lo mismo (Figura 7 muestra el punto B):
 
 5. **Artificio 2** (esfuerzo con el signo de clase, limitado a $`f_y`$):
 
-   $`\displaystyle f_{si} = -\operatorname{signo}(\varepsilon_{si})\cdot\min\!\left(E_s|\varepsilon_{si}|,\ f_y\right)`$
+   $`\displaystyle f_{si} = -\mathrm{signo}(\varepsilon_{si})\cdot\min\!\left(E_s|\varepsilon_{si}|,\ f_y\right)`$
 
 6. **Fuerza de la capa**, restando el concreto desplazado si la capa está dentro del bloque:
 

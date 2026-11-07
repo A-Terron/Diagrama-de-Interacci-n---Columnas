@@ -252,7 +252,7 @@ $`d_t = \max(d_i)`$ es la profundidad de la barra extrema en tensión, que contr
 ```math
 \varepsilon_{si} = \varepsilon_{cu}\,\frac{d_i - c}{c}
 \qquad
-f_{si} = -\operatorname{signo}(\varepsilon_{si})\cdot\min\!\left(E_s\,|\varepsilon_{si}|,\ f_y\right)
+f_{si} = -\mathrm{signo}(\varepsilon_{si})\cdot\min\!\left(E_s\,|\varepsilon_{si}|,\ f_y\right)
 ```
 
 **Bloque de compresión**: $`a = \min(\beta_1 c,\ D)`$. Cada rectángulo $`j`$ con profundidades $`[v_{0j}, v_{1j}]`$ aporta la parte que queda dentro de $`[0, a]`$:
