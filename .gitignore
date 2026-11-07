@@ -1,0 +1,11 @@
+# Material con derechos de autor: no se publica
+Books/
+Bibliografía/
+*.pdf
+
+# Obsidian y sistema
+.obsidian/
+.trash/
+.DS_Store
+Thumbs.db
+desktop.ini

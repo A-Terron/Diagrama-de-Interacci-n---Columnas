@@ -1,0 +1,2288 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Diagrama de Interacción · Columna L</title>
+<meta name="description" content="Hoja interactiva para el diagrama de interacción P–M de columnas de concreto reforzado en L y rectangulares según ACI 318-19: puntos A–F, revisión de combinaciones y cortante.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23660004'/%3E%3Cpath d='M9 6h7v13h7v7H9z' fill='white'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=STIX+Two+Text:ital,wght@0,400;0,500;1,400;1,500&display=swap">
+<style>
+:root{color-scheme:light;box-sizing:border-box}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}img{max-width:100%}[hidden]{display:none!important}
+/* Layout: hoja de cálculo tipo Mathcad a la izquierda (entradas + procedimiento) y vista técnica fija a la derecha (sección + diagrama).
+   Banda granate tomada de la hoja Mathcad original; amarillo = celda de ingreso como en el Excel original. */
+:root{
+  --paper:#ECF0F3; --sheet:#FFFFFF; --ink:#151E28; --ink-2:#4A5765; --ink-3:#7A8693; --rule:#D1D9E0; --rule-2:#E6EBEF;
+  --brand:#660004; --brand-ink:#FFFFFF; --brand-text:#7A0A10;
+  --accent:#234E7A; --accent-2:#E1E9F2;
+  --in-bg:#FFF1B0; --in-bd:#D1A72A; --in-ink:#2E2500;
+  --calc:#08665F; --calc-bg:#E0F1EE;
+  --comp:#D24A12; --comp-bg:#FBE2D6; --trans:#9A6F00; --trans-bg:#F5EBC8; --tens:#2864B4; --tens-bg:#DBE7F7;
+  --ok:#1C7738; --ok-bg:#DCF0E2; --warn:#985700; --warn-bg:#FAEAD0; --bad:#B42318; --bad-bg:#FADFDB;
+  --concrete:#DCE1E6; --concrete-ln:#8F9BA8; --steel:#2A2522; --grid:#E3E8ED; --axis:#8C98A4;
+  --f-sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-cond:'IBM Plex Sans Condensed','Arial Narrow',system-ui,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+  --f-math:'STIX Two Text','Cambria Math',Cambria,'Times New Roman',serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0C1117; --sheet:#141B23; --ink:#DCE4EC; --ink-2:#A2AFBC; --ink-3:#73808D; --rule:#2A3541; --rule-2:#1F2832;
+    --brand:#4A0B10; --brand-ink:#FBE9EA; --brand-text:#E79A9E;
+    --accent:#90B8E6; --accent-2:#1C2A39;
+    --in-bg:#3A3112; --in-bd:#A6882A; --in-ink:#FFF2C2;
+    --calc:#62CDC2; --calc-bg:#12302C;
+    --comp:#F2895A; --comp-bg:#3B2318; --trans:#DDB54E; --trans-bg:#342B12; --tens:#76A9EB; --tens-bg:#172A41;
+    --ok:#5DC47E; --ok-bg:#15301F; --warn:#E5A44C; --warn-bg:#35270F; --bad:#F3776B; --bad-bg:#3A1A17;
+    --concrete:#26303A; --concrete-ln:#5D6B79; --steel:#EDE6DD; --grid:#202A34; --axis:#5D6B79;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0C1117; --sheet:#141B23; --ink:#DCE4EC; --ink-2:#A2AFBC; --ink-3:#73808D; --rule:#2A3541; --rule-2:#1F2832;
+  --brand:#4A0B10; --brand-ink:#FBE9EA; --brand-text:#E79A9E;
+  --accent:#90B8E6; --accent-2:#1C2A39;
+  --in-bg:#3A3112; --in-bd:#A6882A; --in-ink:#FFF2C2;
+  --calc:#62CDC2; --calc-bg:#12302C;
+  --comp:#F2895A; --comp-bg:#3B2318; --trans:#DDB54E; --trans-bg:#342B12; --tens:#76A9EB; --tens-bg:#172A41;
+  --ok:#5DC47E; --ok-bg:#15301F; --warn:#E5A44C; --warn-bg:#35270F; --bad:#F3776B; --bad-bg:#3A1A17;
+  --concrete:#26303A; --concrete-ln:#5D6B79; --steel:#EDE6DD; --grid:#202A34; --axis:#5D6B79;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font:14px/1.5 var(--f-sans);-webkit-font-smoothing:antialiased}
+var{font-family:var(--f-math);font-style:italic;font-size:1.08em}
+sub,sup{font-size:68%;line-height:0}
+.wrap{max-width:1560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 40px}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---------- Encabezado tipo cajetín ---------- */
+.titleblock{display:grid;grid-template-columns:minmax(0,1fr) auto;border:1px solid var(--rule);background:var(--sheet)}
+.tb-main{background:var(--brand);color:var(--brand-ink);padding:14px 18px 12px;min-width:0}
+.tb-main h1{margin:0;font:600 26px/1.15 var(--f-cond);letter-spacing:.01em;text-wrap:balance}
+.tb-main p{margin:4px 0 0;font-size:13px;opacity:.86}
+.tb-meta{display:grid;grid-template-columns:repeat(3,auto);font-size:12px;min-width:0}
+.tb-meta div{padding:8px 14px;border-left:1px solid var(--rule);display:flex;flex-direction:column;justify-content:center}
+.tb-meta b{font:600 11px var(--f-cond);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:10px 14px;border:1px solid var(--rule);border-top:0;background:var(--sheet);font-size:13px}
+.toolbar label{display:inline-flex;gap:6px;align-items:center;color:var(--ink-2)}
+.toolbar select{padding:4px 6px;border:1px solid var(--rule);background:var(--sheet);border-radius:3px}
+.btn{border:1px solid var(--rule);background:var(--sheet);padding:5px 10px;border-radius:3px;cursor:pointer;font-size:13px}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.small{padding:2px 8px;font-size:12px}
+details.unitsx{position:relative}
+details.unitsx summary{cursor:pointer;color:var(--accent);list-style:none}
+details.unitsx summary::-webkit-details-marker{display:none}
+.unitgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 14px;padding:10px 0 2px}
+.unitgrid label{display:flex;justify-content:space-between;gap:8px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;padding:10px 14px;border:1px solid var(--rule);border-top:0;background:var(--sheet);font-size:12.5px;color:var(--ink-2);align-items:center}
+.lg{display:inline-flex;align-items:center;gap:6px}
+.sw-in{display:inline-block;width:30px;height:16px;background:var(--in-bg);border:1px solid var(--in-bd);border-radius:2px}
+.sw-calc{font:500 12.5px var(--f-mono);color:var(--calc);background:var(--calc-bg);padding:0 5px;border-radius:2px}
+.ref{font:500 10.5px var(--f-mono);color:var(--accent);background:var(--accent-2);padding:1px 5px;border-radius:2px;white-space:nowrap}
+.legend .note{flex-basis:100%;margin:0}
+
+/* ---------- Distribución ---------- */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,600px);gap:18px;margin-top:16px;align-items:start}
+.view{position:sticky;top:env(safe-area-inset-top,0px);max-height:100vh;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-bottom:12px;scrollbar-width:thin}
+@media (max-width:1180px){.layout{grid-template-columns:minmax(0,1fr)}.view{position:static;max-height:none;overflow:visible}}
+@media (max-width:760px){.titleblock{grid-template-columns:minmax(0,1fr)}.tb-meta{grid-template-columns:repeat(3,minmax(0,1fr))}.tb-meta div{border-left:0;border-right:1px solid var(--rule);padding:8px 12px}.tb-main h1{font-size:22px}}
+
+/* ---------- Hoja ---------- */
+.sheet{background:var(--sheet);border:1px solid var(--rule);min-width:0}
+.sec{padding:4px 0 14px;border-bottom:1px solid var(--rule)}
+.sec:last-child{border-bottom:0}
+.sec>h2{display:flex;align-items:baseline;gap:10px;margin:0;padding:14px 18px 8px;font:600 18px/1.25 var(--f-cond);color:var(--brand-text);text-wrap:balance}
+.secno{font:600 12px var(--f-mono);color:var(--brand-ink);background:var(--brand);padding:2px 7px;border-radius:2px}
+.intro{margin:0 18px 8px;color:var(--ink-2);font-size:13px;max-width:72ch}
+.step{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,16rem);gap:4px 18px;padding:7px 18px;border-top:1px dashed var(--rule-2);align-items:baseline}
+.mline{font-family:var(--f-math);font-size:16.5px;display:flex;flex-wrap:wrap;align-items:baseline;gap:3px 6px;min-width:0}
+.mline .op{color:var(--ink-3);padding:0 1px}
+.mline .lhs{white-space:nowrap}
+.mline .sub{color:var(--ink-2)}
+.mline .uu{font:400 12px var(--f-mono);color:var(--ink-3);margin-left:2px}
+.step .note{font-size:12.5px;color:var(--ink-2);min-width:0}
+.step .note .ref{margin-left:4px}
+.step.input{background:linear-gradient(90deg,color-mix(in srgb,var(--in-bg) 35%,transparent),transparent 60%)}
+.tag{display:inline-block;font:600 9.5px var(--f-cond);letter-spacing:.09em;text-transform:uppercase;padding:1px 5px;border-radius:2px;margin-right:6px;vertical-align:1px}
+.tag.in{background:var(--in-bg);color:var(--in-ink);border:1px solid var(--in-bd)}
+.tag.ca{background:var(--calc-bg);color:var(--calc)}
+@media (max-width:640px){.step{grid-template-columns:minmax(0,1fr)}}
+
+.inbox{display:inline-flex;align-items:stretch;border:1px solid var(--in-bd);background:var(--in-bg);border-radius:3px;overflow:hidden;font-family:var(--f-mono);font-size:13.5px;color:var(--in-ink)}
+.inbox input{width:7.2em;border:0;background:transparent;padding:3px 7px;font:500 13.5px var(--f-mono);color:var(--in-ink)}
+.inbox input[aria-invalid="true"]{background:var(--bad-bg);color:var(--bad)}
+.inbox select{border:0;border-left:1px solid var(--in-bd);background:transparent;padding:2px 4px;font:12px var(--f-mono);color:var(--in-ink);cursor:pointer}
+.inbox.wide input{width:10em}
+.inbox.narrow input{width:4.2em}
+select.insel{border:1px solid var(--in-bd);background:var(--in-bg);color:var(--in-ink);border-radius:3px;padding:3px 6px;font:500 13px var(--f-mono);cursor:pointer;max-width:100%}
+
+.rv{display:inline-flex;align-items:baseline;gap:2px;white-space:nowrap}
+.rv .num{font:500 14px var(--f-mono);color:var(--calc);background:var(--calc-bg);padding:0 5px;border-radius:2px;font-variant-numeric:tabular-nums}
+.rv.big .num{font-size:15.5px;font-weight:600}
+select.us{appearance:none;-webkit-appearance:none;border:0;border-bottom:1px dotted var(--ink-3);background:transparent;color:var(--ink-2);font:12px var(--f-mono);padding:0 2px;cursor:pointer;border-radius:0}
+select.us:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.n{font-family:var(--f-mono);font-size:13px;color:var(--ink-2)}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 18px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid transparent}
+.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.chip.ok{background:var(--ok-bg);color:var(--ok)}
+.chip.warn{background:var(--warn-bg);color:var(--warn)}
+.chip.bad{background:var(--bad-bg);color:var(--bad)}
+.chip .ref{background:transparent;padding:0}
+.z{display:inline-block;font:600 10.5px var(--f-cond);letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;border-radius:2px}
+.z.comp{background:var(--comp-bg);color:var(--comp)}
+.z.trans{background:var(--trans-bg);color:var(--trans)}
+.z.tens{background:var(--tens-bg);color:var(--tens)}
+
+.tscroll{overflow-x:auto;margin:6px 18px 4px;border:1px solid var(--rule)}
+table.tbl{border-collapse:collapse;width:100%;font-size:12.5px}
+.tbl th,.tbl td{padding:5px 7px;border-bottom:1px solid var(--rule-2);text-align:right;white-space:nowrap}
+.tbl th{font:600 11.5px var(--f-cond);letter-spacing:.03em;color:var(--ink-2);background:color-mix(in srgb,var(--paper) 55%,var(--sheet));vertical-align:bottom;position:sticky;top:0;z-index:1}
+.tbl th .hu{display:block;font-weight:400}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl td{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.tbl td.t{font-family:var(--f-sans)}
+.tbl tfoot td{font-weight:600;border-top:1px solid var(--rule);border-bottom:0}
+.tbl tr.key td{background:color-mix(in srgb,var(--accent-2) 70%,transparent)}
+.tbl td .rvv{color:var(--calc)}
+.tbl .inbox input{width:6.2em}
+.cmp{color:var(--comp)}.tns{color:var(--tens)}
+.mini{font-size:11.5px;color:var(--ink-3)}
+
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:3px;overflow:hidden;flex-wrap:wrap}
+.seg button{border:0;background:var(--sheet);padding:4px 10px;cursor:pointer;font-size:13px;border-right:1px solid var(--rule)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--sheet)}
+.optrow{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;padding:8px 18px}
+.optrow label{display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:100%;min-width:0}
+.mul{font-weight:400;padding:0 1px;color:var(--ink-3)}
+.halo{paint-order:stroke;stroke:var(--sheet);stroke-width:3.5px;stroke-linejoin:round}
+.tbl .inbox.wide input{width:11em}
+
+details.pt{border-top:1px solid var(--rule);margin:0}
+details.pt>summary{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;padding:11px 18px;cursor:pointer;list-style:none}
+details.pt>summary::-webkit-details-marker{display:none}
+details.pt>summary::before{content:"▸";color:var(--ink-3);font-size:12px;transition:transform .15s}
+details.pt[open]>summary::before{transform:rotate(90deg)}
+@media (prefers-reduced-motion:reduce){details.pt>summary::before{transition:none}}
+.pkey{font:700 15px var(--f-cond);color:var(--brand-ink);background:var(--brand);min-width:26px;text-align:center;padding:1px 6px;border-radius:2px}
+.ptitle{font:600 15.5px var(--f-cond)}
+.psum{margin-left:auto;font:12.5px var(--f-mono);color:var(--ink-2)}
+.subh{margin:14px 18px 2px;font:600 13px var(--f-cond);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.btn.use{margin-left:6px;padding:1px 7px;font-size:11.5px}
+.sumline{padding:4px 14px 12px;font-size:13px;color:var(--ink)}
+.sumline b{font-family:var(--f-mono);font-weight:500;color:var(--calc)}
+.convbox{margin:4px 18px 10px;padding:10px 12px;border:1px solid var(--rule);border-left:3px solid var(--accent);font-size:13px;color:var(--ink-2);display:grid;gap:4px}
+.convbox .mline{font-size:15.5px;color:var(--ink)}
+
+/* ---------- Vista ---------- */
+.card{background:var(--sheet);border:1px solid var(--rule)}
+.card>header{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;justify-content:space-between;padding:10px 14px 6px}
+.card>header h3{margin:0;font:600 15px var(--f-cond);letter-spacing:.04em;text-transform:uppercase;color:var(--brand-text)}
+.card .ctrl{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;padding:4px 14px 8px;font-size:12.5px;color:var(--ink-2)}
+.card .ctrl label{display:inline-flex;gap:5px;align-items:center;cursor:pointer}
+.svgbox{padding:0 6px;overflow-x:auto}
+.svgbox svg{display:block;width:100%;height:auto;min-width:420px}
+.info{padding:6px 14px 12px;font:12.5px var(--f-mono);color:var(--ink-2);display:flex;flex-wrap:wrap;gap:4px 14px}
+.info b{color:var(--ink);font-weight:500}
+input[type=range]{accent-color:var(--accent);width:min(260px,60%)}
+.tooltip{position:fixed;pointer-events:none;background:var(--sheet);border:1px solid var(--rule);box-shadow:0 4px 14px rgba(0,0,0,.14);padding:7px 9px;font:12px/1.45 var(--f-mono);color:var(--ink);z-index:50;white-space:nowrap}
+.legendrow{display:flex;flex-wrap:wrap;gap:6px 14px;padding:2px 14px 12px;font-size:12px;color:var(--ink-2)}
+.legendrow i{display:inline-block;width:18px;height:0;border-top:2.5px solid;vertical-align:middle;margin-right:5px}
+.legendrow i.dash{border-top-style:dashed;border-top-width:1.5px}
+svg text{font-family:var(--f-mono)}
+.sumtbl td,.sumtbl th{padding:4px 7px}
+.foot{margin-top:18px;font-size:12px;color:var(--ink-3);max-width:90ch}
+/* ---------- v5: sección L y combinaciones ---------- */
+.tb-meta{grid-template-columns:repeat(3,auto)}
+.legend{gap:8px 22px}
+.legend a{color:var(--accent)}
+.grp{display:contents}
+.dirseg button{min-width:3.6em;font-family:var(--f-mono)}
+.dirseg button[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink)}
+.tbl td.in{padding:3px 5px}
+.tbl .inbox input{width:5.6em}
+.tbl .inbox.narrow input{width:3.6em}
+.tbl select.insel{padding:2px 4px;font-size:12.5px}
+.tbl td .chip{white-space:nowrap}
+.seglbl{font:600 11px var(--f-mono);color:var(--accent);background:var(--accent-2);padding:1px 5px;border-radius:2px}
+.cbres td{vertical-align:middle}
+.dcbar{display:inline-block;width:64px;height:7px;border-radius:4px;background:var(--rule-2);vertical-align:middle;margin-left:6px;overflow:hidden}
+.dcbar i{display:block;height:100%;border-radius:4px}
+.cards2{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.mini b{color:var(--ink-2);font-weight:600}
+.warnbox{margin:6px 18px 10px;padding:9px 12px;border:1px solid var(--warn);background:var(--warn-bg);color:var(--ink);font-size:13px;border-radius:2px}
+.warnbox b{color:var(--warn)}
+.sumtbl td.t b{font-family:var(--f-cond);font-size:13px}
+.selrow{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:6px 18px}
+.selrow label{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}
+svg .lbl{font-family:var(--f-mono)}
+.addrow{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:6px 18px 2px}
+.tbl tr.gov td{background:color-mix(in srgb,var(--warn-bg) 80%,transparent)}
+.tbl td.num-ok{color:var(--ok)}
+.tbl td.num-bad{color:var(--bad)}
+/* ---------- v5.1: vistas, zoom y lectura ---------- */
+@media (min-width:1181px){.layout{grid-template-columns:minmax(0,1fr) minmax(0,660px)}}
+.ctrl.units,.units{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;font-size:12px;color:var(--ink-2)}
+.ctrl.units label,.units label{display:inline-flex;gap:5px;align-items:center}
+.readout{padding:4px 14px 10px;font:12px/1.55 var(--f-mono);color:var(--ink-2);min-height:3.2em}
+.readout b{color:var(--ink);font-weight:600}
+.readout .chip{font-family:var(--f-sans);vertical-align:1px}
+tr[data-cbi]{cursor:pointer}
+.tbl tr.hl td{background:color-mix(in srgb,var(--accent-2) 90%,transparent)}
+.tbl tr.hl td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+.seg button:disabled{color:var(--ink-3);cursor:default}
+.seg button:disabled[aria-pressed="true"]{background:var(--accent);color:var(--sheet)}
+.svgbox svg{user-select:none;-webkit-user-select:none}
+
+.legend a,.foot a{color:var(--accent);text-underline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="titleblock">
+    <div class="tb-main">
+      <h1>Diagrama de Interacción · Columna L</h1>
+      <p>Secciones formadas por rectángulos · flexocompresión uniaxial en ±X y ±Y · cortante con detalle ordinario</p>
+    </div>
+    <div class="tb-meta">
+      <div><b>Norma</b>ACI 318-19</div>
+      <div><b>Cálculo interno</b>kip · in · ksi</div>
+      <div><b>Signos</b>+Mx arriba · +My izquierda</div>
+    </div>
+  </header>
+  <div class="toolbar">
+    <label for="preset">Unidades de resultados
+      <select id="preset"></select></label>
+    <label for="dec">Decimales
+      <select id="dec"><option>2</option><option selected>3</option><option>4</option></select></label>
+    <details class="unitsx" id="unitsx"><summary>Unidades por tipo ▾</summary><div class="unitgrid" id="unitgrid"></div></details>
+    <span style="flex:1"></span>
+    <button class="btn" id="ex-p3" type="button">Ejemplo P3 · columna L</button>
+    <button class="btn" id="ex-rect" type="button">Ejemplo de clase · 80×80</button>
+  </div>
+  <div class="legend">
+    <span class="lg"><span class="sw-in"></span> Dato ingresado</span>
+    <span class="lg"><span class="sw-calc">0.000</span> Dato calculado</span>
+    <span class="lg"><span class="ref">ACI 22.2.2.1</span> Referencia del código</span>
+    <span class="lg docs">Documentación: <a href="https://github.com/A-Terron/Diagrama-de-Interacci-n---Columnas/blob/main/docs/procedimiento-columna-L.md" target="_blank" rel="noopener">procedimiento y normas</a> · <a href="https://github.com/A-Terron/Diagrama-de-Interacci-n---Columnas/blob/main/docs/manual-P3-ECR-columna-L.md" target="_blank" rel="noopener">manual P3-ECR</a> · <a href="https://github.com/A-Terron/Diagrama-de-Interacci-n---Columnas" target="_blank" rel="noopener">repositorio</a></span>
+  </div>
+
+  <div class="layout">
+    <!-- ======================= HOJA ======================= -->
+    <main class="sheet" id="sheet">
+      <section class="sec" id="s1">
+        <h2><span class="secno">1</span><span>Propiedades mecánicas</span></h2>
+        <div class="step input"><div class="mline"><span class="lhs"><var>f′</var><sub>c</sub></span><span class="op">:=</span><span class="inbox"><input id="i-fc" class="in" data-k="fc" data-q="stress" inputmode="decimal" autocomplete="off"><select class="iu" data-k="fc" data-q="stress" aria-label="Unidad de f'c"></select></span></div><div class="note"><span class="tag in">ingresado</span>Resistencia del concreto <span class="ref">ACI 19.2.1.1</span></div></div>
+        <div class="slot" data-slot="Ec"></div>
+        <div class="step input"><div class="mline"><span class="lhs"><var>λ</var></span><span class="op">:=</span><span class="inbox narrow"><input id="i-lambda" class="in" data-k="lambda" inputmode="decimal" autocomplete="off"></span></div><div class="note"><span class="tag in">ingresado</span>Concreto liviano (1.0 = peso normal) <span class="ref">ACI 19.2.4</span></div></div>
+        <div class="step input"><div class="mline"><span class="lhs"><var>ε</var><sub>cu</sub></span><span class="op">:=</span><span class="inbox narrow"><input id="i-ecu" class="in" data-k="ecu" inputmode="decimal" autocomplete="off"></span></div><div class="note"><span class="tag in">ingresado</span>Deformación última del concreto <span class="ref">ACI 22.2.2.1</span></div></div>
+        <div class="slot" data-slot="b1"></div>
+        <div class="step input"><div class="mline"><span class="lhs"><var>f</var><sub>y</sub></span><span class="op">:=</span><span class="inbox"><input id="i-fy" class="in" data-k="fy" data-q="stress" inputmode="decimal" autocomplete="off"><select class="iu" data-k="fy" data-q="stress" aria-label="Unidad de fy"></select></span></div><div class="note"><span class="tag in">ingresado</span>Fluencia del acero longitudinal <span class="ref">ACI 20.2.2.4</span></div></div>
+        <div class="step input"><div class="mline"><span class="lhs"><var>f</var><sub>yt</sub></span><span class="op">:=</span><span class="inbox"><input id="i-fyt" class="in" data-k="fyt" data-q="stress" inputmode="decimal" autocomplete="off"><select class="iu" data-k="fyt" data-q="stress" aria-label="Unidad de fyt"></select></span></div><div class="note"><span class="tag in">ingresado</span>Fluencia del refuerzo transversal <span class="ref">ACI 20.2.2.4</span></div></div>
+        <div class="step input"><div class="mline"><span class="lhs"><var>E</var><sub>s</sub></span><span class="op">:=</span><span class="inbox"><input id="i-Es" class="in" data-k="Es" data-q="stress" inputmode="decimal" autocomplete="off"><select class="iu" data-k="Es" data-q="stress" aria-label="Unidad de Es"></select></span></div><div class="note"><span class="tag in">ingresado</span>Módulo de elasticidad del acero <span class="ref">ACI 20.2.2.2</span></div></div>
+        <div class="slot" data-slot="ety"></div>
+      </section>
+
+      <section class="sec" id="s2">
+        <h2><span class="secno">2</span><span>Geometría de la sección</span></h2>
+        <div class="step input"><div class="mline"><span class="lhs">Forma</span><span class="op">:=</span><select id="i-shape" class="insel" data-k="shape"><option value="L">Tipo L (2 rectángulos)</option><option value="rect">Rectangular</option><option value="custom">Personalizada (rectángulos)</option></select></div><div class="note"><span class="tag in">ingresado</span>La sección se define como unión de rectángulos que no se traslapan</div></div>
+        <div data-shape="L rect">
+          <div class="step input"><div class="mline"><span class="lhs"><var>B</var></span><span class="op">:=</span><span class="inbox"><input id="i-B" class="in" data-k="B" data-q="len" inputmode="decimal" autocomplete="off"><select class="iu" data-k="B" data-q="len" aria-label="Unidad de B"></select></span></div><div class="note"><span class="tag in">ingresado</span>Ancho total (dirección X)</div></div>
+          <div class="step input"><div class="mline"><span class="lhs"><var>H</var></span><span class="op">:=</span><span class="inbox"><input id="i-H" class="in" data-k="H" data-q="len" inputmode="decimal" autocomplete="off"><select class="iu" data-k="H" data-q="len" aria-label="Unidad de H"></select></span></div><div class="note"><span class="tag in">ingresado</span>Alto total (dirección Y)</div></div>
+        </div>
+        <div data-shape="L">
+          <div class="step input"><div class="mline"><span class="lhs"><var>t</var><sub>f</sub></span><span class="op">:=</span><span class="inbox"><input id="i-tf" class="in" data-k="tf" data-q="len" inputmode="decimal" autocomplete="off"><select class="iu" data-k="tf" data-q="len" aria-label="Unidad de tf"></select></span></div><div class="note"><span class="tag in">ingresado</span>Espesor del ala (pata horizontal, medido en Y)</div></div>
+          <div class="step input"><div class="mline"><span class="lhs"><var>t</var><sub>w</sub></span><span class="op">:=</span><span class="inbox"><input id="i-tw" class="in" data-k="tw" data-q="len" inputmode="decimal" autocomplete="off"><select class="iu" data-k="tw" data-q="len" aria-label="Unidad de tw"></select></span></div><div class="note"><span class="tag in">ingresado</span>Espesor del alma (pata vertical, medido en X)</div></div>
+          <div class="step input"><div class="mline"><span class="lhs">Esquina exterior</span><span class="op">:=</span><select id="i-orient" class="insel" data-k="orient"><option value="TL">Superior izquierda</option><option value="TR">Superior derecha</option><option value="BL">Inferior izquierda</option><option value="BR">Inferior derecha</option></select></div><div class="note"><span class="tag in">ingresado</span>Orientación de la L (P3: superior izquierda)</div></div>
+        </div>
+        <div data-shape="custom">
+          <h4 class="subh">Rectángulos de la sección</h4>
+          <div class="tscroll"><table class="tbl" id="rects-tbl"><thead><tr><th>Rectángulo</th><th><var>x</var><sub>0</sub> <span class="hu" data-hu="rt-u"></span></th><th><var>y</var><sub>0</sub></th><th>Ancho</th><th>Alto</th><th></th></tr></thead><tbody></tbody></table></div>
+          <div class="addrow"><button class="btn small" type="button" id="addrect">+ Agregar rectángulo</button><span class="mini">Origen en la esquina inferior izquierda; los rectángulos no deben traslaparse.</span></div>
+        </div>
+        <div class="step input"><div class="mline"><span class="lhs"><var>rec</var></span><span class="op">:=</span><span class="inbox"><input id="i-rec" class="in" data-k="rec" data-q="len" inputmode="decimal" autocomplete="off"><select class="iu" data-k="rec" data-q="len" aria-label="Unidad de rec"></select></span></div><div class="note"><span class="tag in">ingresado</span>Recubrimiento libre a la cara exterior del estribo <span class="ref">ACI 20.5.1.3.1</span></div></div>
+        <div class="step input"><div class="mline"><span class="lhs">No. estribo (<var>ϕ</var><sub>es</sub>)</span><span class="op">:=</span><select id="i-est" class="insel bars" data-k="est" data-max="6"></select></div><div class="note"><span class="tag in">ingresado</span>Varilla de estribos y eslabones</div></div>
+        <div class="slot" data-slot="dest"></div>
+        <div class="step input"><div class="mline"><span class="lhs">Refuerzo transversal</span><span class="op">:=</span><select id="i-tie" class="insel" data-k="tie"><option value="estribos">Estribos (φ = 0.65 · 0.80 P₀)</option><option value="zuncho">Zuncho espiral (φ = 0.75 · 0.85 P₀)</option></select></div><div class="note"><span class="tag in">ingresado</span>Define φ en compresión y la carga axial máxima <span class="ref">ACI 21.2.2 · 22.4.2.1</span></div></div>
+        <div class="slot" data-slot="geo"></div>
+        <div class="step input"><div class="mline"><span class="lhs">Referencia de momentos</span><span class="op">:=</span><select id="i-refPt" class="insel" data-k="refPt"><option value="geo">Centroide geométrico G</option><option value="plast">Centroide plástico</option></select></div><div class="note"><span class="tag in">ingresado</span>Punto respecto al cual se suman los momentos (en la rectangular, h/2)</div></div>
+        <div class="slot" data-slot="ref"></div>
+        <div class="step input"><div class="mline"><span class="lhs"><var>H</var><sub>c</sub></span><span class="op">:=</span><span class="inbox"><input id="i-Hcol" class="in" data-k="Hcol" data-q="len" inputmode="decimal" autocomplete="off"><select class="iu" data-k="Hcol" data-q="len" aria-label="Unidad de Hc"></select></span></div><div class="note"><span class="tag in">ingresado</span>Altura total de la columna</div></div>
+        <div class="step input"><div class="mline"><span class="lhs"><var>l</var><sub>u</sub></span><span class="op">:=</span><span class="inbox"><input id="i-lu" class="in" data-k="lu" data-q="len" inputmode="decimal" autocomplete="off"><select class="iu" data-k="lu" data-q="len" aria-label="Unidad de lu"></select></span></div><div class="note"><span class="tag in">ingresado</span>Altura libre (entre caras de vigas)</div></div>
+      </section>
+
+      <section class="sec" id="s3">
+        <h2><span class="secno">3</span><span>Refuerzo longitudinal propuesto</span></h2>
+        <div class="step input" data-shape="L rect"><div class="mline"><span class="lhs">Barras</span><span class="op">:=</span><select id="i-barMode" class="insel" data-k="barMode"><option value="gen">Generador (principales + intermedias equidistantes)</option><option value="table">Tabla de coordenadas</option></select></div><div class="note"><span class="tag in">ingresado</span>La tabla permite mover cualquier barra</div></div>
+        <div data-bars="gen">
+          <div class="step input"><div class="mline"><span class="lhs" id="prin-lbl">No. varilla principal</span><span class="op">:=</span><select id="i-prin" class="insel bars" data-k="prin"></select></div><div class="note"><span class="tag in">ingresado</span><span id="prin-note">Barras en las esquinas de los estribos</span></div></div>
+          <div class="slot" data-slot="dprin"></div>
+          <div class="step input"><div class="mline"><span class="lhs">Ubicación intermedias</span><span class="op">:=</span><select id="i-align" class="insel" data-k="align"><option value="esquinas">En la línea de las barras principales</option><option value="estribo">Apoyadas en el estribo: rec + ϕes + Ø/2</option></select></div><div class="note"><span class="tag in">ingresado</span>Criterio de clase: en la misma línea que las esquinas</div></div>
+          <div class="tscroll">
+            <table class="tbl" id="segs-tbl">
+              <thead><tr><th>Segmento</th><th>Intermedias</th><th>No.</th><th>Sep. c-c <span class="hu" data-hu="sg-sc"></span></th><th>Sep. libre <span class="hu" data-hu="sg-cl"></span></th><th>Libre mín. <span class="hu" data-hu="sg-req"></span></th><th>Caben</th><th>Eslabones</th><th>Estado</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div data-bars="table">
+          <div class="tscroll" style="max-height:360px;overflow:auto"><table class="tbl" id="bars-tbl"><thead><tr><th>Barra</th><th><var>x</var> <span class="hu" data-hu="bt-u"></span></th><th><var>y</var></th><th>No.</th><th></th></tr></thead><tbody></tbody></table></div>
+          <div class="addrow"><button class="btn small" type="button" id="addbar">+ Agregar barra</button><button class="btn small" type="button" id="genbars" data-shape="L rect">Copiar barras del generador</button><span class="mini">Coordenadas del centro de cada barra desde la esquina inferior izquierda.</span></div>
+        </div>
+        <div class="slot" data-slot="nbar"></div>
+        <div class="slot" data-slot="Ast"></div>
+        <div class="slot" data-slot="rho"></div>
+        <div class="slot" data-slot="checks"></div>
+      </section>
+
+      <section class="sec" id="s4">
+        <h2><span class="secno">4</span><span>Dirección de análisis y capas de acero</span></h2>
+        <div class="selrow"><span class="tag in">ingresado</span><div class="seg dirseg" role="group" aria-label="Dirección de análisis" data-dirsel></div><span class="mini" data-dirtxt></span></div>
+        <div class="slot" data-slot="dirInfo"></div>
+        <div class="tscroll" id="layers-wrap"></div>
+        <div class="slot" data-slot="sumA"></div>
+        <h4 class="subh">Resumen de las cuatro direcciones</h4>
+        <div class="tscroll" id="dirs-wrap"></div>
+      </section>
+
+      <section class="sec" id="s5">
+        <h2><span class="secno">5</span><span>Puntos del diagrama · <span data-dirname></span></span></h2>
+        <div class="convbox">
+          <div class="mline"><span>Artificio 1:</span><span><var>ε</var><sub>si</sub> = <var>ε</var><sub>cu</sub>·(<var>d</var><sub>i</sub> − <var>c</var>) / <var>c</var></span></div>
+          <div class="mline"><span>Artificio 2:</span><span><var>f</var><sub>si</sub> = −signo(<var>ε</var><sub>si</sub>)·mín(<var>E</var><sub>s</sub>·|<var>ε</var><sub>si</sub>| , <var>f</var><sub>y</sub>)</span></div>
+          <div class="mline"><span>Momento:</span><span><var>M</var><sub>n</sub> = <var>P</var><sub>c</sub>·(<var>v̄</var> − <var>v</var><sub>c</sub>) + Σ<var>C</var><sub>si</sub>·(<var>v̄</var> − <var>d</var><sub>i</sub>)</span></div>
+        </div>
+        <div class="slot" data-slot="points"></div>
+      </section>
+
+      <section class="sec" id="s6">
+        <h2><span class="secno">6</span><span>Factores de reducción φ</span></h2>
+        <div class="optrow">
+          <label for="i-tcMode"><span class="tag in">ingresado</span>Límite controlado por tensión
+            <select id="i-tcMode" class="insel" data-k="tcMode"><option value="ety+0.003">εty + 0.003 (ACI 318-19)</option><option value="0.005">0.005 (ACI 318-14)</option></select></label>
+        </div>
+        <div class="slot" data-slot="phi"></div>
+      </section>
+
+      <section class="sec" id="s7">
+        <h2><span class="secno">7</span><span>Combinaciones de carga</span></h2>
+        <div class="tscroll">
+          <table class="tbl" id="combos-tbl">
+            <thead><tr><th>Combinación</th><th><var>P</var><sub>u</sub> <span class="hu"><select class="iu insel" data-k="Pu" data-q="force" aria-label="Unidad de Pu"></select></span></th><th><var>M</var><sub>x</sub> <span class="hu"><select class="iu insel" data-k="Mx" data-q="moment" aria-label="Unidad de Mx"></select></span></th><th><var>M</var><sub>y</sub> <span class="hu"><select class="iu insel" data-k="My" data-q="moment" aria-label="Unidad de My"></select></span></th><th><var>V</var><sub>x</sub> <span class="hu"><select class="iu insel" data-k="Vx" data-q="force" aria-label="Unidad de Vx"></select></span></th><th><var>V</var><sub>y</sub> <span class="hu"><select class="iu insel" data-k="Vy" data-q="force" aria-label="Unidad de Vy"></select></span></th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="addrow"><button class="btn small" type="button" id="addcombo">+ Agregar combinación</button></div>
+        <h4 class="subh">Revisión a flexocompresión (momentos no simultáneos)</h4>
+        <div class="tscroll">
+          <table class="tbl cbres" id="cbres-tbl">
+            <thead><tr><th>Combinación</th><th>Rama X</th><th><var>φM</var><sub>n</sub> en el rayo <span class="hu" data-hu="cr-M"></span></th><th>D/C en X</th><th>Rama Y</th><th><var>φM</var><sub>n</sub> en el rayo <span class="hu" data-hu="cr-M2"></span></th><th>D/C en Y</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="slot" data-slot="pumax"></div>
+      </section>
+
+      <section class="sec" id="s8">
+        <h2><span class="secno">8</span><span>Cortante y refuerzo transversal</span></h2>
+        <div class="step input"><div class="mline"><span class="lhs"><var>n</var><sub>x</sub></span><span class="op">:=</span><span class="inbox narrow"><input id="i-nVx" class="in" data-k="nVx" inputmode="decimal" autocomplete="off"></span></div><div class="note"><span class="tag in">ingresado</span>Ramas que resisten <var>V</var><sub>x</sub> (paralelas a Y, cruzan <span data-bwx>el alma</span>)</div></div>
+        <div class="step input"><div class="mline"><span class="lhs"><var>n</var><sub>y</sub></span><span class="op">:=</span><span class="inbox narrow"><input id="i-nVy" class="in" data-k="nVy" inputmode="decimal" autocomplete="off"></span></div><div class="note"><span class="tag in">ingresado</span>Ramas que resisten <var>V</var><sub>y</sub> (paralelas a X, cruzan <span data-bwy>el ala</span>)</div></div>
+        <div data-shape="custom">
+          <div class="step input"><div class="mline"><span class="lhs"><var>b</var><sub>w,x</sub></span><span class="op">:=</span><span class="inbox"><input id="i-bwx" class="in" data-k="shearMan.bwx" data-q="len" inputmode="decimal" autocomplete="off"><select class="iu" data-k="shearMan.bwx" data-q="len" aria-label="Unidad"></select></span></div><div class="note"><span class="tag in">ingresado</span>Ancho que resiste <var>V</var><sub>x</sub></div></div>
+          <div class="step input"><div class="mline"><span class="lhs"><var>d</var><sub>x</sub></span><span class="op">:=</span><span class="inbox"><input id="i-dx" class="in" data-k="shearMan.dx" data-q="len" inputmode="decimal" autocomplete="off"><select class="iu" data-k="shearMan.dx" data-q="len" aria-label="Unidad"></select></span></div><div class="note"><span class="tag in">ingresado</span>Peralte para <var>V</var><sub>x</sub></div></div>
+          <div class="step input"><div class="mline"><span class="lhs"><var>b</var><sub>w,y</sub></span><span class="op">:=</span><span class="inbox"><input id="i-bwy" class="in" data-k="shearMan.bwy" data-q="len" inputmode="decimal" autocomplete="off"><select class="iu" data-k="shearMan.bwy" data-q="len" aria-label="Unidad"></select></span></div><div class="note"><span class="tag in">ingresado</span>Ancho que resiste <var>V</var><sub>y</sub></div></div>
+          <div class="step input"><div class="mline"><span class="lhs"><var>d</var><sub>y</sub></span><span class="op">:=</span><span class="inbox"><input id="i-dy" class="in" data-k="shearMan.dy" data-q="len" inputmode="decimal" autocomplete="off"><select class="iu" data-k="shearMan.dy" data-q="len" aria-label="Unidad"></select></span></div><div class="note"><span class="tag in">ingresado</span>Peralte para <var>V</var><sub>y</sub></div></div>
+        </div>
+        <div class="slot" data-slot="shearGeo"></div>
+        <h4 class="subh">Resultados por combinación</h4>
+        <div class="tscroll" id="shear-wrap"></div>
+        <div class="selrow"><label for="i-shCombo"><span class="tag in">ingresado</span>Desarrollo de la combinación <select id="i-shCombo" class="insel"></select></label><span class="mini">Por defecto, la que controla la separación</span></div>
+        <div class="slot" data-slot="shearDetail"></div>
+        <div class="slot" data-slot="shearSum"></div>
+      </section>
+
+      <section class="sec" id="s9">
+        <h2><span class="secno">9</span><span>Tabla de puntos del diagrama (iteración de <var>c</var>)</span></h2>
+        <div class="optrow">
+          <label for="i-itAx">Eje <select id="i-itAx" class="insel"><option value="X">X (Mx)</option><option value="Y">Y (My)</option></select></label>
+          <label><input type="checkbox" id="iter-neg"> Incluir rama negativa</label>
+          <button class="btn small" type="button" id="copyiter">Copiar tabla para Excel</button>
+          <span class="mini" id="copymsg" role="status"></span>
+        </div>
+        <div class="tscroll" style="max-height:440px;overflow:auto" id="iter-wrap"></div>
+      </section>
+    </main>
+
+    <!-- ======================= VISTA ======================= -->
+    <aside class="view" id="view" aria-label="Vista de la sección y diagramas">
+      <section class="card">
+        <header><h3>Sección</h3><span class="mini" id="sec-sub"></span></header>
+        <div class="ctrl">
+          <div class="seg" role="group" aria-label="Vista de la sección"><button type="button" data-view="perfil">Perfil de cálculo</button><button type="button" data-view="planta">Planta</button></div>
+          <div class="seg dirseg" role="group" aria-label="Dirección" data-dirsel></div>
+        </div>
+        <div class="ctrl">
+          <div class="seg" role="group" aria-label="Punto mostrado" id="ptsel">
+            <button type="button" data-pt="A">A</button><button type="button" data-pt="E">E</button><button type="button" data-pt="B">B</button><button type="button" data-pt="C">C</button><button type="button" data-pt="D">D</button><button type="button" data-pt="F">F</button><button type="button" data-pt="libre">c libre</button>
+          </div>
+          <label for="cslider">c <input type="range" id="cslider" min="0" max="1000" step="1"></label>
+        </div>
+        <div class="ctrl" data-vopts="planta">
+          <label><input type="checkbox" data-show="dims"> Cotas</label>
+          <label><input type="checkbox" data-show="di"><span>Capas <var>A</var><sub>i</sub></span></label>
+          <label><input type="checkbox" data-show="na"><span>Eje neutro, bloque y estado</span></label>
+          <label><input type="checkbox" data-show="segs"> Segmentos</label>
+          <label><input type="checkbox" data-show="ties"> Estribos y eslabones</label>
+          <label><input type="checkbox" data-show="cg"> Centroide y ejes</label>
+        </div>
+        <div class="ctrl units" id="units-sec"></div>
+        <div class="svgbox" id="sec-svg"></div>
+        <div class="info" id="sec-info"></div>
+      </section>
+
+      <section class="card">
+        <header><h3>Diagrama alrededor de X</h3><span class="mini" id="diaX-sub"></span></header>
+        <div class="ctrl">
+          <label><input type="checkbox" data-show="nominal"><span>Nominal</span></label>
+          <label><input type="checkbox" data-show="design"><span>Diseño (φ)</span></label>
+          <label><input type="checkbox" data-show="region"> Región segura</label>
+          <label><input type="checkbox" data-show="combos"> Combinaciones</label>
+          <label><input type="checkbox" data-show="rays"> Rayos D/C</label>
+          <label><input type="checkbox" data-show="keypts"> Puntos A–F</label>
+        </div>
+        <div class="ctrl">
+          <div class="seg" role="group" aria-label="Zoom del diagrama X"><button type="button" data-zm="all" data-ax="X">Todo</button><button type="button" data-zm="cb" data-ax="X">Combinaciones</button><button type="button" data-zm="tens" data-ax="X">Zona de tensión</button><button type="button" data-zm="custom" data-ax="X" disabled>Arrastre</button></div>
+          <span class="units" data-diau></span>
+        </div>
+        <div class="svgbox" id="diaX-svg" data-ax="X"></div>
+        <div class="readout" id="ro-X" aria-live="polite"></div>
+      </section>
+
+      <section class="card">
+        <header><h3>Diagrama alrededor de Y</h3><span class="mini" id="diaY-sub"></span></header>
+        <div class="ctrl">
+          <div class="seg" role="group" aria-label="Zoom del diagrama Y"><button type="button" data-zm="all" data-ax="Y">Todo</button><button type="button" data-zm="cb" data-ax="Y">Combinaciones</button><button type="button" data-zm="tens" data-ax="Y">Zona de tensión</button><button type="button" data-zm="custom" data-ax="Y" disabled>Arrastre</button></div>
+          <span class="units" data-diau></span>
+        </div>
+        <div class="svgbox" id="diaY-svg" data-ax="Y"></div>
+        <div class="readout" id="ro-Y" aria-live="polite"></div>
+        <div class="legendrow">
+          <span><i class="dash" style="border-color:var(--ink-2)"></i>Nominal</span>
+          <span><i style="border-color:var(--comp)"></i>Compresión</span>
+          <span><i style="border-color:var(--trans)"></i>Transición</span>
+          <span><i style="border-color:var(--tens)"></i>Tensión</span>
+          <span><i class="dash" style="border-color:var(--ok)"></i>Rayo hasta la capacidad</span>
+          <span class="mini">′ = rama negativa · toca una combinación (aquí o en las tablas) para resaltarla</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <header><h3>Revisión</h3><span class="mini">flexocompresión y cortante</span></header>
+        <div class="tscroll" style="margin:0 14px 8px" id="rev-wrap"></div>
+        <div id="shear-card"></div>
+      </section>
+
+      <section class="card">
+        <header><h3>Puntos notables</h3><span class="mini" data-dirname></span></header>
+        <div class="tscroll" style="margin:0 14px 14px" id="sum-wrap"></div>
+      </section>
+    </aside>
+  </div>
+  <p class="foot">Versión 5. Procedimiento de las clases de Diseño de Columnas (octubre de 2026) generalizado a secciones formadas por rectángulos, ACI 318-19 y tabla de varillas ASTM. Columna corta, flexión uniaxial con eje neutro paralelo al eje de flexión; el momento perpendicular inducido se reporta pero no se revisa. Detalles en el <a href="https://github.com/A-Terron/Diagrama-de-Interacci-n---Columnas/blob/main/docs/procedimiento-columna-L.md" target="_blank" rel="noopener">procedimiento</a>.</p>
+</div>
+<div class="tooltip" id="tip" hidden></div>
+<script>
+/* ===== Motor de cálculo: diagrama de interacción para secciones formadas por rectángulos (ACI 318-19) =====
+   Unidades internas: in, in², kip, kip·in, ksi.
+   Convención (clase): ε > 0 tensión; f_s > 0 compresión; P > 0 compresión.
+   +Mx comprime la fibra superior (+y); +My comprime la fibra izquierda (−x).
+   Mx = ΣF·(y − y_ref) ; My = ΣF·(x_ref − x). */
+const BARS = {
+  3: { d: 0.375, A: 0.11, w: 0.376 }, 4: { d: 0.500, A: 0.20, w: 0.668 },
+  5: { d: 0.625, A: 0.31, w: 1.043 }, 6: { d: 0.750, A: 0.44, w: 1.502 },
+  7: { d: 0.875, A: 0.60, w: 2.044 }, 8: { d: 1.000, A: 0.79, w: 2.670 },
+  9: { d: 1.128, A: 1.00, w: 3.400 }, 10: { d: 1.270, A: 1.27, w: 4.303 },
+  11: { d: 1.410, A: 1.56, w: 5.313 }, 14: { d: 1.693, A: 2.25, w: 7.650 },
+  18: { d: 2.257, A: 4.00, w: 13.60 }
+};
+const BAR_NOS = [3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 18];
+const DIRV = { '+X': [0, 1], '-X': [0, -1], '+Y': [-1, 0], '-Y': [1, 0] };
+const DIRS = ['+X', '-X', '+Y', '-Y'];
+const DIRNAME = { '+X': '+Mx', '-X': '−Mx', '+Y': '+My', '-Y': '−My' };
+const DIRFIB = { '+X': 'superior', '-X': 'inferior', '+Y': 'izquierda', '-Y': 'derecha' };
+
+function beta1Of(fc_psi) {
+  if (fc_psi <= 4000) return 0.85;
+  if (fc_psi < 8000) return 0.85 - 0.05 * (fc_psi - 4000) / 1000;
+  return 0.65;
+}
+
+/* Segmentos de la L (esquina exterior arriba a la izquierda). opp = línea a la que llega el eslabón. */
+const SEG_L = [
+  { k: 's1', i: 1, j: 2, name: 'Superior · tramo del alma', face: ['y', 'top'], opp: ['y', 'yb'] },
+  { k: 's2', i: 2, j: 3, name: 'Superior · tramo del ala', face: ['y', 'top'], opp: ['y', 'yb'] },
+  { k: 's3', i: 3, j: 6, name: 'Punta del ala', face: ['x', 'right'], opp: ['x', 'xb'] },
+  { k: 's4', i: 5, j: 6, name: 'Cara inferior del ala', face: ['y', 'flange'], opp: ['y', 'yc'] },
+  { k: 's5', i: 1, j: 4, name: 'Izquierda · tramo del ala', face: ['x', 'left'], opp: ['x', 'xb'] },
+  { k: 's6', i: 4, j: 7, name: 'Izquierda · tramo del alma', face: ['x', 'left'], opp: ['x', 'xb'] },
+  { k: 's7', i: 5, j: 8, name: 'Derecha del alma', face: ['x', 'web'], opp: ['x', 'xa'] },
+  { k: 's8', i: 7, j: 8, name: 'Inferior del alma', face: ['y', 'bottom'], opp: ['y', 'yb'] },
+  { k: 's9', i: 4, j: 5, name: 'Interior horizontal', inner: true, opp: ['y', 'yc'] },
+  { k: 's10', i: 2, j: 5, name: 'Interior vertical', inner: true, opp: ['x', 'xa'] }
+];
+const SEG_R = [
+  { k: 'bot', i: 1, j: 2, name: 'Inferior', face: ['y', 'bottom'], opp: ['y', 'yc'] },
+  { k: 'top', i: 4, j: 3, name: 'Superior', face: ['y', 'top'], opp: ['y', 'ya'] },
+  { k: 'left', i: 1, j: 4, name: 'Izquierda', face: ['x', 'left'], opp: ['x', 'xc'] },
+  { k: 'right', i: 2, j: 3, name: 'Derecha', face: ['x', 'right'], opp: ['x', 'xa'] }
+];
+
+function swapWords(s, mx, my) {
+  if (my) s = s.replace(/Superior/g, '§S').replace(/Inferior/g, 'Superior').replace(/§S/g, 'Inferior').replace(/superior/g, '§s').replace(/inferior/g, 'superior').replace(/§s/g, 'inferior');
+  if (mx) s = s.replace(/Izquierda/g, '§I').replace(/Derecha/g, 'Izquierda').replace(/§I/g, 'Derecha').replace(/izquierda/g, '§i').replace(/derecha/g, 'izquierda').replace(/§i/g, 'derecha');
+  return s;
+}
+const mkBar = (x, y, no, grp, name, seg) => ({ x, y, no, dia: BARS[no].d, A: BARS[no].A, grp, name, seg });
+
+/* Sección: rectángulos, contorno, barras, segmentos y estribos */
+function makeSection(inp) {
+  const de = BARS[inp.est].d;
+  const sec = { kind: inp.shape, rects: [], bars: [], segs: [], ties: [], outline: null, mx: false, my: false };
+  if (inp.shape === 'L' || inp.shape === 'rect') {
+    const isL = inp.shape === 'L';
+    const B = inp.B, H = inp.H, tf = isL ? inp.tf : H, tw = isL ? inp.tw : B;
+    const mx = isL && (inp.orient === 'TR' || inp.orient === 'BR'), my = isL && (inp.orient === 'BL' || inp.orient === 'BR');
+    const T = (x, y) => [mx ? B - x : x, my ? H - y : y];
+    const TRc = (x, y, w, h) => ({ x: mx ? B - x - w : x, y: my ? H - y - h : y, w, h });
+    const dp = BARS[inp.prin].d, REC = inp.rec + de + dp / 2;
+    const ln = { xa: REC, xb: tw - REC, xc: B - REC, ya: REC, yb: H - tf + REC, yc: H - REC };
+    let N, SEGS, faces;
+    if (isL) {
+      sec.rects = [{ ...TRc(0, H - tf, B, tf), name: 'R1 · ala' }, { ...TRc(0, 0, tw, H - tf), name: 'R2 · alma' }];
+      sec.outline = [[0, 0], [tw, 0], [tw, H - tf], [B, H - tf], [B, H], [0, H]].map(p => T(p[0], p[1]));
+      N = { 1: [ln.xa, ln.yc], 2: [ln.xb, ln.yc], 3: [ln.xc, ln.yc], 4: [ln.xa, ln.yb], 5: [ln.xb, ln.yb], 6: [ln.xc, ln.yb], 7: [ln.xa, ln.ya], 8: [ln.xb, ln.ya] };
+      SEGS = SEG_L; faces = inp.segs;
+      const o = inp.rec + de / 2;
+      sec.ties = [TRc(o, H - tf + o, B - 2 * o, tf - 2 * o), TRc(o, o, tw - 2 * o, H - 2 * o)];
+      sec.least = Math.min(tw, tf);
+    } else {
+      sec.rects = [{ x: 0, y: 0, w: B, h: H, name: 'R1' }];
+      sec.outline = [[0, 0], [B, 0], [B, H], [0, H]];
+      N = { 1: [ln.xa, ln.ya], 2: [ln.xc, ln.ya], 3: [ln.xc, ln.yc], 4: [ln.xa, ln.yc] };
+      SEGS = SEG_R; faces = inp.faces;
+      const o = inp.rec + de / 2;
+      sec.ties = [{ x: o, y: o, w: B - 2 * o, h: H - 2 * o }];
+      sec.least = Math.min(B, H);
+    }
+    sec.mx = mx; sec.my = my; sec.ln = ln; sec.REC = REC; sec.dims = { B, H, tf, tw };
+    sec.nodes = Object.keys(N).map(k => ({ k: 'N' + k, p: T(N[k][0], N[k][1]) }));
+    if (inp.barMode !== 'table') {
+      for (const k in N) { const p = T(N[k][0], N[k][1]); sec.bars.push(mkBar(p[0], p[1], inp.prin, 'P', isL ? 'N' + k : 'Esquina ' + k, null)); }
+      const facePos = (face, no) => {
+        const o = inp.rec + de + BARS[no].d / 2;
+        return { top: H - o, bottom: o, left: o, right: B - o, flange: H - tf + o, web: tw - o }[face];
+      };
+      for (const sg of SEGS) {
+        const f = (faces && faces[sg.k]) || { n: 0, bar: inp.prin };
+        const n = Math.max(0, Math.floor(f.n || 0)), no = f.bar || inp.prin;
+        const [x1, y1] = N[sg.i], [x2, y2] = N[sg.j];
+        const seg = { k: sg.k, name: isL ? swapWords(sg.name, mx, my) : sg.name, n, no, inner: !!sg.inner, p1: T(x1, y1), p2: T(x2, y2), len: Math.hypot(x2 - x1, y2 - y1), dEnd: dp, bars: [] };
+        for (let q = 1; q <= n; q++) {
+          let x = x1 + q / (n + 1) * (x2 - x1), y = y1 + q / (n + 1) * (y2 - y1);
+          if (inp.align === 'estribo' && sg.face) { const v = facePos(sg.face[1], no); if (sg.face[0] === 'y') y = v; else x = v; }
+          const p = T(x, y);
+          const b = mkBar(p[0], p[1], no, sg.k, sg.k + '-' + q, sg.k);
+          b.q = q;
+          b.tie = sg.opp[0] === 'y' ? T(x, ln[sg.opp[1]]) : T(ln[sg.opp[1]], y);
+          seg.bars.push(b); sec.bars.push(b);
+        }
+        sec.segs.push(seg);
+      }
+    } else {
+      sec.bars = (inp.barsTbl || []).map((b, i) => mkBar(b.x, b.y, b.no, 'T', 'B' + (i + 1), null));
+    }
+  } else {
+    sec.rects = (inp.rects || []).filter(r => r.w > 0 && r.h > 0).map((r, i) => ({ x: r.x, y: r.y, w: r.w, h: r.h, name: 'R' + (i + 1) }));
+    sec.bars = (inp.barsTbl || []).map((b, i) => mkBar(b.x, b.y, b.no, 'T', 'B' + (i + 1), null));
+    sec.least = Math.min(...sec.rects.map(r => Math.min(r.w, r.h)));
+    sec.REC = inp.rec + de + (sec.bars.length ? Math.max(...sec.bars.map(b => b.dia)) : 1) / 2;
+  }
+  // Propiedades
+  let Ag = 0, Sx = 0, Sy = 0, xmin = Infinity, xmax = -Infinity, ymin = Infinity, ymax = -Infinity;
+  for (const r of sec.rects) {
+    const A = r.w * r.h; Ag += A; Sx += A * (r.x + r.w / 2); Sy += A * (r.y + r.h / 2);
+    xmin = Math.min(xmin, r.x); xmax = Math.max(xmax, r.x + r.w); ymin = Math.min(ymin, r.y); ymax = Math.max(ymax, r.y + r.h);
+  }
+  sec.Ag = Ag; sec.xg = Sx / Ag; sec.yg = Sy / Ag;
+  sec.bbox = { xmin, xmax, ymin, ymax, W: xmax - xmin, H: ymax - ymin };
+  if (!sec.dims) sec.dims = { B: xmax - xmin, H: ymax - ymin };
+  sec.Ast = sec.bars.reduce((s, b) => s + b.A, 0);
+  return sec;
+}
+
+/* Recorta un rectángulo con el semiplano n·p ≥ thr (n alineado con un eje) */
+function clipRect(r, n, thr) {
+  let x0 = r.x, x1 = r.x + r.w, y0 = r.y, y1 = r.y + r.h;
+  if (n[1] === 1) y0 = Math.max(y0, thr);
+  else if (n[1] === -1) y1 = Math.min(y1, -thr);
+  else if (n[0] === 1) x0 = Math.max(x0, thr);
+  else if (n[0] === -1) x1 = Math.min(x1, -thr);
+  if (x1 - x0 <= 1e-12 || y1 - y0 <= 1e-12) return null;
+  return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+}
+
+function summarizeBars(bars) {
+  const m = {};
+  for (const b of bars) m[b.no] = (m[b.no] || 0) + 1;
+  return Object.keys(m).sort((a, b) => b - a).map(k => m[k] + ' #' + k).join(' + ');
+}
+
+/* Geometría de una dirección de análisis: profundidades medidas desde la fibra comprimida */
+function prepDir(sec, dir, ref) {
+  const n = DIRV[dir], pr = (x, y) => n[0] * x + n[1] * y;
+  let vmax = -Infinity, vmin = Infinity;
+  for (const r of sec.rects) for (const [x, y] of [[r.x, r.y], [r.x + r.w, r.y], [r.x, r.y + r.h], [r.x + r.w, r.y + r.h]]) {
+    const p = pr(x, y); vmax = Math.max(vmax, p); vmin = Math.min(vmin, p);
+  }
+  const rects = sec.rects.map(r => {
+    const ps = [[r.x, r.y], [r.x + r.w, r.y], [r.x, r.y + r.h], [r.x + r.w, r.y + r.h]].map(([x, y]) => pr(x, y));
+    return { ...r, v0: vmax - Math.max(...ps), v1: vmax - Math.min(...ps), b: n[1] !== 0 ? r.w : r.h };
+  });
+  const bars = sec.bars.map(b => ({ ...b, d: vmax - pr(b.x, b.y) }));
+  const sorted = [...bars].sort((a, b) => a.d - b.d);
+  const L = [];
+  for (const b of sorted) {
+    const last = L[L.length - 1];
+    if (last && Math.abs(b.d - last.d0) < 1e-3) { last.bars.push(b); last.A += b.A; last.Ad += b.A * b.d; }
+    else L.push({ d0: b.d, bars: [b], A: b.A, Ad: b.A * b.d });
+  }
+  const layers = L.map((l, i) => ({ i: i + 1, A: l.A, d: l.Ad / l.A, n: l.bars.length, bars: l.bars, desc: summarizeBars(l.bars) }));
+  const dt = layers.length ? Math.max(...layers.map(l => l.d)) : 0;
+  return { dir, n, isX: dir[1] === 'X', sgn: dir[0] === '+' ? 1 : -1, vmax, D: vmax - vmin, rects, bars, layers, dt,
+    vref: vmax - pr(ref.x, ref.y), vg: vmax - pr(sec.xg, sec.yg), ref };
+}
+
+/* Estado de la sección para un eje neutro c (c = ∞ compresión pura; c ≤ 0 tensión pura) */
+function analyzeC(c, G, m) {
+  const D = G.D, n = G.n;
+  let a;
+  if (c === Infinity) a = D; else if (c <= 0) a = 0; else a = Math.min(m.b1 * c, D);
+  const thr = G.vmax - a;
+  let Ac = 0, Sv = 0, Sx = 0, Sy = 0;
+  const pieces = [];
+  for (const r of G.rects) {
+    const h = Math.max(0, Math.min(r.v1, a) - r.v0);
+    const q = a > 0 ? clipRect(r, n, thr) : null;
+    if (h > 1e-12 && q) {
+      const A = q.w * q.h, v = r.v0 + h / 2;
+      Ac += A; Sv += A * v; Sx += A * (q.x + q.w / 2); Sy += A * (q.y + q.h / 2);
+      pieces.push({ name: r.name, b: r.b, v0: r.v0, v1: r.v1, h, A, v, q });
+    } else pieces.push({ name: r.name, b: r.b, v0: r.v0, v1: r.v1, h: 0, A: 0, v: NaN, q: null });
+  }
+  const Cc = 0.85 * m.fc * Ac;
+  const vc = Ac > 0 ? Sv / Ac : 0, xc = Ac > 0 ? Sx / Ac : 0, yc = Ac > 0 ? Sy / Ac : 0;
+  const xr = G.ref.x, yr = G.ref.y;
+  let P = Cc, Mloc = Cc * (G.vref - vc);
+  let Mx = Ac > 0 ? Cc * (yc - yr) : 0, My = Ac > 0 ? Cc * (xr - xc) : 0;
+  const rows = G.layers.map(l => {
+    let e;
+    if (c === Infinity) e = -m.ecu; else if (c <= 0) e = Infinity; else e = m.ecu * (l.d - c) / c;
+    const fs = (e === Infinity) ? -m.fy : -Math.sign(e) * Math.min(m.Es * Math.abs(e), m.fy);
+    const inBlock = !(a < l.d);
+    const fnet = inBlock ? fs - 0.85 * m.fc : fs;
+    const F = l.A * fnet;
+    const arm = G.vref - l.d;
+    for (const b of l.bars) { const Fb = b.A * fnet; Mx += Fb * (b.y - yr); My += Fb * (xr - b.x); }
+    P += F; Mloc += F * arm;
+    return { i: l.i, A: l.A, d: l.d, n: l.n, desc: l.desc, e, fs, inBlock, F, arm, Mi: F * arm };
+  });
+  const et = c === Infinity ? -m.ecu : (c <= 0 ? Infinity : m.ecu * (G.dt - c) / c);
+  const M = G.isX ? Mx : My, Mperp = G.isX ? My : Mx;
+  return { c, a, Ac, vc, xc, yc, Cc, MCc: Cc * (G.vref - vc), pieces, rows, P, Mloc, M, Mperp, Mx, My, dt: G.dt, et };
+}
+
+function phiOf(et, m) {
+  const pc = m.spiral ? 0.75 : 0.65;
+  if (!(et > m.ety + 1e-12)) return { phi: pc, zone: 'comp' };
+  if (et >= m.etc - 1e-12) return { phi: 0.90, zone: 'tens' };
+  return { phi: pc + (0.90 - pc) * (et - m.ety) / (m.etc - m.ety), zone: 'trans' };
+}
+
+function solveP0(G, m) {
+  let lo = 1e-7 * G.D, hi = 1e4 * G.D, it = 0;
+  const f = c => analyzeC(c, G, m).P;
+  if (f(lo) > 0 || f(hi) < 0) return null;
+  for (; it < 200; it++) {
+    const mid = hi / lo > 4 ? Math.sqrt(lo * hi) : (lo + hi) / 2;
+    if (f(mid) > 0) hi = mid; else lo = mid;
+    if (hi - lo < 1e-14 * G.D) break;
+  }
+  return { c: (lo + hi) / 2, it: it + 1 };
+}
+
+function dcRatio(poly, Mu, Pu) {
+  if (!isFinite(Mu) || !isFinite(Pu)) return { dc: NaN };
+  if (Math.abs(Mu) < 1e-12 && Math.abs(Pu) < 1e-12) return { dc: 0 };
+  let best = -1;
+  for (let i = 0; i < poly.length; i++) {
+    const [x1, y1] = poly[i], [x2, y2] = poly[(i + 1) % poly.length];
+    const ex = x2 - x1, ey = y2 - y1;
+    const den = Mu * ey - Pu * ex;
+    if (Math.abs(den) < 1e-14) continue;
+    const t = (x1 * ey - y1 * ex) / den;
+    const sp = -(Mu * y1 - Pu * x1) / den;
+    if (t > 0 && sp >= -1e-9 && sp <= 1 + 1e-9) best = Math.max(best, t);
+  }
+  if (best <= 0) return { dc: NaN };
+  return { dc: 1 / best, capM: Mu * best, capP: Pu * best };
+}
+
+function compute(inp) {
+  const fc_psi = inp.fc * 1000;
+  const b1 = beta1Of(fc_psi);
+  const ety = inp.etyMode === '0.002' ? 0.002 : inp.fy / inp.Es;
+  const etc = inp.tcMode === '0.005' ? 0.005 : ety + 0.003;
+  const m = { fc: inp.fc, fy: inp.fy, Es: inp.Es, ecu: inp.ecu, b1, ety, etc, spiral: inp.tie === 'zuncho' };
+  const Ec = 57000 * Math.sqrt(fc_psi) / 1000;
+  const sec = makeSection(inp);
+  const Ag = sec.Ag, Ast = sec.Ast, rho = Ast / Ag;
+  const Po = 0.85 * inp.fc * (Ag - Ast) + inp.fy * Ast;
+  const sAx = sec.bars.reduce((s, b) => s + b.A * b.x, 0), sAy = sec.bars.reduce((s, b) => s + b.A * b.y, 0);
+  const xp = (0.85 * inp.fc * (Ag * sec.xg - sAx) + inp.fy * sAx) / Po;
+  const yp = (0.85 * inp.fc * (Ag * sec.yg - sAy) + inp.fy * sAy) / Po;
+  const ref = inp.refPt === 'plast' ? { x: xp, y: yp } : { x: sec.xg, y: sec.yg };
+  const kmax = m.spiral ? 0.85 : 0.80, phic = m.spiral ? 0.75 : 0.65;
+  const Pnmax = kmax * Po, phiPnmax = phic * Pnmax, Pnt = -inp.fy * Ast;
+
+  const design = st => {
+    const ph = phiOf(st.et, m);
+    return { ...st, phi: ph.phi, zone: ph.zone, phiP: Math.min(ph.phi * st.P, phiPnmax), phiM: ph.phi * st.M, phiMp: ph.phi * st.Mperp, capped: ph.phi * st.P > phiPnmax };
+  };
+  const dirs = {};
+  for (const dir of DIRS) {
+    const G = prepDir(sec, dir, ref);
+    const D = G.D, dt = G.dt;
+    const pts = {};
+    const stA = analyzeC(Infinity, G, m);
+    pts.A = { ...stA, key: 'A', name: 'Compresión pura', P: Po, phi: phic, phiP: phiPnmax, phiM: phic * stA.M, phiMp: phic * stA.Mperp, zone: 'comp' };
+    const stF = analyzeC(0, G, m);
+    pts.F = { ...stF, key: 'F', name: 'Tensión pura', P: Pnt, phi: 0.90, phiP: 0.90 * Pnt, phiM: 0.90 * stF.M, phiMp: 0.9 * stF.Mperp, zone: 'tens', et: Infinity };
+    const cB = m.ecu * dt / (m.ecu + ety);
+    pts.B = { ...design(analyzeC(cB, G, m)), key: 'B', name: 'Condición balanceada' };
+    const cC = m.ecu * dt / (m.ecu + etc);
+    pts.C = { ...design(analyzeC(cC, G, m)), key: 'C', name: 'Inicio de control por tensión' };
+    const sD = solveP0(G, m);
+    if (sD) pts.D = { ...design(analyzeC(sD.c, G, m)), key: 'D', name: 'Flexión pura (Pn = 0)', iters: sD.it };
+    pts.E = { ...design(analyzeC(D, G, m)), key: 'E', name: 'Eje neutro c = D' };
+    // curva
+    const cs = [];
+    for (let k = 0; k <= 8; k++) cs.push(D * 0.001 * Math.pow(10, k / 8));
+    for (let k = 0; k <= 160; k++) cs.push(D * (0.01 + (1.6 - 0.01) * k / 160));
+    for (let k = 1; k <= 40; k++) cs.push(D * 1.6 * Math.pow(50 / 1.6, k / 40));
+    [cB, cC, D, sD ? sD.c : null].forEach(v => v && cs.push(v));
+    cs.sort((x, y) => y - x);
+    for (let k = cs.length - 1; k > 0; k--) if (Math.abs(cs[k] - cs[k - 1]) < 1e-9 * D) cs.splice(k, 1);
+    const curve = [{ c: Infinity, a: D, P: Po, M: stA.M, Mperp: stA.Mperp, et: -m.ecu, phi: phic, phiP: phiPnmax, phiM: phic * stA.M, zone: 'comp' }];
+    for (const c of cs) {
+      const s = design(analyzeC(c, G, m));
+      curve.push({ c, a: s.a, P: s.P, M: s.M, Mperp: s.Mperp, et: s.et, phi: s.phi, phiP: s.phiP, phiM: s.phiM, zone: s.zone, capped: s.capped });
+    }
+    curve.push({ c: 0, a: 0, P: Pnt, M: stF.M, Mperp: stF.Mperp, et: Infinity, phi: 0.9, phiP: 0.9 * Pnt, phiM: 0.9 * stF.M, zone: 'tens' });
+    dirs[dir] = { G, pts, curve, cB, cC };
+  }
+  const axes = {};
+  for (const ax of ['X', 'Y']) {
+    const pos = dirs['+' + ax].curve, neg = dirs['-' + ax].curve;
+    axes[ax] = { pos, neg, poly: [...pos.map(p => [p.phiM, p.phiP]), ...[...neg].reverse().map(p => [p.phiM, p.phiP])] };
+  }
+  const combos = (inp.combos || []).map(cb => {
+    const X = dcRatio(axes.X.poly, cb.Mx, cb.Pu), Y = dcRatio(axes.Y.poly, cb.My, cb.Pu);
+    return { ...cb, X, Y, dc: Math.max(isFinite(X.dc) ? X.dc : -1, isFinite(Y.dc) ? Y.dc : -1) };
+  });
+  return { inp, m, Ec, b1, ety, etc, sec, Ag, Ast, rho, Po, Pnmax, phiPnmax, phic, kmax, Pnt, xp, yp, ref, dirs, axes, combos };
+}
+
+/* Verificaciones de armado */
+function checks(R) {
+  const inp = R.inp, out = [], nb = R.sec.bars.length;
+  const nmin = R.m.spiral ? 6 : 4;
+  out.push({ ok: nb >= nmin, t: `Número de barras = ${nb} ≥ ${nmin}`, ref: 'ACI 10.7.3.1' });
+  out.push({ ok: R.rho >= 0.01, t: `ρ = ${(R.rho * 100).toFixed(2)} % ≥ 1 %`, ref: 'ACI 10.6.1.1' });
+  out.push({ ok: R.rho <= 0.08, t: `ρ = ${(R.rho * 100).toFixed(2)} % ≤ 8 %`, ref: 'ACI 10.6.1.1' });
+  out.push({ ok: R.rho <= 0.04, warn: true, t: `ρ ≤ 4 % (rango del P3 y recomendación por congestión)`, ref: 'ACI R10.6.1.1' });
+  out.push({ ok: inp.rec >= 1.5 - 1e-9, warn: true, t: `Recubrimiento al estribo ≥ 1.5 in`, ref: 'ACI 20.5.1.3.1' });
+  out.push({ ok: inp.fc * 1000 >= 2500 - 1e-6, t: `f′c ≥ 2500 psi`, ref: 'ACI 19.2.1.1' });
+  return out;
+}
+
+/* Separación por segmento y soporte lateral (ACI 25.2.3 y 25.7.2.3) */
+function spacingInfo(R) {
+  return R.sec.segs.map(sg => {
+    const n = sg.n, dE = sg.dEnd, dI = n ? BARS[sg.no].d : dE;
+    const sc = sg.len / (n + 1);
+    const clearEnd = sc - (dE / 2 + dI / 2);
+    const clearMid = n > 1 ? sc - dI : Infinity;
+    const sclear = n ? Math.min(clearEnd, clearMid) : sg.len - dE;
+    const req = Math.max(1.5, 1.5 * Math.max(dI, dE));
+    let nmax = 0;
+    for (let t = 1; t < 60; t++) {
+      const s2 = sg.len / (t + 1);
+      const cl = Math.min(s2 - (dE / 2 + dI / 2), t > 1 ? s2 - dI : Infinity);
+      if (cl >= req - 1e-9) nmax = t; else break;
+    }
+    const ties = n === 0 ? 0 : (sclear > 6 + 1e-9 ? n : Math.floor(n / 2));
+    const tieQ = n === 0 ? [] : (sclear > 6 + 1e-9 ? sg.bars.map(b => b.q) : sg.bars.filter(b => b.q % 2 === 0).map(b => b.q));
+    return { k: sg.k, name: sg.name, n, no: sg.no, len: sg.len, sc, sclear, req, ok: sclear >= req - 1e-9, nmax, ties, tieQ, over6: sclear > 6 + 1e-9 };
+  });
+}
+
+/* Eslabones físicos: un eslabón que une dos barras que se miran sirve a ambos segmentos */
+function uniqueTies(R) {
+  const L = [];
+  R.sp.forEach(s => { const sg = R.sec.segs.find(q => q.k === s.k); if (!sg) return; sg.bars.filter(b => s.tieQ.includes(b.q)).forEach(b => L.push({ a: [b.x, b.y], b: b.tie, seg: s.k })); });
+  const out = [];
+  L.forEach(t => {
+    const dup = out.find(u => Math.hypot(u.a[0] - t.b[0], u.a[1] - t.b[1]) < 1e-3 && Math.hypot(u.b[0] - t.a[0], u.b[1] - t.a[1]) < 1e-3);
+    if (dup) dup.shared = t.seg; else out.push({ ...t });
+  });
+  return out;
+}
+
+/* ===== Cortante por combinación (detalle ordinario, ACI 318-19) ===== */
+const floorTo = (x, step) => Math.floor(x / step + 1e-9) * step;
+const floorCm = (x_in, step_cm) => floorTo(x_in * 2.54, step_cm) / 2.54;
+function computeShear(inp, R) {
+  const fc_psi = inp.fc * 1000, sq = Math.sqrt(fc_psi), lam = inp.lambda || 1, fyt = inp.fyt;
+  const bars = R.sec.bars, nos = bars.map(b => b.no);
+  const noL = Math.max(...nos), noLmin = Math.min(...nos);
+  const phl = BARS[noL].d, phlmin = BARS[noLmin].d, phes = BARS[inp.est].d, Aes = BARS[inp.est].A, Nl = bars.length;
+  const d0 = inp.rec + phes + phl / 2;
+  const dm = R.sec.dims;
+  let gx, gy;
+  if (inp.shape === 'L') { gx = { bw: inp.tw, d: inp.H - d0, bwS: 't<sub>w</sub>', DS: 'H' }; gy = { bw: inp.tf, d: inp.B - d0, bwS: 't<sub>f</sub>', DS: 'B' }; }
+  else if (inp.shape === 'rect') { gx = { bw: inp.B, d: inp.H - d0, bwS: 'B', DS: 'H' }; gy = { bw: inp.H, d: inp.B - d0, bwS: 'H', DS: 'B' }; }
+  else { gx = { bw: inp.shearMan.bwx, d: inp.shearMan.dx, bwS: 'b<sub>w,x</sub>', DS: null, man: true }; gy = { bw: inp.shearMan.bwy, d: inp.shearMan.dy, bwS: 'b<sub>w,y</sub>', DS: null, man: true }; }
+  const area = { sheet: BARS[noL].A * Nl, real: R.Ast };
+  const far = ax => {   // barras a más de 2D/3 de la fibra comprimida (comentario R22.5.5.1), la menor de las dos ramas
+    const v = ['+' + ax, '-' + ax].map(d => { const G = R.dirs[d].G; return G.bars.filter(b => b.d > 2 * G.D / 3).reduce((s, b) => s + b.A, 0); });
+    return Math.min(...v);
+  };
+  const AsVx = inp.rhoArea === 'r2255' ? far('X') : area[inp.rhoArea === 'real' ? 'real' : 'sheet'];
+  const AsVy = inp.rhoArea === 'r2255' ? far('Y') : area[inp.rhoArea === 'real' ? 'real' : 'sheet'];
+  const Ag = R.Ag, phiv = 0.75;
+  const one = (g, AsV, Vu, Nu, nLeg) => {
+    const bw = g.bw, d = g.d;
+    const rho = AsV / (bw * d);
+    const nuRaw = Nu * 1000 / (6 * Ag);
+    const nuT = Math.min(nuRaw, 0.05 * fc_psi);
+    const vc = 8 * lam * Math.cbrt(rho) * sq + nuT;
+    const VcRaw = vc * bw * d / 1000;
+    const Vcmax = 5 * lam * sq * bw * d / 1000;
+    const Vc = Math.min(Math.max(0, VcRaw), Vcmax);
+    const Avn = (Vu / phiv - Vc) / (fyt * d);
+    const Avmin = Math.max(0.75 * sq * bw / (fyt * 1000), 50 * bw / (fyt * 1000));
+    const Av = Math.max(Avn, Avmin);
+    const sv = nLeg * Aes / Av;
+    const Vs = Av * fyt * d;
+    const lim4 = 4 * sq * bw * d / 1000, lim8 = 8 * sq * bw * d / 1000;
+    const Vsreq = Math.max(0, Vu / phiv - Vc);
+    const smax = Vs <= lim4 ? Math.min(d / 2, 24) : Math.min(d / 4, 12);
+    return { bw, d, AsV, rho, nuRaw, nuT, vc, VcRaw, Vcmax, Vc, phiVc: phiv * Vc, Avn, Avmin, Av, sv, Vs, Vsreq, lim4, lim8, smax, smaxCase: Vs <= lim4 ? 'd/2' : 'd/4', Vu, Nu, nLeg, ok8: Vsreq <= lim8 + 1e-9 };
+  };
+  const rows = (inp.combos || []).map(cb => ({ name: cb.name, Pu: cb.Pu,
+    x: one(gx, AsVx, Math.abs(cb.Vx || 0), cb.Pu, inp.nVx), y: one(gy, AsVy, Math.abs(cb.Vy || 0), cb.Pu, inp.nVy) }));
+  let gov = null;
+  rows.forEach((r, i) => ['x', 'y'].forEach(k => { const v = Math.min(r[k].sv, r[k].smax); if (!gov || v < gov.v) gov = { v, i, k }; }));
+  const sRaw = gov ? gov.v : Infinity;
+  const sShear = floorCm(sRaw, 0.5);
+  const sxRaw = Math.min(16 * phlmin, 48 * phes, R.sec.least);
+  const sx = floorCm(sxRaw, 0.5);
+  const s = Math.min(sShear, sx);
+  return { fc_psi, sq, lam, fyt, phl, phlmin, noL, noLmin, phes, Aes, Nl, d0, gx, gy, AsVx, AsVy, Ag, phiv, rows, gov, sRaw, sShear, sxRaw, sx, s,
+    least: R.sec.least, luc1: inp.lu / R.sec.least };
+}
+
+
+</script>
+<script>
+(function () {
+'use strict';
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+/* ---------- Unidades (factor = valor mostrado / valor interno) ---------- */
+const U = {
+  len: { 'in': 1, 'ft': 1 / 12, 'mm': 25.4, 'cm': 2.54, 'm': 0.0254 },
+  area: { 'in²': 1, 'ft²': 1 / 144, 'mm²': 645.16, 'cm²': 6.4516, 'm²': 0.00064516 },
+  force: { 'kip': 1, 'lb': 1000, 'kN': 4.4482216152605, 'N': 4448.2216152605, 'tonf': 0.45359237, 'kgf': 453.59237 },
+  moment: { 'kip·in': 1, 'kip·ft': 1 / 12, 'lb·in': 1000, 'lb·ft': 1000 / 12, 'kN·m': 0.1129848290276167, 'N·m': 112.9848290276167, 'tonf·m': 0.0115212462, 'kgf·m': 11.5212462, 'kgf·cm': 1152.12462 },
+  stress: { 'ksi': 1, 'psi': 1000, 'MPa': 6.894757293168, 'kPa': 6894.757293168, 'kgf/cm²': 70.30695796 },
+  strain: { '—': 1, '‰': 1000, '%': 100 },
+  ratio: { '%': 100, '—': 1 },
+  avs: { 'in²/in': 1, 'in²/ft': 12, 'cm²/m': 254, 'mm²/m': 25400, 'cm²/cm': 2.54 }
+};
+const QN = { len: 'Longitud', area: 'Área', force: 'Fuerza', moment: 'Momento', stress: 'Esfuerzo', strain: 'Deformación', ratio: 'Cuantía', avs: 'Área por longitud' };
+const PRESETS = {
+  'us-in': { label: 'Inglés · kip, in, ksi', len: 'in', area: 'in²', force: 'kip', moment: 'kip·in', stress: 'ksi', avs: 'in²/in' },
+  'us-ft': { label: 'Inglés · kip, ft, ksi', len: 'in', area: 'in²', force: 'kip', moment: 'kip·ft', stress: 'ksi', avs: 'in²/ft' },
+  'si': { label: 'SI · kN, m, MPa', len: 'mm', area: 'mm²', force: 'kN', moment: 'kN·m', stress: 'MPa', avs: 'mm²/m' },
+  'mks': { label: 'MKS · tonf, m, kgf/cm²', len: 'cm', area: 'cm²', force: 'tonf', moment: 'tonf·m', stress: 'kgf/cm²', avs: 'cm²/m' }
+};
+const KEY = 'diagrama-interaccion-L-v5';
+const CM = 1 / 2.54;
+
+function P3inp() {
+  const seg = (n, bar) => ({ n, bar });
+  return {
+    fc: 5, lambda: 1, ecu: 0.003, fy: 60, fyt: 60, Es: 29000,
+    shape: 'L', B: 80 * CM, H: 100 * CM, tf: 45 * CM, tw: 45 * CM, orient: 'TL',
+    rects: [{ x: 0, y: 55 * CM, w: 80 * CM, h: 45 * CM }, { x: 0, y: 0, w: 45 * CM, h: 55 * CM }],
+    rec: 4 * CM, est: 4, tie: 'estribos', refPt: 'geo', Hcol: 600 * CM, lu: 525 * CM,
+    barMode: 'gen', prin: 10, align: 'esquinas',
+    segs: { s1: seg(1, 9), s2: seg(1, 9), s3: seg(1, 9), s4: seg(1, 9), s5: seg(1, 9), s6: seg(2, 9), s7: seg(2, 9), s8: seg(1, 9), s9: seg(0, 9), s10: seg(0, 9) },
+    faces: { bot: seg(3, 7), top: seg(3, 7), left: seg(3, 7), right: seg(3, 7) },
+    barsTbl: [], etyMode: 'fy/Es', tcMode: 'ety+0.003',
+    nVx: 2, nVy: 2, rhoArea: 'sheet', shearMan: { bwx: 45 * CM, dx: 93 * CM, bwy: 45 * CM, dy: 73 * CM },
+    combos: [[1200, 8800, 14200, 250, 345], [1600, -5075, -8600, -175, -240], [-670, 2400, 2000, 120, 115], [-880, 1000, 1050, 80, 78], [-630, -1125, -4000, -85, -160], [1800, 3300, 11400, 150, 325]]
+      .map((r, i) => ({ name: 'Caso ' + (i + 1), Pu: r[0], Mx: r[1], My: r[2], Vx: r[3], Vy: r[4] }))
+  };
+}
+function RECTinp() {
+  const b = P3inp();
+  return { ...b, fc: 4, shape: 'rect', B: 80 * CM, H: 80 * CM, rec: 1.5, est: 4, prin: 8, Hcol: 350 * CM, lu: 290 * CM, nVx: 3, nVy: 3,
+    faces: { bot: { n: 3, bar: 7 }, top: { n: 3, bar: 7 }, left: { n: 3, bar: 7 }, right: { n: 3, bar: 7 } },
+    combos: [{ name: 'CR1 (ejemplo)', Pu: 1500, Mx: 8000, My: 8000, Vx: 175, Vy: 140 }, { name: 'CR2 (ejemplo)', Pu: 900, Mx: 6500, My: -6500, Vx: 120, Vy: 100 },
+      { name: 'CR3 (ejemplo)', Pu: 1800, Mx: 7000, My: 5000, Vx: 90, Vy: 80 }, { name: 'CR4 sismo (ejemplo)', Pu: 350, Mx: -12500, My: 9000, Vx: 200, Vy: 175 }] };
+}
+function DEF() {
+  return {
+    inp: P3inp(),
+    inU: { fc: 'psi', fy: 'ksi', fyt: 'ksi', Es: 'ksi', B: 'cm', H: 'cm', tf: 'cm', tw: 'cm', rec: 'cm', Hcol: 'm', lu: 'm', coord: 'cm',
+      'shearMan.bwx': 'cm', 'shearMan.dx': 'cm', 'shearMan.bwy': 'cm', 'shearMan.dy': 'cm', Pu: 'kip', Mx: 'kip·in', My: 'kip·in', Vx: 'kip', Vy: 'kip' },
+    out: { len: 'in', area: 'in²', force: 'kip', moment: 'kip·in', stress: 'ksi', strain: '—', ratio: '%', avs: 'in²/in' },
+    over: Object.fromEntries(['sh.sv', 'sh.s', 'sh.sx', 'sh.sf', 'sh.smax', 'sh.d', 'sc.s', 'sg-sc', 'sg-cl', 'sg-req', 'g.xg', 'g.yg', 'g.xp', 'g.yp', 'dim', 'g.r'].map(k => [k, { u: 'cm', q: 'len' }])),
+    dec: 3, dir: '+X', sel: 'B', cFree: null, iterNeg: true, itAx: 'X', shCombo: null,
+    open: { A: true, F: false, B: true, C: false, D: false, E: false, libre: false },
+    show: { dims: true, di: true, na: true, segs: false, ties: true, cg: true, nominal: true, design: true, combos: true, keypts: true, rays: true, region: true },
+    zoom: { X: 'all', Y: 'all' }, hlCombo: null, secView: 'perfil'
+  };
+}
+function deepMerge(a, b) {
+  for (const k in b) {
+    if (b[k] && typeof b[k] === 'object' && !Array.isArray(b[k]) && a[k] && typeof a[k] === 'object' && !Array.isArray(a[k])) deepMerge(a[k], b[k]);
+    else a[k] = b[k];
+  }
+  return a;
+}
+function load() { try { const t = localStorage.getItem(KEY); return t ? deepMerge(DEF(), JSON.parse(t)) : null; } catch (e) { return null; } }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* sin almacenamiento */ } }
+let S = load() || DEF();
+let R = null;
+
+/* ---------- Formato ---------- */
+function fmt(x, dec) {
+  if (x === Infinity) return '∞';
+  if (x === -Infinity) return '−∞';
+  if (x === null || x === undefined || Number.isNaN(x)) return '—';
+  const ax = Math.abs(x);
+  let d = dec;
+  if (ax < 1e-9) return (0).toFixed(dec);
+  if (ax > 0 && ax < 1) d = Math.min(8, Math.max(dec, Math.ceil(-Math.log10(ax)) + dec - 1));
+  if (ax < 0.5 * Math.pow(10, -d)) return (0).toFixed(d);
+  const s = ax.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+  return (x < 0 ? '−' : '') + s;
+}
+const n = (x, d) => `<span class="n">${fmt(x, d === undefined ? S.dec : d)}</span>`;
+const nu = (x, u, d) => `${n(x, d)}<span class="uu">${u}</span>`;
+function unitOf(id, q) { const o = S.over[id]; return (o && o.q === q && U[q][o.u] !== undefined) ? o.u : S.out[q]; }
+const cv = (v, q, u) => v * U[q][u];
+function usel(id, q, u) {
+  return `<select class="us" data-id="${id}" data-q="${q}" aria-label="Unidad (${QN[q]})">${Object.keys(U[q]).map(k => `<option${k === u ? ' selected' : ''}>${k}</option>`).join('')}</select>`;
+}
+function rv(id, v, q, big) {
+  if (!q) return `<span class="rv${big ? ' big' : ''}"><b class="num">${fmt(v, S.dec)}</b></span>`;
+  const u = unitOf(id, q);
+  return `<span class="rv${big ? ' big' : ''}"><b class="num">${fmt(cv(v, q, u), S.dec)}</b>${usel(id, q, u)}</span>`;
+}
+const fu = (v, q, id) => { const u = id ? unitOf(id, q) : S.out[q]; return `${fmt(cv(v, q, u), S.dec)} ${u}`; };
+const V = (s, sub) => `<var>${s}</var>${sub !== undefined ? `<sub>${sub}</sub>` : ''}`;
+const FC = '<var>f′</var><sub>c</sub>', FY = V('f', 'y'), FYT = V('f', 'yt'), ES = V('E', 's'), ECU = '<var>ε</var><sub>cu</sub>',
+  ETY = '<var>ε</var><sub>ty</sub>', B1 = '<var>β</var><sub>1</sub>', PHI = '<var>φ</var>', VB = '<var>v̄</var>';
+const MUL = s => (s ? String(s).replace(/·/g, '<b class="mul">·</b>') : s);
+function step(o) {
+  o = { ...o, def: MUL(o.def), sub: MUL(o.sub) };
+  const tag = o.tag === false ? '' : '<span class="tag ca">calculado</span>';
+  return `<div class="step"><div class="mline"><span class="lhs">${o.lhs}</span>` +
+    (o.def ? `<span class="op">:=</span><span>${o.def}</span>` : '') +
+    (o.sub ? `<span class="op">=</span><span class="sub">${o.sub}</span>` : '') +
+    (o.res !== undefined ? `<span class="op">${o.def ? '=' : ':='}</span>${o.res}` : '') +
+    `</div><div class="note">${tag}${o.note || ''}${o.ref ? ` <span class="ref">${o.ref}</span>` : ''}</div></div>`;
+}
+const zoneTxt = { comp: 'Controlada por compresión', trans: 'Zona de transición', tens: 'Controlada por tensión' };
+const zchip = z => `<span class="z ${z}">${zoneTxt[z]}</span>`;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function chipsHTML(list) {
+  return `<div class="chips">${list.map(c => `<span class="chip ${c.ok ? 'ok' : (c.warn ? 'warn' : 'bad')}"><span>${c.t}</span>${c.ref ? `<span class="ref">${c.ref}</span>` : ''}</span>`).join('')}</div>`;
+}
+function dcChip(dc) {
+  if (!isFinite(dc)) return '<span class="chip warn">Revisar datos</span>';
+  if (dc > 1) return `<span class="chip bad">${(dc * 100).toFixed(1)} % · No cumple</span>`;
+  if (dc > 0.95) return `<span class="chip warn">${(dc * 100).toFixed(1)} % · Muy justo</span>`;
+  return `<span class="chip ok">${(dc * 100).toFixed(1)} % · Cumple</span>`;
+}
+const int = x => `<span class="rv"><b class="num">${x}</b></span>`;
+const DN = d => ({ '+X': '+M<sub>x</sub>', '-X': '−M<sub>x</sub>', '+Y': '+M<sub>y</sub>', '-Y': '−M<sub>y</sub>' }[d]);
+const DNt = d => ({ '+X': '+Mx', '-X': '−Mx', '+Y': '+My', '-Y': '−My' }[d]);
+
+/* ---------- Entradas ---------- */
+function getK(k) { return k.split('.').reduce((o, p) => (o == null ? o : o[p]), S.inp); }
+function setK(k, v) { const ps = k.split('.'); let o = S.inp; for (let i = 0; i < ps.length - 1; i++) o = o[ps[i]]; o[ps[ps.length - 1]] = v; }
+const showVal = v => (isFinite(v) ? String(+(+v).toPrecision(7)) : '');
+const segKeys = () => (S.inp.shape === 'rect' ? ['bot', 'top', 'left', 'right'] : ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10']);
+const segRoot = () => (S.inp.shape === 'rect' ? 'faces' : 'segs');
+const barOpts = (max, sel) => BAR_NOS.filter(b => b <= (max || 18)).map(b => `<option value="${b}"${+sel === b ? ' selected' : ''} title="Ø ${BARS[b].d.toFixed(3)} in · A ${BARS[b].A.toFixed(2)} in²">#${b}</option>`).join('');
+
+function buildStatic() {
+  $$('select.bars').forEach(el => { el.innerHTML = barOpts(+(el.dataset.max || 18)); });
+  $('#preset').innerHTML = Object.entries(PRESETS).map(([k, p]) => `<option value="${k}">${p.label}</option>`).join('') + '<option value="custom" disabled>Personalizado</option>';
+  $('#unitgrid').innerHTML = Object.keys(QN).map(q => `<label>${QN[q]}<select data-qall="${q}" aria-label="Unidad de ${QN[q]}">${Object.keys(U[q]).map(u => `<option>${u}</option>`).join('')}</select></label>`).join('');
+  $$('[data-dirsel]').forEach(el => { el.innerHTML = DIRS.map(d => `<button type="button" data-dir="${d}" title="Fibra comprimida: ${DIRFIB[d]}">${DNt(d)}</button>`).join(''); });
+  buildTables();
+}
+function buildTables() {
+  const root = segRoot();
+  $('#segs-tbl tbody').innerHTML = segKeys().map(k => `<tr><td class="t" style="white-space:normal;min-width:11em"><span class="seglbl">${k}</span> <span id="sg-${k}-nm"></span> <span class="mini" id="sg-${k}-btw"></span></td>
+    <td class="in"><span class="inbox narrow"><input class="in" data-k="${root}.${k}.n" inputmode="numeric" autocomplete="off" aria-label="Barras intermedias ${k}"></span></td>
+    <td class="in"><select class="insel bars" data-k="${root}.${k}.bar" aria-label="Varilla ${k}">${barOpts(18)}</select></td>
+    <td id="sg-${k}-sc"></td><td id="sg-${k}-cl"></td><td id="sg-${k}-req"></td><td id="sg-${k}-max"></td><td id="sg-${k}-tie"></td><td class="t" id="sg-${k}-st"></td></tr>`).join('');
+  const uc = S.inU.coord, f = U.len[uc];
+  $('#rects-tbl tbody').innerHTML = S.inp.rects.map((r, i) => `<tr><td class="t">R${i + 1}</td>${['x', 'y', 'w', 'h'].map(k => `<td class="in"><span class="inbox"><input class="rt-in" data-i="${i}" data-f="${k}" inputmode="decimal" value="${showVal(r[k] * f)}" aria-label="R${i + 1} ${k}"></span></td>`).join('')}<td class="t"><button class="btn small" type="button" data-delrect="${i}">Quitar</button></td></tr>`).join('');
+  $('[data-hu="rt-u"]').innerHTML = `<select class="iu insel" data-k="coord" data-q="len" aria-label="Unidad de coordenadas">${Object.keys(U.len).map(u => `<option${u === uc ? ' selected' : ''}>${u}</option>`).join('')}</select>`;
+  $('[data-hu="bt-u"]').innerHTML = `<select class="iu insel" data-k="coord" data-q="len" aria-label="Unidad de coordenadas">${Object.keys(U.len).map(u => `<option${u === uc ? ' selected' : ''}>${u}</option>`).join('')}</select>`;
+  $('#bars-tbl tbody').innerHTML = S.inp.barsTbl.map((b, i) => `<tr><td class="t">B${i + 1}</td>${['x', 'y'].map(k => `<td class="in"><span class="inbox"><input class="bt-in" data-i="${i}" data-f="${k}" inputmode="decimal" value="${showVal(b[k] * f)}" aria-label="Barra ${i + 1} ${k}"></span></td>`).join('')}<td class="in"><select class="insel bt-no" data-i="${i}" aria-label="Varilla barra ${i + 1}">${barOpts(18, b.no)}</select></td><td class="t"><button class="btn small" type="button" data-delbar="${i}">Quitar</button></td></tr>`).join('');
+  const uP = S.inU.Pu, uMx = S.inU.Mx, uMy = S.inU.My, uVx = S.inU.Vx, uVy = S.inU.Vy;
+  $('#combos-tbl tbody').innerHTML = S.inp.combos.map((c, i) => `<tr data-cbi="${i}">
+    <td class="t in"><span class="inbox wide"><input class="cb-in" data-f="name" data-i="${i}" value="${esc(c.name)}" aria-label="Nombre combinación ${i + 1}" style="font-family:var(--f-sans)"></span></td>
+    <td class="in"><span class="inbox"><input class="cb-in" data-f="Pu" data-i="${i}" inputmode="decimal" value="${showVal(c.Pu * U.force[uP])}" aria-label="Pu ${i + 1}"></span></td>
+    <td class="in"><span class="inbox"><input class="cb-in" data-f="Mx" data-i="${i}" inputmode="decimal" value="${showVal(c.Mx * U.moment[uMx])}" aria-label="Mx ${i + 1}"></span></td>
+    <td class="in"><span class="inbox"><input class="cb-in" data-f="My" data-i="${i}" inputmode="decimal" value="${showVal(c.My * U.moment[uMy])}" aria-label="My ${i + 1}"></span></td>
+    <td class="in"><span class="inbox"><input class="cb-in" data-f="Vx" data-i="${i}" inputmode="decimal" value="${showVal(c.Vx * U.force[uVx])}" aria-label="Vx ${i + 1}"></span></td>
+    <td class="in"><span class="inbox"><input class="cb-in" data-f="Vy" data-i="${i}" inputmode="decimal" value="${showVal(c.Vy * U.force[uVy])}" aria-label="Vy ${i + 1}"></span></td>
+    <td class="t"><button class="btn small" type="button" data-del="${i}">Quitar</button></td></tr>`).join('');
+  $('#i-shCombo').innerHTML = S.inp.combos.map((c, i) => `<option value="${i}">${esc(c.name)}</option>`).join('');
+}
+function syncInputs() {
+  $$('input.in').forEach(el => {
+    const k = el.dataset.k, q = el.dataset.q;
+    let v = getK(k);
+    if (q) v = v * U[q][S.inU[k]];
+    el.value = showVal(v);
+    el.setAttribute('aria-invalid', 'false');
+  });
+  $$('select.iu').forEach(el => {
+    const k = el.dataset.k, q = el.dataset.q;
+    if (k === 'coord') return;
+    el.innerHTML = Object.keys(U[q]).map(u => `<option${u === S.inU[k] ? ' selected' : ''}>${u}</option>`).join('');
+  });
+  $$('select.insel[data-k]').forEach(el => { const v = getK(el.dataset.k); if (v !== undefined) el.value = String(v); });
+  $('#dec').value = String(S.dec);
+  $('#iter-neg').checked = !!S.iterNeg;
+  $('#i-itAx').value = S.itAx;
+  syncUnitsUI();
+  applyVisibility();
+}
+function syncUnitsUI() {
+  const match = Object.entries(PRESETS).find(([, p]) => ['len', 'area', 'force', 'moment', 'stress'].every(q => p[q] === S.out[q]));
+  $('#preset').value = match ? match[0] : 'custom';
+  $$('[data-qall]').forEach(el => { el.value = S.out[el.dataset.qall]; });
+}
+function applyVisibility() {
+  const sh = S.inp.shape, bm = sh === 'custom' ? 'table' : S.inp.barMode;
+  $$('[data-shape]').forEach(el => { el.hidden = !el.dataset.shape.split(' ').includes(sh); });
+  $$('[data-bars]').forEach(el => { el.hidden = el.dataset.bars !== bm; });
+  $('#prin-lbl').textContent = sh === 'rect' ? 'No. varilla de esquina' : 'No. varilla principal (N1–N8)';
+  $('#prin-note').textContent = sh === 'rect' ? 'Varilla en las 4 esquinas del estribo' : 'Barras "rojas": esquinas de los dos estribos, incluida la esquina entrante N5';
+  $$('[data-bwx]').forEach(el => { el.textContent = sh === 'L' ? 'el alma' : (sh === 'rect' ? 'la sección' : 'el ancho b_w,x'); });
+  $$('[data-bwy]').forEach(el => { el.textContent = sh === 'L' ? 'el ala' : (sh === 'rect' ? 'la sección' : 'el ancho b_w,y'); });
+}
+function validIn(k, v) {
+  if (k.endsWith('.n')) return v >= 0 && v <= 30;
+  if (k === 'nVx' || k === 'nVy') return v >= 1 && v <= 20;
+  if (k === 'rec') return v >= 0;
+  if (k === 'ecu') return v > 0 && v < 0.02;
+  if (k === 'tf') return v > 0 && v < S.inp.H;
+  if (k === 'tw') return v > 0 && v < S.inp.B;
+  if (k === 'H' && S.inp.shape === 'L') return v > S.inp.tf;
+  if (k === 'B' && S.inp.shape === 'L') return v > S.inp.tw;
+  return v > 0;
+}
+
+/* ---------- Bloques calculados ---------- */
+function barCountsExpr() {
+  const m = {};
+  R.sec.bars.forEach(b => { m[b.no] = (m[b.no] || 0) + 1; });
+  const ks = Object.keys(m).sort((a, b) => b - a);
+  return { sym: ks.map(k => `${m[k]}·${V('A', '#' + k)}`).join(' + '), sub: ks.map(k => `${m[k]}·${n(BARS[k].A, 2)}`).join(' + ') };
+}
+const G_ = () => R.dirs[S.dir].G;
+function vbarDef(d) {
+  return { '+X': [`${V('y')}<sub>máx</sub> − ${V('ȳ')}`, R.sec.bbox.ymax, R.ref.y], '-X': [`${V('ȳ')} − ${V('y')}<sub>mín</sub>`, R.ref.y, R.sec.bbox.ymin],
+    '+Y': [`${V('x̄')} − ${V('x')}<sub>mín</sub>`, R.ref.x, R.sec.bbox.xmin], '-Y': [`${V('x')}<sub>máx</sub> − ${V('x̄')}`, R.sec.bbox.xmax, R.ref.x] }[d];
+}
+const SLOTS = {
+  Ec: () => step({ lhs: V('E', 'c'), def: `57000·√(${FC}·psi)`, sub: `57000·√${n(R.inp.fc * 1000, 0)} psi`, res: rv('Ec', R.Ec, 'stress'), note: 'Módulo del concreto de peso normal (informativo)', ref: 'ACI 19.2.2.1' }),
+  b1: () => {
+    const fc = R.inp.fc * 1000;
+    let def, sub = '', why;
+    if (fc <= 4000) { def = '0.85'; why = `porque f′c = ${fmt(fc, 0)} psi ≤ 4000 psi`; }
+    else if (fc < 8000) { def = `0.85 − 0.05·(${FC} − 4000)/1000`; sub = `0.85 − 0.05·(${n(fc, 0)} − 4000)/1000`; why = 'porque 4000 &lt; f′c &lt; 8000 psi'; }
+    else { def = '0.65'; why = 'porque f′c ≥ 8000 psi'; }
+    return step({ lhs: B1, def, sub, res: rv('b1', R.b1), note: `Factor del bloque equivalente, ${why}`, ref: 'ACI Tabla 22.2.2.4.3' });
+  },
+  ety: () => {
+    const m = R.inp.etyMode === '0.002';
+    return step({ lhs: ETY, def: m ? '0.002' : `${FY} / ${ES}`, sub: m ? '' : `${nu(R.inp.fy, 'ksi')} / ${nu(R.inp.Es, 'ksi', 0)}`, res: rv('ety', R.ety, 'strain'),
+      note: `Deformación de fluencia. Criterio <select class="insel" data-k="etyMode" aria-label="Criterio de εty"><option value="fy/Es"${!m ? ' selected' : ''}>fy / Es</option><option value="0.002"${m ? ' selected' : ''}>0.002</option></select>`, ref: 'ACI 21.2.2.1' });
+  },
+  dest: () => step({ lhs: V('ϕ', 'es'), def: `tabla ASTM #${R.inp.est}`, res: rv('dest', BARS[R.inp.est].d, 'len'), note: 'Diámetro del estribo' }) +
+    step({ lhs: V('A', 'es'), def: `tabla ASTM #${R.inp.est}`, res: rv('Aes', BARS[R.inp.est].A, 'area'), note: 'Área de una rama' }),
+  geo: () => {
+    const sec = R.sec, us = unitOf('g.r', 'len'), ua = unitOf('g.A', 'area');
+    let h = `<h4 class="subh">Rectángulos y centroide</h4><div class="tscroll"><table class="tbl"><thead><tr><th>Rectángulo</th><th><var>x</var><sub>0</sub><span class="hu">${usel('g.r', 'len', us)}</span></th><th><var>y</var><sub>0</sub><span class="hu">${us}</span></th><th>Ancho</th><th>Alto</th><th><var>A</var><sub>j</sub><span class="hu">${usel('g.A', 'area', ua)}</span></th><th><var>x</var><sub>j</sub></th><th><var>y</var><sub>j</sub></th></tr></thead><tbody>`;
+    h += sec.rects.map(r => `<tr><td class="t">${r.name}</td><td>${fmt(cv(r.x, 'len', us), S.dec)}</td><td>${fmt(cv(r.y, 'len', us), S.dec)}</td><td>${fmt(cv(r.w, 'len', us), S.dec)}</td><td>${fmt(cv(r.h, 'len', us), S.dec)}</td><td>${fmt(cv(r.w * r.h, 'area', ua), S.dec)}</td><td>${fmt(cv(r.x + r.w / 2, 'len', us), S.dec)}</td><td>${fmt(cv(r.y + r.h / 2, 'len', us), S.dec)}</td></tr>`).join('');
+    h += `</tbody></table></div>`;
+    const rs = sec.rects;
+    h += step({ lhs: V('A', 'g'), def: 'Σ' + V('A', 'j'), sub: rs.map(r => n(r.w * r.h)).join(' + '), res: rv('Ag', R.Ag, 'area', true), note: 'Área bruta de la sección' });
+    h += step({ lhs: V('x̄'), def: `Σ${V('A', 'j')}·${V('x', 'j')} / ${V('A', 'g')}`, sub: `(${rs.map(r => `${n(r.w * r.h)}·${n(r.x + r.w / 2)}`).join(' + ')}) / ${n(R.Ag)}`, res: rv('g.xg', sec.xg, 'len'), note: 'Centroide geométrico G, desde la cara izquierda' });
+    h += step({ lhs: V('ȳ'), def: `Σ${V('A', 'j')}·${V('y', 'j')} / ${V('A', 'g')}`, sub: `(${rs.map(r => `${n(r.w * r.h)}·${n(r.y + r.h / 2)}`).join(' + ')}) / ${n(R.Ag)}`, res: rv('g.yg', sec.yg, 'len'), note: 'Centroide geométrico G, desde la cara inferior' });
+    h += step({ lhs: 'Menor dimensión', def: R.inp.shape === 'L' ? `mín(${V('t', 'f')} , ${V('t', 'w')})` : (R.inp.shape === 'rect' ? 'mín(<var>B</var> , <var>H</var>)' : 'mín espesor de los rectángulos'), res: rv('least', sec.least, 'len'), note: 'Se usa en la separación de estribos', ref: 'ACI 25.7.2.1' });
+    return h;
+  },
+  ref: () => {
+    const plast = R.inp.refPt === 'plast';
+    return step({ lhs: V('x', 'pc'), def: `[0.85·${FC}·(${V('A', 'g')}·${V('x̄')} − Σ${V('A', 'si')}·${V('x', 'i')}) + ${FY}·Σ${V('A', 'si')}·${V('x', 'i')}] / ${V('P', 'o')}`, res: rv('g.xp', R.xp, 'len'), note: 'Centroide plástico: punto donde actúa P<sub>o</sub>' }) +
+      step({ lhs: V('y', 'pc'), def: `[0.85·${FC}·(${V('A', 'g')}·${V('ȳ')} − Σ${V('A', 'si')}·${V('y', 'i')}) + ${FY}·Σ${V('A', 'si')}·${V('y', 'i')}] / ${V('P', 'o')}`, res: rv('g.yp', R.yp, 'len'), note: `Distancia al centroide geométrico: ${fu(Math.hypot(R.xp - R.sec.xg, R.yp - R.sec.yg), 'len', 'g.xp')}` }) +
+      step({ lhs: `(${V('x', 'ref')} , ${V('y', 'ref')})`, def: plast ? 'centroide plástico' : 'centroide geométrico G', res: `(${rv('g.xr', R.ref.x, 'len')} , ${rv('g.yr', R.ref.y, 'len')})`, note: 'Punto de referencia de todos los momentos' });
+  },
+  dprin: () => {
+    const rect = R.inp.shape === 'rect';
+    return step({ lhs: V('ϕ', 'p'), def: `tabla ASTM #${R.inp.prin}`, res: rv('dprin', BARS[R.inp.prin].d, 'len'), note: rect ? 'Diámetro de la varilla de esquina' : 'Diámetro de la varilla principal' }) +
+      step({ lhs: '<var>REC</var>', def: `<var>rec</var> + ${V('ϕ', 'es')} + ${V('ϕ', 'p')}/2`, sub: `${n(R.inp.rec)} + ${n(BARS[R.inp.est].d)} + ${n(BARS[R.inp.prin].d)}/2`, res: rv('REC', R.sec.REC, 'len'), note: 'Del borde al centro de la barra principal' }) +
+      (R.sec.ln ? step({ lhs: 'Líneas de barras', def: rect ? `${V('x', 'a')}, ${V('x', 'c')} · ${V('y', 'a')}, ${V('y', 'c')}` : `${V('x', 'a')} = REC, ${V('x', 'b')} = ${V('t', 'w')} − REC, ${V('x', 'c')} = B − REC · ${V('y', 'a')} = REC, ${V('y', 'b')} = H − ${V('t', 'f')} + REC, ${V('y', 'c')} = H − REC`,
+        res: rect ? `${rv('ln.xa', R.sec.ln.xa, 'len')} ${rv('ln.xc', R.sec.ln.xc, 'len')}` : `x: ${rv('ln.xa', R.sec.ln.xa, 'len')} ${rv('ln.xb', R.sec.ln.xb, 'len')} ${rv('ln.xc', R.sec.ln.xc, 'len')} · y: ${rv('ln.ya', R.sec.ln.ya, 'len')} ${rv('ln.yb', R.sec.ln.yb, 'len')} ${rv('ln.yc', R.sec.ln.yc, 'len')}`,
+        note: rect ? 'Centros de las esquinas (antes de reflejar)' : 'Coordenadas de N1–N8 en la L con esquina exterior arriba a la izquierda (antes de reflejar)' }) : '');
+  },
+  nbar: () => step({ lhs: '<var>N</var>', def: R.sec.segs.length ? `${R.sec.nodes.length} + Σ<var>n</var><sub>seg</sub>` : 'barras de la tabla', sub: R.sec.segs.length ? `${R.sec.nodes.length} + ${R.sec.segs.map(s => s.n).join(' + ')}` : '', res: int(R.sec.bars.length), note: 'Número total de barras longitudinales' }),
+  Ast: () => { const e = barCountsExpr(); return step({ lhs: V('A', 'st'), def: e.sym, sub: e.sub, res: rv('Ast', R.Ast, 'area', true), note: 'Área total de acero longitudinal' }); },
+  rho: () => step({ lhs: '<var>ρ</var>', def: `${V('A', 'st')} / ${V('A', 'g')}`, sub: `${n(R.Ast)} / ${n(R.Ag)}`, res: rv('rho', R.rho, 'ratio', true), note: 'Cuantía de refuerzo longitudinal', ref: 'ACI 10.6.1.1' }) +
+    step({ lhs: V('A', 's,1%') + ' – ' + V('A', 's,4%'), def: `0.01·${V('A', 'g')} – 0.04·${V('A', 'g')}`, res: `${rv('As1', 0.01 * R.Ag, 'area')} – ${rv('As4', 0.04 * R.Ag, 'area')}`, note: 'Rango pedido en el P3 (1 %–4 %)' }),
+  checks: () => chipsHTML(R.chk),
+  dirInfo: () => {
+    const G = G_(), d = S.dir, vb = vbarDef(d), D = G.D;
+    const Dsym = G.isX ? '<var>H</var>' : '<var>B</var>';
+    return step({ lhs: 'Fibra comprimida', def: `${DIRFIB[d]}`, note: `${DN(d)}: el bloque de Whitney se mide desde la cara ${DIRFIB[d]}`, tag: false }) +
+      step({ lhs: '<var>D</var>', def: `${Dsym} (peralte total en la dirección)`, res: rv('D', D, 'len'), note: 'Eje neutro E: c = D' }) +
+      step({ lhs: VB, def: vb[0], sub: `${n(vb[1])} − ${n(vb[2])}`, res: rv('vbar', G.vref, 'len'), note: 'Profundidad del punto de referencia (en la rectangular, h/2)' }) +
+      step({ lhs: V('d', 't'), def: `máx(${V('d', 'i')})`, res: rv('dt', G.dt, 'len'), note: 'Profundidad de la capa extrema a tensión; controla φ' });
+  },
+  sumA: () => step({ lhs: `Σ${V('A', 'si')}`, def: G_().layers.map(l => n(l.A, 2)).join(' + '), res: rv('sumA', G_().layers.reduce((s, l) => s + l.A, 0), 'area'), note: `Igual a A<sub>st</sub> <span class="chip ok" style="margin-left:4px">Revisión OK</span>` }),
+  points: () => renderPoints(),
+  phi: () => renderPhi(),
+  pumax: () => {
+    const cbs = R.inp.combos; if (!cbs.length) return '';
+    const pmax = Math.max(...cbs.map(c => c.Pu)), pmin = Math.min(...cbs.map(c => c.Pu));
+    return chipsHTML([
+      { ok: pmax <= R.phiPnmax + 1e-9, t: `P<sub>u,máx</sub> = ${fu(pmax, 'force')} ${pmax <= R.phiPnmax ? '≤' : '&gt;'} φP<sub>n,máx</sub> = ${fu(R.phiPnmax, 'force')}`, ref: 'ACI 22.4.2.1' },
+      { ok: pmin >= 0.9 * R.Pnt - 1e-9, t: `P<sub>u,mín</sub> = ${fu(pmin, 'force')} ${pmin >= 0.9 * R.Pnt ? '≥' : '&lt;'} φP<sub>nt</sub> = ${fu(0.9 * R.Pnt, 'force')}`, ref: 'ACI 22.4.3.1' }]);
+  },
+  shearGeo: () => shearGeo(),
+  shearDetail: () => shearDetail(),
+  shearSum: () => shearSum()
+};
+function renderSlots() { $$('.slot').forEach(el => { const f = SLOTS[el.dataset.slot]; if (f) el.innerHTML = f(); }); }
+
+/* ---------- Segmentos ---------- */
+function renderSegs() {
+  if (!R.sec.segs.length) return;
+  const uS = unitOf('sg-sc', 'len'), uC = unitOf('sg-cl', 'len'), uQ = unitOf('sg-req', 'len');
+  $('[data-hu="sg-sc"]').innerHTML = usel('sg-sc', 'len', uS);
+  $('[data-hu="sg-cl"]').innerHTML = usel('sg-cl', 'len', uC);
+  $('[data-hu="sg-req"]').innerHTML = usel('sg-req', 'len', uQ);
+  const segMap = Object.fromEntries(R.sec.segs.map(s => [s.k, s]));
+  const SEGDEF = R.inp.shape === 'rect' ? { bot: 'E1–E2', top: 'E4–E3', left: 'E1–E4', right: 'E2–E3' } : { s1: 'N1–N2', s2: 'N2–N3', s3: 'N3–N6', s4: 'N5–N6', s5: 'N1–N4', s6: 'N4–N7', s7: 'N5–N8', s8: 'N7–N8', s9: 'N4–N5', s10: 'N2–N5' };
+  R.sp.forEach(s => {
+    const nm = $(`#sg-${s.k}-nm`); if (!nm) return;
+    nm.textContent = segMap[s.k].name;
+    $(`#sg-${s.k}-btw`).textContent = SEGDEF[s.k] || '';
+    $(`#sg-${s.k}-sc`).textContent = fmt(cv(s.sc, 'len', uS), S.dec);
+    $(`#sg-${s.k}-cl`).textContent = fmt(cv(s.sclear, 'len', uC), S.dec);
+    $(`#sg-${s.k}-req`).textContent = fmt(cv(s.req, 'len', uQ), S.dec);
+    $(`#sg-${s.k}-max`).textContent = s.nmax;
+    $(`#sg-${s.k}-tie`).textContent = s.n ? s.ties : '—';
+    let chip = s.ok ? '<span class="chip ok">Cabe</span>' : '<span class="chip bad">No cabe</span>';
+    if (s.ok && s.n && s.over6) chip += ' <span class="chip warn" title="ACI 25.7.2.3: libre mayor que 6 in, cada barra intermedia necesita eslabón">&gt; 6 in</span>';
+    $(`#sg-${s.k}-st`).innerHTML = chip;
+  });
+}
+
+/* ---------- Capas ---------- */
+function renderLayers() {
+  const G = G_();
+  const uA = unitOf('ly-A', 'area'), uD = unitOf('ly-d', 'len'), uR = unitOf('ly-r', 'len');
+  const head = `<tr><th>Capa</th><th>Barras</th><th><var>A</var><sub>si</sub><span class="hu">${usel('ly-A', 'area', uA)}</span></th><th><var>d</var><sub>i</sub><span class="hu">${usel('ly-d', 'len', uD)}</span></th><th><var>v̄</var> − <var>d</var><sub>i</sub><span class="hu">${usel('ly-r', 'len', uR)}</span></th><th>Barras de la capa</th></tr>`;
+  const rows = G.layers.map(l => `<tr><td class="t">A${l.i}</td><td class="t">${l.desc}</td><td>${fmt(cv(l.A, 'area', uA), S.dec)}</td><td>${fmt(cv(l.d, 'len', uD), S.dec)}</td><td>${fmt(cv(G.vref - l.d, 'len', uR), S.dec)}</td><td class="t mini">${l.bars.map(b => b.name).join(', ')}</td></tr>`).join('');
+  $('#layers-wrap').innerHTML = `<table class="tbl"><thead>${head}</thead><tbody>${rows}</tbody><tfoot><tr><td class="t">Σ</td><td class="t">${R.sec.bars.length} barras</td><td>${fmt(cv(R.Ast, 'area', uA), S.dec)}</td><td colspan="3"></td></tr></tfoot></table>`;
+}
+function renderDirs() {
+  const uL = unitOf('dr-L', 'len'), uM = unitOf('dr-M', 'moment'), uF = unitOf('dr-F', 'force');
+  const rows = DIRS.map(d => {
+    const o = R.dirs[d], G = o.G, B = o.pts.B, Dp = o.pts.D;
+    const r = Math.abs(B.M) > 1e-9 ? B.Mperp / B.M : 0;
+    return `<tr${d === S.dir ? ' class="key"' : ''}><td class="t"><b>${DN(d)}</b></td><td class="t">${DIRFIB[d]}</td><td>${fmt(cv(G.D, 'len', uL), S.dec)}</td><td>${fmt(cv(G.dt, 'len', uL), S.dec)}</td><td>${fmt(cv(G.vref, 'len', uL), S.dec)}</td><td>${G.layers.length}</td><td>${fmt(cv(B.P, 'force', uF), S.dec)}</td><td>${fmt(cv(B.M, 'moment', uM), S.dec)}</td><td>${Dp ? fmt(cv(Dp.M, 'moment', uM), S.dec) : '—'}</td><td>${(r * 100).toFixed(1)} %</td></tr>`;
+  }).join('');
+  $('#dirs-wrap').innerHTML = `<table class="tbl sumtbl"><thead><tr><th>Dirección</th><th>Fibra comprimida</th><th><var>D</var><span class="hu">${usel('dr-L', 'len', uL)}</span></th><th><var>d</var><sub>t</sub><span class="hu">${uL}</span></th><th><var>v̄</var><span class="hu">${uL}</span></th><th>Capas</th><th><var>P</var><sub>nB</sub><span class="hu">${usel('dr-F', 'force', uF)}</span></th><th><var>M</var><sub>nB</sub><span class="hu">${usel('dr-M', 'moment', uM)}</span></th><th><var>M</var><sub>nD</sub><span class="hu">${uM}</span></th><th><var>M</var><sub>⊥</sub>/<var>M</var> en B</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+/* ---------- Puntos ---------- */
+function blockTable(id, p) {
+  const uL = unitOf(id + '.L', 'len'), uA = unitOf(id + '.A', 'area');
+  const rows = p.pieces.map(q => `<tr><td class="t">${q.name}</td><td>${fmt(cv(q.b, 'len', uL), S.dec)}</td><td>${fmt(cv(q.v0, 'len', uL), S.dec)}</td><td>${fmt(cv(q.v1, 'len', uL), S.dec)}</td><td>${fmt(cv(q.h, 'len', uL), S.dec)}</td><td>${fmt(cv(q.A, 'area', uA), S.dec)}</td><td>${q.h > 0 ? fmt(cv(q.v, 'len', uL), S.dec) : '—'}</td></tr>`).join('');
+  return `<div class="tscroll"><table class="tbl"><thead><tr><th>Rectángulo</th><th><var>b</var><sub>j</sub><span class="hu">${usel(id + '.L', 'len', uL)}</span></th><th><var>v</var><sub>0j</sub><span class="hu">${uL}</span></th><th><var>v</var><sub>1j</sub><span class="hu">${uL}</span></th><th><var>h</var><sub>j</sub> = mín(<var>v</var><sub>1j</sub>, <var>a</var>) − <var>v</var><sub>0j</sub><span class="hu">${uL}</span></th><th><var>A</var><sub>j</sub><span class="hu">${usel(id + '.A', 'area', uA)}</span></th><th><var>v</var><sub>j</sub><span class="hu">${uL}</span></th></tr></thead><tbody>${rows}</tbody><tfoot><tr><td class="t">Σ</td><td colspan="4"></td><td>${fmt(cv(p.Ac, 'area', uA), S.dec)}</td><td></td></tr></tfoot></table></div>`;
+}
+function layerTable(id, p) {
+  const cols = [['A', '<var>A</var><sub>si</sub>', 'area'], ['d', '<var>d</var><sub>i</sub>', 'len'], ['e', '<var>ε</var><sub>si</sub>', 'strain'], ['fs', '<var>f</var><sub>si</sub>', 'stress'],
+    ['cond', '<var>a</var> &lt; <var>d</var><sub>i</sub>', null], ['F', '<var>C</var><sub>si</sub>', 'force'], ['arm', '<var>v̄</var> − <var>d</var><sub>i</sub>', 'len'], ['Mi', '<var>C</var><sub>si</sub>·(<var>v̄</var> − <var>d</var><sub>i</sub>)', 'moment']];
+  const us = {};
+  cols.forEach(([k, , q]) => { if (q) us[k] = unitOf(id + '.' + k, q); });
+  const head = '<tr><th>Capa</th>' + cols.map(([k, l, q]) => `<th>${l}${q ? `<span class="hu">${usel(id + '.' + k, q, us[k])}</span>` : ''}</th>`).join('') + '<th>Estado</th></tr>';
+  const fy = R.inp.fy;
+  const rows = p.rows.map(r => {
+    const st = r.fs > 1e-9 ? '<span class="cmp">Comp.</span>' : (r.fs < -1e-9 ? '<span class="tns">Tens.</span>' : '—');
+    const yl = Math.abs(Math.abs(r.fs) - fy) < 1e-9 ? ' · fluye' : '';
+    return `<tr><td class="t">A${r.i}</td><td>${fmt(cv(r.A, 'area', us.A), S.dec)}</td><td>${fmt(cv(r.d, 'len', us.d), S.dec)}</td><td>${fmt(cv(r.e, 'strain', us.e), S.dec)}</td><td>${fmt(cv(r.fs, 'stress', us.fs), S.dec)}</td><td class="t">${r.inBlock ? 'No: −0.85<var>f′</var><sub>c</sub>' : 'Sí'}</td><td>${fmt(cv(r.F, 'force', us.F), S.dec)}</td><td>${fmt(cv(r.arm, 'len', us.arm), S.dec)}</td><td>${fmt(cv(r.Mi, 'moment', us.Mi), S.dec)}</td><td class="t">${st}${yl}</td></tr>`;
+  }).join('');
+  const sA = p.rows.reduce((s, r) => s + r.A, 0), sF = p.rows.reduce((s, r) => s + r.F, 0), sM = p.rows.reduce((s, r) => s + r.Mi, 0);
+  return `<div class="tscroll"><table class="tbl"><thead>${head}</thead><tbody>${rows}</tbody><tfoot><tr><td class="t">Σ</td><td>${fmt(cv(sA, 'area', us.A), S.dec)}</td><td colspan="4"></td><td>${fmt(cv(sF, 'force', us.F), S.dec)}</td><td></td><td>${fmt(cv(sM, 'moment', us.Mi), S.dec)}</td><td></td></tr></tfoot></table></div>`;
+}
+function phiExpr(p) {
+  const m = R.m, pc = m.spiral ? 0.75 : 0.65, dl = m.spiral ? 0.15 : 0.25;
+  const den = m.etc - m.ety;
+  if (p.zone === 'comp') return { def: `${pc.toFixed(2)}`, note: `porque ε<sub>t</sub> ≤ ε<sub>ty</sub> → ${zchip('comp')}` };
+  if (p.zone === 'tens') return { def: '0.90', note: `porque ε<sub>t</sub> ≥ ${fmt(m.etc, 5)} → ${zchip('tens')}` };
+  return { def: `${pc.toFixed(2)} + ${dl.toFixed(2)}·(<var>ε</var><sub>t</sub> − ${ETY}) / (${fmt(den, 5)})`, sub: `${pc.toFixed(2)} + ${dl.toFixed(2)}·(${n(p.et, 5)} − ${n(m.ety, 5)}) / ${n(den, 5)}`, note: zchip('trans') };
+}
+function mSigned(key, p) {
+  const G = G_(), ax = G.isX ? 'x' : 'y', o = G.isX ? 'y' : 'x';
+  const ratio = (key !== 'A' && key !== 'F' && Math.abs(p.M) > 1e-9) ? Math.abs(p.Mperp / p.M) * 100 : null;
+  return (G.sgn < 0 ? step({ lhs: V('M', ax), def: `−${V('M', 'n' + key)}`, sub: `−(${n(p.Mloc)})`, res: rv('p' + key + 'Ms', p.M, 'moment', true), note: `Signo global: la compresión está en la cara ${DIRFIB[S.dir]}` }) : '') +
+    step({ lhs: V('M', o) + ' inducido', def: `${V('P', 'c')}·(<var>u</var><sub>c</sub> − <var>ū</var>) + Σ${V('C', 'si')}·(<var>u</var><sub>i</sub> − <var>ū</var>)`, res: rv('p' + key + 'Mp', p.Mperp, 'moment'),
+      note: `Momento perpendicular por la asimetría${ratio !== null ? ` (${ratio.toFixed(1)} % de M<sub>${ax}</sub>)` : ''}. Se reporta, no se revisa.` });
+}
+function cardGeneric(key, p, how) {
+  const id = 'p' + key, G = G_(), fc = R.inp.fc;
+  const sumF = p.rows.reduce((s, r) => s + r.F, 0), sumM = p.rows.reduce((s, r) => s + r.Mi, 0);
+  const aCap = isFinite(p.c) && R.b1 * p.c > G.D;
+  const ph = phiExpr(p);
+  const act = p.pieces.filter(q => q.h > 0);
+  return how +
+    step({ lhs: V('a'), def: `${B1}·<var>c</var>${aCap ? ' ≤ <var>D</var>' : ''}`, sub: `${n(R.b1)}·${n(p.c)}`, res: rv(id + 'a', p.a, 'len'), note: aCap ? 'Se limita a D: toda la sección queda en el bloque' : 'Profundidad del bloque equivalente', ref: 'ACI 22.2.2.4.1' }) +
+    `<div class="step"><div class="mline"><span class="lhs">Zona comprimida</span><span class="op">:</span><span class="sub" style="font-size:14px">parte de cada rectángulo entre 0 y <var>a</var></span></div><div class="note"><span class="tag ca">calculado</span><var>v</var><sub>0j</sub>, <var>v</var><sub>1j</sub>: profundidades del rectángulo desde la fibra ${DIRFIB[S.dir]}</div></div>` +
+    blockTable(id, p) +
+    step({ lhs: V('A', 'c'), def: `Σ${V('b', 'j')}·${V('h', 'j')}`, sub: act.length ? act.map(q => `${n(q.b)}·${n(q.h)}`).join(' + ') : '0', res: rv(id + 'Ac', p.Ac, 'area'), note: 'Área comprimida de concreto' }) +
+    step({ lhs: V('v', 'c'), def: `Σ${V('A', 'j')}·${V('v', 'j')} / ${V('A', 'c')}`, sub: act.length ? `(${act.map(q => `${n(q.A)}·${n(q.v)}`).join(' + ')}) / ${n(p.Ac)}` : '', res: rv(id + 'vc', p.vc, 'len'), note: 'Profundidad del centroide del área comprimida (en la rectangular, a/2)' }) +
+    step({ lhs: V('P', 'c'), def: `0.85·${FC}·${V('A', 'c')}`, sub: `0.85·${n(fc)}·${n(p.Ac)}`, res: rv(id + 'Pc', p.Cc, 'force'), note: 'Fuerza del concreto', ref: 'ACI 22.2.2.4.1' }) +
+    `<div class="step"><div class="mline"><span class="lhs">Capas</span><span class="op">:</span><span class="sub" style="font-size:14px">artificios 1 y 2 en cada capa</span></div><div class="note"><span class="tag ca">calculado</span>Cambia la unidad de cada columna en su encabezado</div></div>` +
+    layerTable(id, p) +
+    step({ lhs: V('P', 'n' + key), def: `${V('P', 'c')} + Σ${V('C', 'si')}`, sub: `${n(p.Cc)} + (${n(sumF)})`, res: rv(id + 'P', p.P, 'force', true), note: 'Suma de fuerzas (compresión positiva)' }) +
+    step({ lhs: V('M', 'n' + key), def: `${V('P', 'c')}·(${VB} − ${V('v', 'c')}) + Σ${V('C', 'si')}·(${VB} − ${V('d', 'i')})`, sub: `${n(p.Cc)}·(${n(G.vref)} − ${n(p.vc)}) + (${n(sumM)})`, res: rv(id + 'M', p.Mloc, 'moment', true), note: 'Suma de momentos respecto al punto de referencia' }) +
+    mSigned(key, p) +
+    step({ lhs: '<var>ε</var><sub>t</sub>', def: `${ECU}·(${V('d', 't')} − <var>c</var>) / <var>c</var>`, sub: `${n(R.inp.ecu)}·(${n(G.dt)} − ${n(p.c)}) / ${n(p.c)}`, res: rv(id + 'et', p.et, 'strain'), note: 'Deformación en la capa extrema a tensión', ref: 'ACI 21.2.2' }) +
+    step({ lhs: PHI, def: ph.def, sub: ph.sub, res: rv(id + 'phi', p.phi), note: ph.note, ref: 'ACI Tabla 21.2.2' }) +
+    step({ lhs: PHI + V('P', 'n'), def: `${PHI}·${V('P', 'n')}`, sub: `${n(p.phi)}·${n(p.P)}`, res: rv(id + 'phiP', p.phiP, 'force'), note: p.capped ? `Se limita a φP<sub>n,máx</sub> = ${fu(R.phiPnmax, 'force')}` : 'Resistencia axial de diseño' }) +
+    step({ lhs: PHI + V('M', G.isX ? 'x' : 'y'), def: `${PHI}·${V('M', G.isX ? 'x' : 'y')}`, sub: `${n(p.phi)}·(${n(p.M)})`, res: rv(id + 'phiM', p.phiM, 'moment'), note: 'Resistencia a flexión de diseño (con signo)' });
+}
+function designOf(st) {
+  const ph = phiOf(st.et, R.m);
+  return { ...st, phi: ph.phi, zone: ph.zone, phiP: Math.min(ph.phi * st.P, R.phiPnmax), phiM: ph.phi * st.M, capped: ph.phi * st.P > R.phiPnmax };
+}
+function selLibre() {
+  const c = (S.cFree && isFinite(S.cFree) && S.cFree > 0) ? S.cFree : R.dirs[S.dir].pts.B.c;
+  return { ...designOf(analyzeC(c, G_(), R.m)), key: 'libre', name: 'Eje neutro libre' };
+}
+function psum(p) {
+  return `P<sub>n</sub> = ${fu(p.P, 'force')} · M = ${fu(p.M, 'moment')} · φ = ${fmt(p.phi, 3)}`;
+}
+function card(key, title, body, p) {
+  return `<details class="pt" data-pt="${key}"${S.open[key] ? ' open' : ''}><summary><span class="pkey">${key === 'libre' ? 'c' : key}</span><span class="ptitle">${title}</span><span class="psum">${psum(p)}</span></summary>${body}</details>`;
+}
+function renderPoints() {
+  const O = R.dirs[S.dir], P = O.pts, G = O.G, fc = R.inp.fc, fy = R.inp.fy, ecu = R.inp.ecu;
+  const tied = R.inp.tie !== 'zuncho', ax = G.isX ? 'x' : 'y';
+  const sumAarm = G.layers.map(l => `${n(l.A, 2)}·(${n(G.vref - l.d)})`).join(' + ');
+  let h = '';
+  h += card('A', 'Compresión pura', step({ lhs: V('P', 'nA'), def: `0.85·${FC}·(${V('A', 'g')} − ${V('A', 'st')}) + ${FY}·${V('A', 'st')}`, sub: `0.85·${n(fc)}·(${n(R.Ag)} − ${n(R.Ast)}) + ${n(fy)}·${n(R.Ast)}`, res: rv('PnA', R.Po, 'force', true), note: 'c → ∞: todo el concreto y todo el acero a compresión (P<sub>o</sub>)', ref: 'ACI 22.4.2.2' }) +
+    step({ lhs: V('M', 'nA'), def: `0.85·${FC}·${V('A', 'g')}·(${VB} − ${V('v', 'g')}) + Σ${V('A', 'si')}·(${FY} − 0.85·${FC})·(${VB} − ${V('d', 'i')})`, sub: `${n(0.85 * fc * R.Ag)}·(${n(G.vref)} − ${n(G.vg)}) + ${n(fy - 0.85 * fc)}·[${sumAarm}]`, res: rv('MnA', P.A.Mloc, 'moment'), note: 'Es cero solo si el acero es simétrico respecto a la referencia' }) +
+    mSigned('A', P.A) +
+    step({ lhs: V('P', 'n,máx'), def: `${tied ? '0.80' : '0.85'}·${V('P', 'o')}`, sub: `${tied ? '0.80' : '0.85'}·${n(R.Po)}`, res: rv('Pnmax', R.Pnmax, 'force'), note: 'Carga axial máxima por excentricidad accidental', ref: 'ACI 22.4.2.1' }) +
+    step({ lhs: PHI + V('P', 'n,máx'), def: `${PHI}·${V('P', 'n,máx')}`, sub: `${R.phic.toFixed(2)}·${n(R.Pnmax)}`, res: rv('phiPnmax', R.phiPnmax, 'force', true), note: 'Tope horizontal de la curva de diseño', ref: 'ACI 21.2.2' }), P.A);
+  const howE = step({ lhs: '<var>c</var>', def: '<var>D</var>', res: rv('pEc', P.E.c, 'len'), note: 'Eje neutro en la cara opuesta: toda la sección comprimida' });
+  h += card('E', 'Eje neutro igual al peralte (c = D)', cardGeneric('E', P.E, howE), P.E);
+  const howB = step({ lhs: V('c', 'b'), def: `${ECU}·${V('d', 't')} / (${ECU} + ${ETY})`, sub: `${n(ecu)}·${n(G.dt)} / (${n(ecu)} + ${n(R.ety, 5)})`, res: rv('pBc', P.B.c, 'len'), note: 'Triángulos semejantes: el concreto llega a ε<sub>cu</sub> y la capa extrema fluye a la vez' });
+  h += card('B', 'Condición balanceada', cardGeneric('B', P.B, howB), P.B);
+  const tc = R.inp.tcMode === '0.005';
+  const howC = step({ lhs: '<var>ε</var><sub>t</sub>', def: tc ? '0.005' : `${ETY} + 0.003`, sub: tc ? '' : `${n(R.ety, 5)} + 0.003`, res: rv('pCet0', R.etc, 'strain'), note: 'Inicio de la zona controlada por tensión', ref: 'ACI Tabla 21.2.2' }) +
+    step({ lhs: '<var>c</var>', def: `${ECU}·${V('d', 't')} / (${ECU} + <var>ε</var><sub>t</sub>)`, sub: `${n(ecu)}·${n(G.dt)} / (${n(ecu)} + ${n(R.etc, 5)})`, res: rv('pCc', P.C.c, 'len'), note: 'Triángulos semejantes' });
+  h += card('C', 'Inicio de zona controlada por tensión', cardGeneric('C', P.C, howC), P.C);
+  if (P.D) {
+    const howD = step({ lhs: '<var>c</var>', def: `valor tal que ${V('P', 'n')}(<var>c</var>) = 0`, sub: `bisección, ${P.D.iters} iteraciones`, res: rv('pDc', P.D.c, 'len'), note: 'Flexión pura' });
+    h += card('D', 'Flexión pura', cardGeneric('D', P.D, howD), P.D);
+  }
+  h += card('F', 'Tensión pura', step({ lhs: V('P', 'nF'), def: `−${FY}·${V('A', 'st')}`, sub: `−${n(fy)}·${n(R.Ast)}`, res: rv('PnF', R.Pnt, 'force', true), note: 'c ≤ 0: todo el acero fluye a tensión', ref: 'ACI 22.4.3.1' }) +
+    step({ lhs: V('M', 'nF'), def: `Σ(−${FY}·${V('A', 'si')})·(${VB} − ${V('d', 'i')})`, sub: `−${n(fy)}·[${sumAarm}]`, res: rv('MnF', P.F.Mloc, 'moment'), note: 'Cero solo con acero simétrico respecto a la referencia' }) +
+    mSigned('F', P.F) +
+    step({ lhs: PHI + V('P', 'nF'), def: `0.90·${V('P', 'nF')}`, sub: `0.90·(${n(R.Pnt)})`, res: rv('phiPnF', P.F.phiP, 'force'), note: 'Controlada por tensión', ref: 'ACI 21.2.2' }), P.F);
+  const L = selLibre();
+  const howL = step({ lhs: '<var>c</var>', def: 'valor elegido', res: rv('pLc', L.c, 'len'), note: 'Control “c” de la vista o un toque en el diagrama', tag: false });
+  h += card('libre', 'Eje neutro libre', cardGeneric('L', L, howL), L);
+  return h;
+}
+function renderPhi() {
+  const m = R.m, sp = m.spiral, pc = sp ? 0.75 : 0.65, dl = sp ? 0.15 : 0.25;
+  return `<div class="tscroll"><table class="tbl"><thead><tr><th>Clasificación</th><th>Condición</th><th><var>φ</var> (${sp ? 'zuncho' : 'estribos'})</th></tr></thead><tbody>
+    <tr><td class="t">${zchip('comp')}</td><td class="t"><var>ε</var><sub>t</sub> ≤ ε<sub>ty</sub> = ${fmt(m.ety, 5)}</td><td>${pc.toFixed(2)}</td></tr>
+    <tr><td class="t">${zchip('trans')}</td><td class="t">${fmt(m.ety, 5)} &lt; <var>ε</var><sub>t</sub> &lt; ${fmt(m.etc, 5)}</td><td class="t">${pc.toFixed(2)} + ${dl.toFixed(2)}·(ε<sub>t</sub> − ε<sub>ty</sub>)/(${fmt(m.etc - m.ety, 5)})</td></tr>
+    <tr><td class="t">${zchip('tens')}</td><td class="t"><var>ε</var><sub>t</sub> ≥ ${fmt(m.etc, 5)}</td><td>0.90</td></tr></tbody></table></div>` +
+    step({ lhs: PHI + V('P', 'n'), def: `mín(${PHI}·${V('P', 'n')} , ${PHI}${V('P', 'n,máx')})`, note: 'La curva de diseño queda truncada en φP<sub>n,máx</sub>', ref: 'ACI 22.4.2.1', tag: false }) +
+    step({ lhs: PHI + V('P', 'n,máx'), def: `${pc.toFixed(2)}·${sp ? '0.85' : '0.80'}·${V('P', 'o')}`, sub: `${pc.toFixed(2)}·${sp ? '0.85' : '0.80'}·${n(R.Po)}`, res: rv('phiPnmax2', R.phiPnmax, 'force'), note: 'Tope de diseño', ref: 'ACI 22.4.2.1' });
+}
+
+/* ---------- Combinaciones ---------- */
+function renderCombosOut() {
+  const uM = unitOf('cr-M', 'moment');
+  $('[data-hu="cr-M"]').innerHTML = usel('cr-M', 'moment', uM);
+  $('[data-hu="cr-M2"]').textContent = uM;
+  $('#cbres-tbl tbody').innerHTML = R.combos.map(c => {
+    const bx = c.Mx >= 0 ? '+M<sub>x</sub>' : '−M<sub>x</sub>', by = c.My >= 0 ? '+M<sub>y</sub>' : '−M<sub>y</sub>';
+    return `<tr data-cbi="${R.combos.indexOf(c)}"><td class="t">${esc(c.name)}</td><td class="t">${bx}</td><td>${isFinite(c.X.capM) ? fmt(cv(c.X.capM, 'moment', uM), S.dec) : '—'}</td><td class="t">${dcChip(c.X.dc)}</td><td class="t">${by}</td><td>${isFinite(c.Y.capM) ? fmt(cv(c.Y.capM, 'moment', uM), S.dec) : '—'}</td><td class="t">${dcChip(c.Y.dc)}</td></tr>`;
+  }).join('');
+}
+
+/* ---------- Cortante ---------- */
+function shearGeo() {
+  const v = R.V, inp = R.inp, sh = inp.shape;
+  let h = '';
+  h += step({ lhs: V('ϕ', 'l'), def: 'mayor Ø longitudinal', sub: `#${v.noL}`, res: rv('phl', v.phl, 'len'), note: 'Barra longitudinal más grande' }) +
+    step({ lhs: V('ϕ', 'l,mín'), def: 'menor Ø longitudinal', sub: `#${v.noLmin}`, res: rv('phlmin', v.phlmin, 'len'), note: 'Barra longitudinal más pequeña' });
+  if (sh !== 'custom') {
+    h += step({ lhs: V('d', '0'), def: `<var>rec</var> + ${V('ϕ', 'es')} + ${V('ϕ', 'l')}/2`, sub: `${n(inp.rec)} + ${n(v.phes)} + ${n(v.phl)}/2`, res: rv('sh.d0', v.d0, 'len'), note: 'Del borde al centro de la barra extrema' });
+    h += step({ lhs: V('d', 'x'), def: `<var>H</var> − ${V('d', '0')}`, sub: `${n(inp.H)} − ${n(v.d0)}`, res: rv('sh.dx', v.gx.d, 'len'), note: `Peralte para V<sub>x</sub> (asociado a M<sub>x</sub>, fuerza a lo largo de Y)` }) +
+      step({ lhs: V('b', 'w,x'), def: v.gx.bwS, res: rv('sh.bwx', v.gx.bw, 'len'), note: sh === 'L' ? 'Ancho del alma vertical, que resiste V<sub>x</sub>' : 'Ancho de la sección' }) +
+      step({ lhs: V('d', 'y'), def: `<var>B</var> − ${V('d', '0')}`, sub: `${n(inp.B)} − ${n(v.d0)}`, res: rv('sh.dy', v.gy.d, 'len'), note: 'Peralte para V<sub>y</sub> (asociado a M<sub>y</sub>, fuerza a lo largo de X)' }) +
+      step({ lhs: V('b', 'w,y'), def: v.gy.bwS, res: rv('sh.bwy', v.gy.bw, 'len'), note: sh === 'L' ? 'Espesor del ala horizontal, que resiste V<sub>y</sub>' : 'Alto de la sección' });
+  }
+  const sel = `<select class="insel" data-k="rhoArea" aria-label="Área de acero en ρw"><option value="sheet"${inp.rhoArea === 'sheet' ? ' selected' : ''}>A_l·No.ϕl (hoja de clase)</option><option value="real"${inp.rhoArea === 'real' ? ' selected' : ''}>A_st real</option><option value="r2255"${inp.rhoArea === 'r2255' ? ' selected' : ''}>Barras a más de 2D/3 (R22.5.5.1)</option></select>`;
+  h += step({ lhs: V('A', 's') + ' en ' + V('ρ', 'w'), def: inp.rhoArea === 'sheet' ? `${V('A', 'l')}·No.${V('ϕ', 'l')} = ${n(BARS[v.noL].A, 2)}·${v.Nl}` : (inp.rhoArea === 'real' ? V('A', 'st') : 'Σ barras con d &gt; 2D/3, rama menor'),
+    res: inp.rhoArea === 'r2255' ? `${rv('sh.AsVx', v.AsVx, 'area')} (x) · ${rv('sh.AsVy', v.AsVy, 'area')} (y)` : rv('sh.AsV', v.AsVx, 'area'), note: `Área usada: ${sel}` });
+  h += step({ lhs: `${V('l', 'u')} / ${V('c', '1')}`, def: `${V('l', 'u')} / menor dimensión`, sub: `${n(inp.lu)} / ${n(v.least)}`, res: rv('luc1', v.luc1),
+    note: v.luc1 <= 5 ? 'l<sub>u</sub> ≤ 5c<sub>1</sub>: revisa también el cortante por capacidad de ACI 18.3.3' : 'l<sub>u</sub> &gt; 5c<sub>1</sub>: V<sub>u</sub> es el del análisis (no aplica 18.3.3)', ref: 'ACI 18.3.3' });
+  h += step({ lhs: V('ϕ', 'v'), def: '0.75', res: rv('phiv', v.phiv), note: 'Factor de reducción a cortante', ref: 'ACI 21.2.1' });
+  return h;
+}
+function renderShearTable() {
+  const v = R.V, uF = unitOf('st.F', 'force'), uA = unitOf('st.A', 'avs'), uL = unitOf('sh.sv', 'len');
+  const head = `<tr><th>Combinación</th><th><var>P</var><sub>u</sub><span class="hu">${usel('st.F', 'force', uF)}</span></th><th><var>V</var><sub>x</sub><span class="hu">${uF}</span></th><th><var>φV</var><sub>c,x</sub><span class="hu">${uF}</span></th><th><var>A</var><sub>v</sub>/<var>s</var> x<span class="hu">${usel('st.A', 'avs', uA)}</span></th><th><var>s</var><sub>v,x</sub><span class="hu">${usel('sh.sv', 'len', uL)}</span></th><th><var>V</var><sub>y</sub><span class="hu">${uF}</span></th><th><var>φV</var><sub>c,y</sub><span class="hu">${uF}</span></th><th><var>A</var><sub>v</sub>/<var>s</var> y<span class="hu">${uA}</span></th><th><var>s</var><sub>v,y</sub><span class="hu">${uL}</span></th><th>Estado</th></tr>`;
+  const rows = v.rows.map((r, i) => {
+    const gov = v.gov && v.gov.i === i;
+    const ok = r.x.ok8 && r.y.ok8;
+    return `<tr data-cbi="${i}"${gov ? ' class="gov"' : ''}><td class="t">${esc(r.name)}${gov ? ' <span class="mini">(controla)</span>' : ''}</td><td>${fmt(cv(r.Pu, 'force', uF), S.dec)}</td><td>${fmt(cv(r.x.Vu, 'force', uF), S.dec)}</td><td>${fmt(cv(r.x.phiVc, 'force', uF), S.dec)}</td><td>${fmt(cv(r.x.Av, 'avs', uA), S.dec)}</td><td>${fmt(cv(r.x.sv, 'len', uL), 2)}</td><td>${fmt(cv(r.y.Vu, 'force', uF), S.dec)}</td><td>${fmt(cv(r.y.phiVc, 'force', uF), S.dec)}</td><td>${fmt(cv(r.y.Av, 'avs', uA), S.dec)}</td><td>${fmt(cv(r.y.sv, 'len', uL), 2)}</td><td class="t">${ok ? '<span class="chip ok">Sección OK</span>' : '<span class="chip bad">V<sub>s</sub> &gt; 8√f′c·b<sub>w</sub>d</span>'}</td></tr>`;
+  }).join('');
+  $('#shear-wrap').innerHTML = `<table class="tbl sumtbl"><thead>${head}</thead><tbody>${rows}</tbody></table>`;
+  const selEl = $('#i-shCombo');
+  if (S.shCombo === null || S.shCombo >= v.rows.length) S.shCombo = v.gov ? v.gov.i : 0;
+  if (selEl) selEl.value = String(S.shCombo);
+}
+function shearDetail() {
+  const v = R.V, inp = R.inp; if (!v.rows.length) return '';
+  const i = Math.min(S.shCombo || 0, v.rows.length - 1), r = v.rows[i];
+  const fc = v.fc_psi, sq = `√(${FC}·psi)`;
+  let h = '';
+  [['x', r.x, v.gx, inp.nVx], ['y', r.y, v.gy, inp.nVy]].forEach(([a, A, g, nl]) => {
+    h += `<h4 class="subh">Dirección ${a} · ${esc(r.name)}</h4>`;
+    h += step({ lhs: V('V', 'u' + a), def: `|${V('V', a)}|`, res: rv('sd.Vu' + a, A.Vu, 'force', true), note: 'Cortante de diseño de la combinación' });
+    h += step({ lhs: V('ρ', 'w' + a), def: `${V('A', 's')} / (${V('b', 'w,' + a)}·${V('d', a)})`, sub: `${n(A.AsV)} / (${n(A.bw)}·${n(A.d)})`, res: rv('sd.rho' + a, A.rho, 'ratio'), note: 'Cuantía longitudinal para V<sub>c</sub>' });
+    h += step({ lhs: `${V('N', 'u')}/(6·${V('A', 'g')})`, def: `mín(${V('P', 'u')}/(6·${V('A', 'g')}) , 0.05·${FC})`, sub: `mín(${n(r.Pu * 1000, 1)} lb/(6·${n(v.Ag)}) , ${n(0.05 * fc, 1)})`, res: `${n(A.nuT, 2)}<span class="uu">psi</span>`, note: r.Pu < 0 ? 'Tensión: el término es negativo y reduce V<sub>c</sub>' : 'Compresión: aumenta V<sub>c</sub>', ref: 'ACI 22.5.5.1.2' });
+    h += step({ lhs: V('V', 'c' + a), def: `[8·<var>λ</var>·${V('ρ', 'w')}<sup>1/3</sup>·${sq} + ${V('N', 'u')}/(6${V('A', 'g')})]·${V('b', 'w')}·${V('d', a)}`, sub: `[8·${n(v.lam, 2)}·${n(A.rho, 5)}<sup>1/3</sup>·${n(v.sq, 2)} + (${n(A.nuT, 2)})]·${n(A.bw)}·${n(A.d)} / 1000`, res: rv('sd.Vcr' + a, A.VcRaw, 'force'), note: 'Resistencia del concreto con carga axial (psi·in²/1000 = kip)', ref: 'ACI Tabla 22.5.5.1(b)' });
+    h += step({ lhs: V('V', 'c' + a) + ' usado', def: `mín(máx(${V('V', 'c')} , 0) , 5·<var>λ</var>·${sq}·${V('b', 'w')}·${V('d', a)})`, sub: `mín(máx(${n(A.VcRaw)} , 0) , ${n(A.Vcmax)})`, res: rv('sd.Vc' + a, A.Vc, 'force', true), note: 'V<sub>c</sub> no es negativo ni mayor que el límite', ref: 'ACI 22.5.5.1.1' });
+    h += step({ lhs: `${V('ϕ', 'v')}·${V('V', 'c' + a)}`, def: `0.75·${n(A.Vc)}`, res: rv('sd.phiVc' + a, A.phiVc, 'force'), note: 'Resistencia de diseño del concreto' });
+    h += step({ lhs: `${V('A', 'vn' + a)}/<var>s</var>`, def: `(${V('V', 'u')}/${V('ϕ', 'v')} − ${V('V', 'c')}) / (${FYT}·${V('d', a)})`, sub: `(${n(A.Vu)}/0.75 − ${n(A.Vc)}) / (${n(inp.fyt)}·${n(A.d)})`, res: rv('sd.Avn' + a, A.Avn, 'avs'), note: 'Área requerida por cortante' });
+    h += step({ lhs: `${V('A', 'v,mín' + a)}/<var>s</var>`, def: `máx(0.75·${sq}·${V('b', 'w')}/${FYT} , 50·${V('b', 'w')}/${FYT})`, sub: `máx(0.75·${n(v.sq, 2)}·${n(A.bw)}/${n(inp.fyt * 1000, 0)} , 50·${n(A.bw)}/${n(inp.fyt * 1000, 0)})`, res: rv('sd.Avmin' + a, A.Avmin, 'avs'), note: 'Área mínima', ref: 'ACI 10.6.2.2' });
+    h += step({ lhs: `${V('A', 'v' + a)}/<var>s</var>`, def: `máx(${V('A', 'vn')} , ${V('A', 'v,mín')})/<var>s</var>`, res: rv('sd.Av' + a, A.Av, 'avs', true), note: 'Área de diseño por unidad de longitud' });
+    h += step({ lhs: V('s', 'v' + a), def: `${V('n', a)}·${V('A', 'es')} / (${V('A', 'v')}/<var>s</var>)`, sub: `${nl}·${n(v.Aes, 2)} / ${n(A.Av, 5)}`, res: rv('sh.sv', A.sv, 'len'), note: 'Separación requerida' });
+    h += step({ lhs: V('V', 's' + a), def: `(${V('A', 'v')}/<var>s</var>)·${FYT}·${V('d', a)}`, sub: `${n(A.Av, 5)}·${n(inp.fyt)}·${n(A.d)}`, res: rv('sd.Vs' + a, A.Vs, 'force'), note: `${A.Vs <= A.lim4 ? '≤' : '&gt;'} 4√f′c·b<sub>w</sub>d = ${fu(A.lim4, 'force')} → ${A.smaxCase === 'd/2' ? 'mín(d/2, 24 in)' : 'mín(d/4, 12 in)'}` });
+    h += step({ lhs: V('s', 'máx' + a), def: A.smaxCase === 'd/2' ? `mín(${V('d', a)}/2 , 24 in)` : `mín(${V('d', a)}/4 , 12 in)`, sub: A.smaxCase === 'd/2' ? `mín(${n(A.d)}/2 , 24)` : `mín(${n(A.d)}/4 , 12)`, res: rv('sh.smax', A.smax, 'len'), note: 'Separación máxima', ref: 'ACI 10.7.6.5.2' });
+    h += chipsHTML([{ ok: A.ok8, t: `V<sub>u</sub>/φ − V<sub>c</sub> = ${fu(A.Vsreq, 'force')} ${A.ok8 ? '≤' : '&gt;'} 8√f′c·b<sub>w</sub>d = ${fu(A.lim8, 'force')}`, ref: 'ACI 22.5.1.2' }]);
+  });
+  return h;
+}
+function shearSum() {
+  const v = R.V, inp = R.inp, uL = unitOf('sh.s', 'len');
+  const ncm = x => n(x * 2.54, 2);
+  const totTies = uniqueTies(R).length;
+  const g = v.gov;
+  let h = '<h4 class="subh">Separación de diseño</h4>';
+  h += step({ lhs: V('s', 'cortante'), def: 'Floor(mín de todas las combinaciones (s<sub>v</sub> , s<sub>máx</sub>) , 0.5 cm)', sub: g ? `Floor(${ncm(v.sRaw)} cm , 0.5 cm)` : '', res: rv('sh.s', v.sShear, 'len', true), note: g ? `Controla ${esc(v.rows[g.i].name)}, dirección ${g.k}` : '' });
+  h += step({ lhs: V('s', 'x'), def: `Floor(mín(16·${V('ϕ', 'l,mín')} , 48·${V('ϕ', 'es')} , menor dimensión) , 0.5 cm)`, sub: `Floor(mín(${ncm(16 * v.phlmin)} , ${ncm(48 * v.phes)} , ${ncm(v.least)}) cm , 0.5 cm)`, res: rv('sh.sx', v.sx, 'len'), note: 'Separación por soporte lateral de las barras', ref: 'ACI 25.7.2.1' });
+  h += step({ lhs: '<var>s</var>', def: `mín(${V('s', 'cortante')} , ${V('s', 'x')})`, res: rv('sh.sf', v.s, 'len', true), note: 'Separación de estribos y eslabones' });
+  if (R.sp.length) {
+    h += chipsHTML(R.sp.filter(s => s.n).map(s => ({ ok: s.ties === 0, warn: true, t: `${s.k}: ${s.ties ? s.ties + ' barra(s) por amarrar' : 'sin eslabones'} · libre ${fu(s.sclear, 'len', 'sg-cl')} ${s.over6 ? '&gt;' : '≤'} ${fu(6, 'len', 'sg-cl')} (6 in)`, ref: 'ACI 25.7.2.3' })));
+  }
+  h += `<div class="tscroll"><table class="tbl"><tbody>
+    <tr><td class="t">Refuerzo transversal</td><td class="t">${inp.shape === 'L' ? '2 estribos rectangulares' : (inp.shape === 'rect' ? '1 estribo perimetral' : 'según tabla')} #${inp.est}${totTies ? ` + ${totTies} eslabón(es) #${inp.est}` : ''}</td></tr>
+    <tr><td class="t">Ramas que resisten V<sub>x</sub> / V<sub>y</sub></td><td class="t">${inp.nVx} / ${inp.nVy}</td></tr>
+    <tr><td class="t">Separación</td><td class="t">${fmt(cv(v.s, 'len', uL), 2)} ${uL}</td></tr></tbody></table></div>`;
+  return h;
+}
+function renderShearCard() {
+  const v = R.V, inp = R.inp, uL = unitOf('sc.s', 'len');
+  const totTies = uniqueTies(R).length;
+  const bad = [];
+  if (v.rows.some(r => !r.x.ok8 || !r.y.ok8)) bad.push({ ok: false, t: 'Alguna combinación supera V<sub>s</sub> ≤ 8√f′c·b<sub>w</sub>d' });
+  $('#shear-card').innerHTML = `<div class="sumline">Estribo <b>#${inp.est}</b>${inp.shape === 'L' ? ' (2 estribos)' : ''}${totTies ? ` + <b>${totTies}</b> eslabones` : ''} @ <b>${fmt(cv(v.s, 'len', uL), 2)} ${uL}</b> · ramas V<sub>x</sub>/V<sub>y</sub>: <b>${inp.nVx}/${inp.nVy}</b><br>s<sub>cortante</sub> = ${fmt(cv(v.sShear, 'len', uL), 2)} · s<sub>x</sub> = ${fmt(cv(v.sx, 'len', uL), 2)} ${usel('sc.s', 'len', uL)}</div>${bad.length ? chipsHTML(bad) : ''}`;
+}
+function renderRev() {
+  const rows = R.combos.map((c, i) => {
+    const sh = R.V.rows[i];
+    const smin = sh ? Math.min(sh.x.sv, sh.y.sv) : NaN;
+    return `<tr data-cbi="${i}"><td class="t">${esc(c.name)}</td><td class="t">${dcChip(c.X.dc)}</td><td class="t">${dcChip(c.Y.dc)}</td><td>${fmt(cv(smin, 'len', unitOf('sc.s', 'len')), 2)}</td></tr>`;
+  }).join('');
+  $('#rev-wrap').innerHTML = `<table class="tbl sumtbl"><thead><tr><th>Combinación</th><th>D/C en X</th><th>D/C en Y</th><th><var>s</var><sub>v</sub> mín<span class="hu">${unitOf('sc.s', 'len')}</span></th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+/* ---------- Tabla de iteración ---------- */
+function keyLabel(dir, c) {
+  if (c === Infinity) return 'A';
+  if (c === 0) return 'F';
+  const P = R.dirs[dir].pts;
+  for (const k of ['B', 'C', 'D', 'E']) if (P[k] && Math.abs(P[k].c - c) < 1e-9) return k;
+  return '';
+}
+const ITCOLS = [['c', '<var>c</var>', 'len'], ['a', '<var>a</var>', 'len'], ['et', '<var>ε</var><sub>t</sub>', 'strain'], ['phi', '<var>φ</var>', null], ['zone', 'Zona', null], ['P', '<var>P</var><sub>n</sub>', 'force'], ['M', '<var>M</var><sub>n</sub>', 'moment'], ['Mperp', '<var>M</var><sub>⊥</sub>', 'moment'], ['phiP', '<var>φP</var><sub>n</sub>', 'force'], ['phiM', '<var>φM</var><sub>n</sub>', 'moment']];
+function iterRows() {
+  const ax = S.itAx;
+  const rows = R.dirs['+' + ax].curve.map(p => ({ ...p, br: '+', dir: '+' + ax }));
+  if (S.iterNeg) R.dirs['-' + ax].curve.forEach(p => rows.push({ ...p, br: '−', dir: '-' + ax }));
+  return rows;
+}
+function renderIter() {
+  const us = {};
+  ITCOLS.forEach(([k, , q]) => { if (q) us[k] = unitOf('it.' + k, q); });
+  const head = '<tr><th>Rama</th><th>Punto</th>' + ITCOLS.map(([k, l, q]) => `<th>${l}${q ? `<span class="hu">${usel('it.' + k, q, us[k])}</span>` : ''}</th>`).join('') + '</tr>';
+  const zs = { comp: 'Compresión', trans: 'Transición', tens: 'Tensión' };
+  const body = iterRows().map(p => {
+    const kl = keyLabel(p.dir, p.c);
+    return `<tr${kl ? ' class="key"' : ''}><td class="t">${p.br}</td><td class="t">${kl}</td>` + ITCOLS.map(([k, , q]) => {
+      if (k === 'zone') return `<td class="t"><span class="z ${p.zone}">${zs[p.zone]}</span></td>`;
+      if (k === 'phi') return `<td>${fmt(p.phi, 3)}</td>`;
+      return `<td>${fmt(cv(p[k], q, us[k]), S.dec)}</td>`;
+    }).join('') + '</tr>';
+  }).join('');
+  $('#iter-wrap').innerHTML = `<table class="tbl"><thead>${head}</thead><tbody>${body}</tbody></table>`;
+}
+function iterTSV() {
+  const us = {};
+  ITCOLS.forEach(([k, , q]) => { if (q) us[k] = unitOf('it.' + k, q); });
+  const head = ['Rama', 'Punto'].concat(ITCOLS.map(([k, l, q]) => l.replace(/<[^>]+>/g, '') + (q ? ` (${us[k]})` : ''))).join('\t');
+  const lines = iterRows().map(p => [p.br, keyLabel(p.dir, p.c)].concat(ITCOLS.map(([k, , q]) => {
+    if (k === 'zone') return p.zone; if (k === 'phi') return p.phi.toFixed(4);
+    const v = cv(p[k], q, us[k]); return isFinite(v) ? String(+v.toPrecision(8)) : (v > 0 ? 'inf' : '');
+  })).join('\t'));
+  return [head].concat(lines).join('\n');
+}
+
+/* ---------- Estado seleccionado ---------- */
+function selState() {
+  if (S.sel === 'libre') return selLibre();
+  return R.dirs[S.dir].pts[S.sel] || R.dirs[S.dir].pts.B;
+}
+const cToT = c => Math.max(0, Math.min(1000, Math.round((Math.log10(c / G_().D) + 2) / 3.5 * 1000)));
+const tToC = t => G_().D * Math.pow(10, -2 + 3.5 * t / 1000);
+
+/* ---------- Utilidades de dibujo ---------- */
+const sv = x => Math.round(x * 100) / 100;
+function arrowHead(x, y, ang, s = 6) {
+  const a1 = ang + 2.6, a2 = ang - 2.6;
+  return `${sv(x)},${sv(y)} ${sv(x + s * Math.cos(a1))},${sv(y + s * Math.sin(a1))} ${sv(x + s * Math.cos(a2))},${sv(y + s * Math.sin(a2))}`;
+}
+const DIMDEC = { 'in': 2, 'ft': 3, 'mm': 0, 'cm': 1, 'm': 3 };
+const dimU = () => unitOf('dim', 'len');
+const dimT = v => `${fmt(cv(v, 'len', dimU()), DIMDEC[dimU()])} ${dimU()}`;
+/* Cota con flechas; pos = 'above' | 'below' | 'left' | 'right' indica dónde va el texto */
+function dimLine(x1, y1, x2, y2, txt, pos, color) {
+  const col = color || 'var(--ink-2)';
+  const ang = Math.atan2(y2 - y1, x2 - x1);
+  const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+  let t;
+  if (pos === 'left' || pos === 'right') {
+    const tx = mx + (pos === 'left' ? -5 : 12);
+    t = `<text x="${sv(tx)}" y="${sv(my)}" transform="rotate(-90 ${sv(tx)} ${sv(my)})" text-anchor="middle" class="lbl halo" style="fill:${col}" font-size="10.5">${txt}</text>`;
+  } else t = `<text x="${sv(mx)}" y="${sv(my + (pos === 'below' ? 13 : -5))}" text-anchor="middle" class="lbl halo" style="fill:${col}" font-size="10.5">${txt}</text>`;
+  return `<line x1="${sv(x1)}" y1="${sv(y1)}" x2="${sv(x2)}" y2="${sv(y2)}" style="stroke:${col};stroke-width:0.9"/><polygon points="${arrowHead(x1, y1, ang)}" style="fill:${col}"/><polygon points="${arrowHead(x2, y2, ang + Math.PI)}" style="fill:${col}"/>` + t;
+}
+function extLine(x1, y1, x2, y2) { return `<line x1="${sv(x1)}" y1="${sv(y1)}" x2="${sv(x2)}" y2="${sv(y2)}" style="stroke:var(--ink-3);stroke-width:0.6;stroke-dasharray:2 2"/>`; }
+const HATCH = id => `<pattern id="${id}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" style="fill:var(--comp-bg)"/><line x1="0" y1="0" x2="0" y2="6" style="stroke:var(--comp);stroke-width:1.1"/></pattern>`;
+const stateFill = r => (r ? (r.fs > 1e-9 ? 'var(--comp)' : (r.fs < -1e-9 ? 'var(--tens)' : 'var(--ink-3)')) : null);
+function layerOfBar(st, G, b) {
+  if (!st || !st.rows) return null;
+  const d = G.vmax - (G.n[0] * b.x + G.n[1] * b.y);
+  return st.rows.find(r => Math.abs(r.d - d) < 1e-3) || null;
+}
+
+/* ---------- Vista en planta (orientación real) ---------- */
+function drawPlanta(st) {
+  const sec = R.sec, G = G_(), sh = S.show, isX = G.isX, bb = sec.bbox;
+  const isL = R.inp.shape === 'L', webRight = isL && sec.mx, flangeBot = isL && sec.my;
+  const k = 300 / Math.max(bb.W, bb.H);
+  const finite = st && isFinite(st.c) && st.c > 0;
+  const showNA = st && sh.na && finite;
+  // filas y columnas de cotas: lado de B/x̄ (bSide), lado de H/ȳ (hSide); los lados opuestos llevan t_w y t_f
+  const R1 = 28, R2 = 54;
+  const hSideRight = webRight, bSideBottom = flangeBot;
+  const L = { left: 0, right: 0, top: 0, bottom: 0 };
+  if (sh.dims) {
+    L[hSideRight ? 'right' : 'left'] = sh.cg ? R2 : R1; L[hSideRight ? 'left' : 'right'] = isL ? R1 : 0;
+    L[bSideBottom ? 'bottom' : 'top'] = sh.cg ? R2 : R1; L[bSideBottom ? 'top' : 'bottom'] = isL ? R1 : 0;
+  }
+  // etiquetas de capas (lado izquierdo/superior) y del eje neutro (lado opuesto)
+  const layerSide = isX ? 'left' : (bSideBottom ? 'bottom' : 'top');
+  const naSide = isX ? 'right' : (bSideBottom ? 'top' : 'bottom');
+  const layerOff = L[layerSide] + (isX ? 16 : 28), naOff = L[naSide] + (isX ? 16 : 32);
+  let padL = 30 + L.left + (sh.di && layerSide === 'left' ? 34 : 0) + (showNA && naSide === 'left' ? 120 : 0);
+  let padR = 30 + L.right + (showNA && naSide === 'right' ? 120 : 0);
+  const padT = 30 + L.top + (sh.di && layerSide === 'top' ? 34 : 0) + (showNA && naSide === 'top' ? 40 : 0);
+  const padB = 30 + L.bottom + (sh.di && layerSide === 'bottom' ? 34 : 0) + (showNA && naSide === 'bottom' ? 40 : 0);
+  const extra = 600 - (padL + bb.W * k + padR);
+  if (extra > 0) { padL += extra / 2; padR += extra / 2; }
+  const VW = sv(padL + bb.W * k + padR), VH = sv(padT + bb.H * k + padB);
+  const X = x => padL + (x - bb.xmin) * k, Y = y => padT + (bb.ymax - y) * k;
+  const top = Y(bb.ymax), bot = Y(bb.ymin), lft = X(bb.xmin), rgt = X(bb.xmax);
+  const o = [];
+  o.push(`<svg viewBox="0 0 ${VW} ${VH}" role="img" aria-label="Sección en planta" font-size="11"><defs>${HATCH('hatchP')}</defs>`);
+  sec.rects.forEach(r => o.push(`<rect x="${sv(X(r.x))}" y="${sv(Y(r.y + r.h))}" width="${sv(r.w * k)}" height="${sv(r.h * k)}" style="fill:var(--concrete)"/>`));
+  if (st && sh.na && st.pieces) st.pieces.forEach(q => { if (q.q) o.push(`<rect x="${sv(X(q.q.x))}" y="${sv(Y(q.q.y + q.q.h))}" width="${sv(q.q.w * k)}" height="${sv(q.q.h * k)}" style="fill:url(#hatchP)"/>`); });
+  if (sec.outline) o.push(`<polygon points="${sec.outline.map(p => `${sv(X(p[0]))},${sv(Y(p[1]))}`).join(' ')}" style="fill:none;stroke:var(--concrete-ln);stroke-width:1.4"/>`);
+  else sec.rects.forEach(r => o.push(`<rect x="${sv(X(r.x))}" y="${sv(Y(r.y + r.h))}" width="${sv(r.w * k)}" height="${sv(r.h * k)}" style="fill:none;stroke:var(--concrete-ln);stroke-width:1.2"/>`));
+  if (sh.ties) {
+    const tw_ = sv(Math.max(1.2, BARS[R.inp.est].d * k));
+    sec.ties.forEach(t => o.push(`<rect x="${sv(X(t.x))}" y="${sv(Y(t.y + t.h))}" width="${sv(t.w * k)}" height="${sv(t.h * k)}" rx="${sv(Math.min(6, 1.5 * BARS[R.inp.est].d * k))}" style="fill:none;stroke:var(--ink-3);stroke-width:${tw_};opacity:.75"/>`));
+    R.sp.forEach(s => {
+      const sg = sec.segs.find(q => q.k === s.k); if (!sg) return;
+      sg.bars.filter(b => s.tieQ.includes(b.q)).forEach(b => {
+        o.push(`<line x1="${sv(X(b.x))}" y1="${sv(Y(b.y))}" x2="${sv(X(b.tie[0]))}" y2="${sv(Y(b.tie[1]))}" style="stroke:var(--accent);stroke-width:1.8;stroke-dasharray:5 3"/><circle cx="${sv(X(b.x))}" cy="${sv(Y(b.y))}" r="${sv(Math.max(4, b.dia / 2 * k + 2.5))}" style="fill:none;stroke:var(--accent);stroke-width:1.4"/>`);
+      });
+    });
+  }
+  // posición en pantalla de una profundidad v (línea paralela al eje neutro)
+  const fib = G.vmax, posD = v => { const pr = fib - v; return isX ? Y(G.n[1] > 0 ? pr : -pr) : X(G.n[0] > 0 ? pr : -pr); };
+  // capas: líneas tenues y rótulo A_i fuera de la sección
+  if (sh.di) G.layers.forEach(l => {
+    const p = posD(l.d);
+    if (isX) o.push(`<line x1="${sv(lft - layerOff + 4)}" y1="${sv(p)}" x2="${sv(rgt)}" y2="${sv(p)}" style="stroke:var(--accent);stroke-width:0.7;stroke-dasharray:2 3;opacity:.8"/><text x="${sv(lft - layerOff)}" y="${sv(p + 3.5)}" text-anchor="end" class="lbl halo" style="fill:var(--accent)" font-size="10">A${l.i}</text>`);
+    else { const yE = layerSide === 'top' ? top - layerOff : bot + layerOff; o.push(`<line x1="${sv(p)}" y1="${sv(layerSide === 'top' ? yE + 4 : yE - 4)}" x2="${sv(p)}" y2="${sv(layerSide === 'top' ? bot : top)}" style="stroke:var(--accent);stroke-width:0.7;stroke-dasharray:2 3;opacity:.8"/><text x="${sv(p)}" y="${sv(layerSide === 'top' ? yE : yE + 9)}" text-anchor="middle" class="lbl halo" style="fill:var(--accent)" font-size="10">A${l.i}</text>`); }
+  });
+  // eje neutro y bloque, con su valor fuera de la sección
+  if (showNA) {
+    const items = [{ v: st.c, lbl: `EN · c = ${dimT(st.c)}`, style: 'stroke:var(--ink);stroke-width:1.3;stroke-dasharray:7 4', col: 'var(--ink)' }];
+    if (st.a < G.D - 1e-9) items.push({ v: st.a, lbl: `a = ${dimT(st.a)}`, style: 'stroke:var(--comp);stroke-width:1.1', col: 'var(--comp)' });
+    const placed = [];
+    items.forEach(it => {
+      const p = posD(it.v);
+      if (isX) {
+        if (p < top - 1 || p > bot + 1) return;
+        const xe = naSide === 'right' ? rgt + naOff : lft - naOff;
+        let yl = p + 3.5; placed.forEach(q => { if (Math.abs(q - yl) < 12) yl = q + (it.v < st.c ? -12 : 12); }); placed.push(yl);
+        o.push(`<line x1="${sv(Math.min(lft, xe) - 4)}" y1="${sv(p)}" x2="${sv(Math.max(rgt, xe) - (naSide === 'right' ? 4 : 0))}" y2="${sv(p)}" style="${it.style}"/><text x="${sv(xe + (naSide === 'right' ? 2 : -2))}" y="${sv(yl - 3)}" text-anchor="${naSide === 'right' ? 'start' : 'end'}" class="lbl halo" style="fill:${it.col}" font-size="10.5">${it.lbl}</text>`);
+      } else {
+        if (p < lft - 1 || p > rgt + 1) return;
+        const ye = naSide === 'bottom' ? bot + naOff : top - naOff;
+        const left = (G.n[0] < 0) === (it.v < st.c);
+        o.push(`<line x1="${sv(p)}" y1="${sv(Math.min(top, ye))}" x2="${sv(p)}" y2="${sv(Math.max(bot, ye))}" style="${it.style}"/><text x="${sv(p + (left ? -4 : 4))}" y="${sv(naSide === 'bottom' ? ye + 4 : ye - 2)}" text-anchor="${left ? 'end' : 'start'}" class="lbl halo" style="fill:${it.col}" font-size="10.5">${it.lbl}</text>`);
+      }
+    });
+  }
+  // barras
+  sec.bars.forEach(b => {
+    let fill = b.grp === 'P' ? 'var(--bad)' : 'var(--steel)';
+    if (sh.na && st) { const f = stateFill(layerOfBar(st, G, b)); if (f) fill = f; }
+    o.push(`<circle cx="${sv(X(b.x))}" cy="${sv(Y(b.y))}" r="${sv(Math.max(2.6, b.dia / 2 * k))}" style="fill:${fill};stroke:var(--sheet);stroke-width:0.8"><title>${b.name} · #${b.no} · (${dimT(b.x)} ; ${dimT(b.y)})</title></circle>`);
+  });
+  if (sh.segs && sec.segs.length) {
+    const cx = X(sec.xg), cy = Y(sec.yg);
+    sec.segs.forEach(sg => {
+      const mx = (X(sg.p1[0]) + X(sg.p2[0])) / 2, my = (Y(sg.p1[1]) + Y(sg.p2[1])) / 2;
+      const dx = Y(sg.p2[1]) - Y(sg.p1[1]), dy = -(X(sg.p2[0]) - X(sg.p1[0])), Ln = Math.hypot(dx, dy) || 1;
+      let nx = dx / Ln, ny = dy / Ln;
+      if ((mx - cx) * nx + (my - cy) * ny < 0) { nx = -nx; ny = -ny; }
+      if (sg.inner) { nx = -nx; ny = -ny; }
+      o.push(`<text x="${sv(mx + nx * 11)}" y="${sv(my + ny * 11 + 3.5)}" text-anchor="middle" class="lbl halo" style="fill:var(--accent)" font-size="10" font-weight="600">${sg.k}</text>`);
+    });
+    sec.nodes.forEach(nd => o.push(`<text x="${sv(X(nd.p[0]) + 6)}" y="${sv(Y(nd.p[1]) - 6)}" class="lbl halo" style="fill:var(--bad)" font-size="9">${nd.k}</text>`));
+  }
+  const gx = X(R.ref.x), gy = Y(R.ref.y);
+  if (sh.cg) {
+    o.push(`<line x1="${sv(gx)}" y1="${sv(gy)}" x2="${sv(gx + 34)}" y2="${sv(gy)}" style="stroke:var(--ok);stroke-width:1.4"/><polygon points="${arrowHead(gx + 34, gy, 0)}" style="fill:var(--ok)"/><text x="${sv(gx + 38)}" y="${sv(gy + 4)}" class="lbl halo" style="fill:var(--ok)" font-size="11" font-weight="600">X</text>`);
+    o.push(`<line x1="${sv(gx)}" y1="${sv(gy)}" x2="${sv(gx)}" y2="${sv(gy - 34)}" style="stroke:var(--ok);stroke-width:1.4"/><polygon points="${arrowHead(gx, gy - 34, -Math.PI / 2)}" style="fill:var(--ok)"/><text x="${sv(gx - 4)}" y="${sv(gy - 39)}" class="lbl halo" style="fill:var(--ok)" font-size="11" font-weight="600">Y</text>`);
+    o.push(`<circle cx="${sv(gx)}" cy="${sv(gy)}" r="5" style="fill:none;stroke:var(--brand-text);stroke-width:1.6"/><line x1="${sv(gx - 8)}" y1="${sv(gy)}" x2="${sv(gx + 8)}" y2="${sv(gy)}" style="stroke:var(--brand-text);stroke-width:1.4"/><line x1="${sv(gx)}" y1="${sv(gy - 8)}" x2="${sv(gx)}" y2="${sv(gy + 8)}" style="stroke:var(--brand-text);stroke-width:1.4"/><text x="${sv(gx - 7)}" y="${sv(gy + 15)}" text-anchor="end" class="lbl halo" style="fill:var(--brand-text)" font-size="10.5" font-weight="600">${R.inp.refPt === 'plast' ? 'CP' : 'G'}</text>`);
+    if (st && finite && st.Ac > 0 && sh.na) o.push(`<g style="stroke:var(--comp);stroke-width:1.8"><line x1="${sv(X(st.xc) - 4)}" y1="${sv(Y(st.yc) - 4)}" x2="${sv(X(st.xc) + 4)}" y2="${sv(Y(st.yc) + 4)}"/><line x1="${sv(X(st.xc) - 4)}" y1="${sv(Y(st.yc) + 4)}" x2="${sv(X(st.xc) + 4)}" y2="${sv(Y(st.yc) - 4)}"/></g>`);
+  }
+  if (sh.dims) {
+    const yB = bSideBottom ? bot + R1 : top - R1, yE = bSideBottom ? bot : top;
+    o.push(extLine(lft, yE, lft, yB + (bSideBottom ? 4 : -4)) + extLine(rgt, yE, rgt, yB + (bSideBottom ? 4 : -4)));
+    o.push(dimLine(lft, yB, rgt, yB, `B = ${dimT(bb.W)}`, bSideBottom ? 'below' : 'above'));
+    const xH = hSideRight ? rgt + R1 : lft - R1, xE = hSideRight ? rgt : lft;
+    o.push(extLine(xE, top, xH + (hSideRight ? 4 : -4), top) + extLine(xE, bot, xH + (hSideRight ? 4 : -4), bot));
+    o.push(dimLine(xH, top, xH, bot, `H = ${dimT(bb.H)}`, hSideRight ? 'right' : 'left'));
+    if (sh.cg) {
+      const yG = bSideBottom ? bot + R2 : top - R2;
+      o.push(extLine(gx, gy, gx, yG + (bSideBottom ? 4 : -4)) + dimLine(lft, yG, gx, yG, `x̄ = ${dimT(R.ref.x - bb.xmin)}`, bSideBottom ? 'below' : 'above', 'var(--brand-text)'));
+      const xG = hSideRight ? rgt + R2 : lft - R2;
+      o.push(extLine(gx, gy, xG + (hSideRight ? 4 : -4), gy) + dimLine(xG, bot, xG, gy, `ȳ = ${dimT(R.ref.y - bb.ymin)}`, hSideRight ? 'right' : 'left', 'var(--brand-text)'));
+      o.push(extLine(xE, bot, xG + (hSideRight ? 4 : -4), bot));
+    }
+    if (isL) {
+      const r1 = sec.rects[0], r2 = sec.rects[1];
+      const xf = hSideRight ? lft - R1 : rgt + R1, xe = hSideRight ? lft : rgt;
+      o.push(extLine(xe, Y(r1.y + r1.h), xf + (hSideRight ? -4 : 4), Y(r1.y + r1.h)) + extLine(xe, Y(r1.y), xf + (hSideRight ? -4 : 4), Y(r1.y)));
+      o.push(dimLine(xf, Y(r1.y + r1.h), xf, Y(r1.y), `t<tspan baseline-shift="sub" font-size="8">f</tspan> = ${dimT(R.inp.tf)}`, hSideRight ? 'left' : 'right'));
+      const yw = bSideBottom ? top - R1 : bot + R1, ye = bSideBottom ? top : bot;
+      o.push(extLine(X(r2.x), ye, X(r2.x), yw + (bSideBottom ? -4 : 4)) + extLine(X(r2.x + r2.w), ye, X(r2.x + r2.w), yw + (bSideBottom ? -4 : 4)));
+      o.push(dimLine(X(r2.x), yw, X(r2.x + r2.w), yw, `t<tspan baseline-shift="sub" font-size="8">w</tspan> = ${dimT(R.inp.tw)}`, bSideBottom ? 'above' : 'below'));
+    }
+  }
+  // flecha en la cara comprimida
+  const face = G.rects.filter(r => r.v0 < 1e-6), n0 = G.n, La = 18;
+  if (face.length) {
+    if (isX) {
+      const xa = Math.min(...face.map(r => r.x)), xb = Math.max(...face.map(r => r.x + r.w));
+      const ax = X(xa + 0.8 * (xb - xa)), ay = n0[1] > 0 ? top - 3 : bot + 3, dr = n0[1] > 0 ? -1 : 1;
+      o.push(`<line x1="${sv(ax)}" y1="${sv(ay + dr * La)}" x2="${sv(ax)}" y2="${sv(ay)}" style="stroke:var(--comp);stroke-width:2.4"/><polygon points="${arrowHead(ax, ay, n0[1] > 0 ? Math.PI / 2 : -Math.PI / 2, 8)}" style="fill:var(--comp)"/>`);
+    } else {
+      const ya = Math.min(...face.map(r => r.y)), yb2 = Math.max(...face.map(r => r.y + r.h));
+      const ay = Y(ya + 0.2 * (yb2 - ya)), ax = n0[0] < 0 ? lft - 3 : rgt + 3, dr = n0[0] < 0 ? -1 : 1;
+      o.push(`<line x1="${sv(ax + dr * La)}" y1="${sv(ay)}" x2="${sv(ax)}" y2="${sv(ay)}" style="stroke:var(--comp);stroke-width:2.4"/><polygon points="${arrowHead(ax, ay, n0[0] < 0 ? 0 : Math.PI, 8)}" style="fill:var(--comp)"/>`);
+    }
+  }
+  o.push('</svg>');
+  $('#sec-svg').innerHTML = o.join('');
+}
+
+/* ---------- Perfil de cálculo: sección girada (compresión arriba) + ε + f_s + fuerzas ---------- */
+function drawPerfil(st) {
+  const sec = R.sec, G = G_(), d = S.dir, bb = sec.bbox, m = R.m, inp = R.inp;
+  const TR = {
+    '+X': (x, y) => [x - bb.xmin, bb.ymax - y], '-X': (x, y) => [bb.xmax - x, y - bb.ymin],
+    '+Y': (x, y) => [y - bb.ymin, x - bb.xmin], '-Y': (x, y) => [bb.ymax - y, bb.xmax - x]
+  }[d];
+  const Wu = G.isX ? bb.W : bb.H, D = G.D;
+  const k = Math.min(340 / D, 190 / Wu);
+  const uL = dimU(), dl = DIMDEC[uL];
+  const uS = unitOf('pf.fs', 'stress'), uF = unitOf('pf.F', 'force'), uE = S.out.strain, uMo = unitOf('pf.M', 'moment');
+  const top = 54, Hd = D * k;
+  const xAx = 70, xC = 82, xA = 94, x0s = 114, Ws = Wu * k;
+  const e0 = x0s + Ws + 24, eW = 112, eZ = e0 + 58;
+  const s0 = e0 + eW + 12, sW = 100, sZ = s0 + 52;
+  const f0 = s0 + sW + 12, fZ = f0 + 56;
+  const VW = sv(f0 + 56 + 54 + 74), VH = sv(top + Hd + 74);
+  const Yv = v => top + v * k;
+  const finite = st && isFinite(st.c) && st.c > 0;
+  const o = [];
+  o.push(`<svg viewBox="0 0 ${VW} ${VH}" role="img" aria-label="Perfil de deformaciones, esfuerzos y fuerzas" font-size="11"><defs>${HATCH('hatchF')}</defs>`);
+  // encabezados
+  const hdr = (x, t, u) => `<text x="${sv(x)}" y="20" text-anchor="middle" style="fill:var(--ink)" font-size="12.5" font-weight="600">${t}</text>${u ? `<text x="${sv(x)}" y="34" text-anchor="middle" class="lbl" style="fill:var(--ink-3)" font-size="10.5">${u}</text>` : ''}`;
+  o.push(hdr(x0s + Ws / 2, 'Sección', `${DNt(d).replace('M', 'M')} · compresión arriba`));
+  o.push(hdr(eZ, 'Deformaciones', `ε (${uE})`));
+  o.push(hdr(sZ, 'Esfuerzos', `f (${uS})`));
+  o.push(hdr(fZ + 40, 'Fuerzas', `${uF}`));
+  // sección girada
+  const rr = q => { const a = TR(q.x, q.y), b = TR(q.x + q.w, q.y + q.h); return { u: Math.min(a[0], b[0]), v: Math.min(a[1], b[1]), w: Math.abs(a[0] - b[0]), h: Math.abs(a[1] - b[1]) }; };
+  const Xs = u => x0s + u * k;
+  sec.rects.forEach(r => { const q = rr(r); o.push(`<rect x="${sv(Xs(q.u))}" y="${sv(Yv(q.v))}" width="${sv(q.w * k)}" height="${sv(q.h * k)}" style="fill:var(--concrete)"/>`); });
+  if (st && st.pieces) st.pieces.forEach(p => { if (p.q) { const q = rr(p.q); o.push(`<rect x="${sv(Xs(q.u))}" y="${sv(Yv(q.v))}" width="${sv(q.w * k)}" height="${sv(q.h * k)}" style="fill:url(#hatchF)"/>`); } });
+  if (sec.outline) o.push(`<polygon points="${sec.outline.map(p => { const t = TR(p[0], p[1]); return `${sv(Xs(t[0]))},${sv(Yv(t[1]))}`; }).join(' ')}" style="fill:none;stroke:var(--concrete-ln);stroke-width:1.3"/>`);
+  else sec.rects.forEach(r => { const q = rr(r); o.push(`<rect x="${sv(Xs(q.u))}" y="${sv(Yv(q.v))}" width="${sv(q.w * k)}" height="${sv(q.h * k)}" style="fill:none;stroke:var(--concrete-ln);stroke-width:1.1"/>`); });
+  sec.ties.forEach(t => { const q = rr(t); o.push(`<rect x="${sv(Xs(q.u))}" y="${sv(Yv(q.v))}" width="${sv(q.w * k)}" height="${sv(q.h * k)}" rx="3" style="fill:none;stroke:var(--ink-3);stroke-width:1.2;opacity:.6"/>`); });
+  sec.bars.forEach(b => { const t = TR(b.x, b.y), f = stateFill(layerOfBar(st, G, b)) || 'var(--steel)'; o.push(`<circle cx="${sv(Xs(t[0]))}" cy="${sv(Yv(t[1]))}" r="${sv(Math.max(2.4, b.dia / 2 * k))}" style="fill:${f};stroke:var(--sheet);stroke-width:0.7"/>`); });
+  // líneas guía horizontales: capas, EN, a, referencia y centroide comprimido
+  const xEnd = f0 + 56 + 54 + 70;
+  G.layers.forEach(l => o.push(`<line x1="${xAx}" y1="${sv(Yv(l.d))}" x2="${sv(xEnd - 70)}" y2="${sv(Yv(l.d))}" style="stroke:var(--rule);stroke-width:0.8;stroke-dasharray:2 3"/>`));
+  o.push(`<line x1="${sv(x0s - 6)}" y1="${sv(Yv(G.vref))}" x2="${sv(xEnd - 70)}" y2="${sv(Yv(G.vref))}" style="stroke:var(--brand-text);stroke-width:1;stroke-dasharray:6 3"/>`);
+  if (finite && st.c <= D * 1.02) o.push(`<line x1="${sv(x0s - 8)}" y1="${sv(Yv(st.c))}" x2="${sv(s0 + sW)}" y2="${sv(Yv(st.c))}" style="stroke:var(--ink);stroke-width:1.2;stroke-dasharray:7 4"/><text x="${sv(x0s + Ws + 4)}" y="${sv(Yv(st.c) - 4)}" class="lbl halo" style="fill:var(--ink)" font-size="11">EN</text>`);
+  if (finite && st.a < D - 1e-9) o.push(`<line x1="${sv(x0s - 8)}" y1="${sv(Yv(st.a))}" x2="${sv(x0s + Ws + 8)}" y2="${sv(Yv(st.a))}" style="stroke:var(--comp);stroke-width:1"/>`);
+  // eje de profundidades con cotas d_i
+  o.push(`<line x1="${xAx}" y1="${sv(Yv(0))}" x2="${xAx}" y2="${sv(Yv(D))}" style="stroke:var(--accent);stroke-width:1.2"/>`);
+  o.push(`<text x="${xAx - 6}" y="${sv(Yv(0) + 3.5)}" text-anchor="end" class="lbl" style="fill:var(--accent)" font-size="10.5">0</text><text x="${xAx - 6}" y="${sv(Yv(D) + 15)}" text-anchor="end" class="lbl" style="fill:var(--accent)" font-size="10.5">D ${fmt(cv(D, 'len', uL), dl)}</text>`);
+  const ticks = G.layers.map(l => ({ v: l.d, t: `<tspan font-weight="600">A${l.i}</tspan> ${fmt(cv(l.d, 'len', uL), dl)}`, col: 'var(--accent)' }));
+  ticks.push({ v: G.vref, t: `<tspan font-weight="600">v̄</tspan> ${fmt(cv(G.vref, 'len', uL), dl)}`, col: 'var(--brand-text)' });
+  ticks.sort((a, b) => a.v - b.v);
+  let lastY = -99;
+  ticks.forEach(tk => {
+    const y = Yv(tk.v); const yy = Math.max(y + 3.5, lastY + 12.5); lastY = yy;
+    o.push(`<line x1="${xAx - 4}" y1="${sv(y)}" x2="${xAx}" y2="${sv(y)}" style="stroke:${tk.col};stroke-width:1.2"/><text x="${xAx - 7}" y="${sv(yy)}" text-anchor="end" class="lbl halo" style="fill:${tk.col}" font-size="11">${tk.t}</text>`);
+  });
+  o.push(`<text x="${xAx - 7}" y="${sv(Yv(0) - 12)}" text-anchor="end" class="lbl" style="fill:var(--ink-3)" font-size="9">d<tspan baseline-shift="sub" font-size="7">i</tspan> (${uL})</text>`);
+  // cotas c y a
+  if (finite && st.c <= D * 1.02) o.push(dimLine(xC, Yv(0), xC, Yv(st.c), `c = ${fmt(cv(st.c, 'len', uL), dl)}`, 'left', 'var(--ink)'));
+  if (finite) o.push(dimLine(xA, Yv(0), xA, Yv(st.a), `a = ${fmt(cv(st.a, 'len', uL), dl)}`, 'right', 'var(--comp)'));
+  // referencia y centroide del área comprimida en la sección
+  o.push(`<text x="${sv(x0s - 8)}" y="${sv(Yv(G.vref) + 13)}" text-anchor="end" class="lbl halo" style="fill:var(--brand-text)" font-size="11" font-weight="600">${inp.refPt === 'plast' ? 'CP' : 'G'}</text>`);
+  // --- deformaciones ---
+  const ecu = inp.ecu;
+  const eAt = v => (st.c === Infinity ? -ecu : (st.c <= 0 ? null : ecu * (v - st.c) / st.c));
+  o.push(`<line x1="${eZ}" y1="${sv(Yv(0) - 6)}" x2="${eZ}" y2="${sv(Yv(D) + 6)}" style="stroke:var(--ink);stroke-width:1"/>`);
+  if (eAt(D) !== null) {
+    const eD = eAt(D), emax = Math.max(ecu, Math.abs(eD), m.ety * 1.15), Ls = 50 / emax;
+    [-m.ety, m.ety].forEach(e => o.push(`<line x1="${sv(eZ + e * Ls)}" y1="${sv(Yv(0))}" x2="${sv(eZ + e * Ls)}" y2="${sv(Yv(D))}" style="stroke:var(--ink-3);stroke-width:0.7;stroke-dasharray:2 3"/>`));
+    o.push(`<text x="${sv(eZ + m.ety * Ls)}" y="${sv(Yv(D) + 14)}" text-anchor="middle" class="lbl" style="fill:var(--ink-3)" font-size="9">ε<tspan baseline-shift="sub" font-size="7">ty</tspan></text><text x="${sv(eZ - m.ety * Ls)}" y="${sv(Yv(D) + 14)}" text-anchor="middle" class="lbl" style="fill:var(--ink-3)" font-size="9">−ε<tspan baseline-shift="sub" font-size="7">ty</tspan></text>`);
+    o.push(`<polygon points="${sv(eZ)},${sv(Yv(0))} ${sv(eZ + eAt(0) * Ls)},${sv(Yv(0))} ${sv(eZ + eD * Ls)},${sv(Yv(D))} ${sv(eZ)},${sv(Yv(D))}" style="fill:var(--accent-2);stroke:var(--ink-2);stroke-width:1;opacity:.9"/>`);
+    o.push(`<text x="${sv(eZ + eAt(0) * Ls)}" y="${sv(Yv(0) - 5)}" text-anchor="middle" class="lbl halo" style="fill:var(--comp)" font-size="10.5">ε<tspan baseline-shift="sub" font-size="7">cu</tspan> ${fmt(cv(-ecu, 'strain', uE), 2)}</text>`);
+    let lastE = -99;
+    st.rows.forEach(r => {
+      const y = Yv(r.d), x2 = eZ + r.e * Ls;
+      o.push(`<line x1="${eZ}" y1="${sv(y)}" x2="${sv(x2)}" y2="${sv(y)}" style="stroke:${r.e < 0 ? 'var(--comp)' : 'var(--tens)'};stroke-width:2"/>`);
+      const yy = Math.max(y + 3.5, lastE + 12); lastE = yy;
+      const right = r.e < 0;
+      o.push(`<text x="${sv(eZ + (right ? 4 : -4))}" y="${sv(yy)}" text-anchor="${right ? 'start' : 'end'}" class="lbl halo" style="fill:${r.e < 0 ? 'var(--comp)' : 'var(--tens)'}" font-size="11">${fmt(cv(r.e, 'strain', uE), uE === '—' ? 3 : 2)}</text>`);
+    });
+  } else {
+    o.push(`<text x="${eZ}" y="${sv(Yv(D / 2))}" text-anchor="middle" class="lbl" style="fill:var(--tens)" font-size="11">c ≤ 0</text><text x="${eZ}" y="${sv(Yv(D / 2) + 13)}" text-anchor="middle" class="lbl" style="fill:var(--ink-3)" font-size="10.5">todo en tensión</text>`);
+  }
+  // --- esfuerzos ---
+  o.push(`<line x1="${sZ}" y1="${sv(Yv(0) - 6)}" x2="${sZ}" y2="${sv(Yv(D) + 6)}" style="stroke:var(--ink);stroke-width:1"/>`);
+  const Lf = 46 / inp.fy;
+  [-1, 1].forEach(sg => o.push(`<line x1="${sv(sZ + sg * inp.fy * Lf)}" y1="${sv(Yv(0))}" x2="${sv(sZ + sg * inp.fy * Lf)}" y2="${sv(Yv(D))}" style="stroke:var(--ink-3);stroke-width:0.7;stroke-dasharray:2 3"/>`));
+  o.push(`<text x="${sv(sZ + inp.fy * Lf)}" y="${sv(Yv(D) + 14)}" text-anchor="middle" class="lbl" style="fill:var(--ink-3)" font-size="9">−f<tspan baseline-shift="sub" font-size="7">y</tspan></text><text x="${sv(sZ - inp.fy * Lf)}" y="${sv(Yv(D) + 14)}" text-anchor="middle" class="lbl" style="fill:var(--ink-3)" font-size="9">f<tspan baseline-shift="sub" font-size="7">y</tspan></text>`);
+  if (st.a > 0) {
+    o.push(`<rect x="${sv(sZ - 26)}" y="${sv(Yv(0))}" width="26" height="${sv(st.a * k)}" style="fill:var(--comp-bg);stroke:var(--comp);stroke-width:1"/>`);
+    o.push(`<text x="${sv(sZ - 13)}" y="${sv(Yv(0) - 5)}" text-anchor="middle" class="lbl halo" style="fill:var(--comp)" font-size="10.5">0.85f′c = ${fmt(cv(0.85 * inp.fc, 'stress', uS), 2)}</text>`);
+  }
+  let lastS = -99;
+  st.rows.forEach(r => {
+    const y = Yv(r.d), x2 = sZ - r.fs * Lf;
+    o.push(`<line x1="${sZ}" y1="${sv(y)}" x2="${sv(x2)}" y2="${sv(y)}" style="stroke:${r.fs > 0 ? 'var(--comp)' : 'var(--tens)'};stroke-width:2.2"/>`);
+    const yy = Math.max(y + 3.5, lastS + 12); lastS = yy;
+    const right = r.fs > 0;
+    const yl = Math.abs(Math.abs(r.fs) - inp.fy) < 1e-9 ? '·f<tspan baseline-shift="sub" font-size="7">y</tspan>' : '';
+    o.push(`<text x="${sv(sZ + (right ? 4 : -4))}" y="${sv(yy)}" text-anchor="${right ? 'start' : 'end'}" class="lbl halo" style="fill:${r.fs > 0 ? 'var(--comp)' : 'var(--tens)'}" font-size="11">${fmt(cv(r.fs, 'stress', uS), 1)}${yl}</text>`);
+  });
+  // --- fuerzas ---
+  o.push(`<line x1="${fZ}" y1="${sv(Yv(0) - 6)}" x2="${fZ}" y2="${sv(Yv(D) + 6)}" style="stroke:var(--ink);stroke-width:1"/>`);
+  const Fmax = Math.max(1e-9, ...st.rows.map(r => Math.abs(r.F)));
+  const arr = (y, F, L, col, w) => F > 0
+    ? `<line x1="${sv(fZ - L)}" y1="${sv(y)}" x2="${sv(fZ - 7)}" y2="${sv(y)}" style="stroke:${col};stroke-width:${w}"/><polygon points="${arrowHead(fZ, y, 0, 8)}" style="fill:${col}"/>`
+    : `<line x1="${fZ}" y1="${sv(y)}" x2="${sv(fZ + L - 7)}" y2="${sv(y)}" style="stroke:${col};stroke-width:${w}"/><polygon points="${arrowHead(fZ + L, y, 0, 8)}" style="fill:${col}"/>`;
+  if (st.Cc > 0) {
+    const yc = Yv(st.vc);
+    o.push(`<line x1="${sv(x0s + Ws * 0.5)}" y1="${sv(yc)}" x2="${sv(fZ - 54)}" y2="${sv(yc)}" style="stroke:var(--comp);stroke-width:0.8;stroke-dasharray:3 3;opacity:.7"/>`);
+    o.push(arr(yc, 1, 54, 'var(--comp)', 3.6));
+    o.push(`<g style="stroke:var(--comp);stroke-width:1.6"><line x1="${sv(x0s + Ws * 0.5 - 4)}" y1="${sv(yc - 4)}" x2="${sv(x0s + Ws * 0.5 + 4)}" y2="${sv(yc + 4)}"/><line x1="${sv(x0s + Ws * 0.5 - 4)}" y1="${sv(yc + 4)}" x2="${sv(x0s + Ws * 0.5 + 4)}" y2="${sv(yc - 4)}"/></g>`);
+  }
+  const fl = st.rows.map(r => ({ v: r.d, t: `C<tspan baseline-shift="sub" font-size="7">s${r.i}</tspan> ${fmt(cv(r.F, 'force', uF), 1)}`, col: r.F > 0 ? 'var(--comp)' : 'var(--tens)', w: 400 }));
+  st.rows.forEach(r => { const L = 12 + 40 * Math.abs(r.F) / Fmax; o.push(arr(Yv(r.d), r.F, L, r.F > 0 ? 'var(--comp)' : 'var(--tens)', 2)); });
+  if (st.Cc > 0) fl.push({ v: st.vc, t: `P<tspan baseline-shift="sub" font-size="7">c</tspan> ${fmt(cv(st.Cc, 'force', uF), 1)}`, col: 'var(--comp)', w: 700 });
+  fl.sort((a, b) => a.v - b.v);
+  let lastF = -99;
+  fl.forEach(l => { const yy = Math.max(Yv(l.v) + 3.5, lastF + 14); lastF = yy; o.push(`<text x="${sv(fZ + 56)}" y="${sv(yy)}" class="lbl halo" style="fill:${l.col}" font-size="11" font-weight="${l.w}">${l.t}</text>`); });
+  // resultantes
+  const yR = top + Hd + 30;
+  const ax_ = G.isX ? 'x' : 'y', ox = G.isX ? 'y' : 'x';
+  o.push(`<text x="${xAx - 70}" y="${sv(yR)}" class="lbl" style="fill:var(--ink)" font-size="10.5"><tspan font-weight="600">P<tspan baseline-shift="sub" font-size="7">n</tspan> = P<tspan baseline-shift="sub" font-size="7">c</tspan> + ΣC<tspan baseline-shift="sub" font-size="7">si</tspan> = ${fmt(cv(st.P, 'force', uF), 1)} ${uF}</tspan>   ·   M<tspan baseline-shift="sub" font-size="7">${ax_}</tspan> = ${fmt(cv(st.M, 'moment', uMo), 1)} ${uMo}   ·   M<tspan baseline-shift="sub" font-size="7">${ox}</tspan> inducido = ${fmt(cv(st.Mperp, 'moment', uMo), 1)}</text>`);
+  o.push(`<text x="${xAx - 70}" y="${sv(yR + 16)}" class="lbl" style="fill:var(--ink-2)" font-size="11">ε<tspan baseline-shift="sub" font-size="7">t</tspan> = ${fmt(st.et, 5)}   ·   φ = ${fmt(st.phi, 3)}   ·   φP<tspan baseline-shift="sub" font-size="7">n</tspan> = ${fmt(cv(st.phiP, 'force', uF), 1)}   ·   φM<tspan baseline-shift="sub" font-size="7">n</tspan> = ${fmt(cv(st.phiM, 'moment', uMo), 1)}</text>`);
+  o.push('</svg>');
+  $('#sec-svg').innerHTML = o.join('');
+}
+const VBt = () => 'v̄';
+function drawSection(st) { if (S.secView === 'planta') drawPlanta(st); else drawPerfil(st); }
+
+/* ---------- Diagramas de interacción ---------- */
+const DIA = {};
+let HOV = null;   // combinación bajo el cursor (tabla o gráfica)
+function niceTicks(min, max, cnt) {
+  const span = max - min || 1;
+  const raw = span / cnt, mag = Math.pow(10, Math.floor(Math.log10(raw))), r = raw / mag;
+  const st = (r < 1.5 ? 1 : r < 3 ? 2 : r < 7 ? 5 : 10) * mag;
+  const t = [];
+  for (let v = Math.ceil(min / st) * st; v <= max + st * 1e-9; v += st) t.push(Math.abs(v) < st * 1e-9 ? 0 : v);
+  return { t, step: st };
+}
+function fmtTick(v, st) {
+  const d = Math.max(0, -Math.floor(Math.log10(st)));
+  const s = Math.abs(v).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+  return (v < 0 ? '−' : '') + s;
+}
+const diaU = () => ({ uF: unitOf('dia.F', 'force'), uM: unitOf('dia.M', 'moment') });
+const mKeyOf = ax => (ax === 'X' ? 'Mx' : 'My');
+function padExt(e, fx, fy) {
+  const dx = (e.x1 - e.x0) || Math.abs(e.x0) || 1, dy = (e.y1 - e.y0) || Math.abs(e.y0) || 1;
+  return { x0: e.x0 - dx * fx, x1: e.x1 + dx * fx, y0: e.y0 - dy * fy, y1: e.y1 + dy * fy };
+}
+function bboxOf(pts) {
+  const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+  return { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) };
+}
+function extentFor(ax, mode) {
+  const brs = [R.dirs['+' + ax].curve, R.dirs['-' + ax].curve], sh_ = S.show, mk = mKeyOf(ax);
+  const cbs = R.combos.filter(c => isFinite(c[mk]) && isFinite(c.Pu));
+  if (mode === 'cb' && cbs.length) {
+    const pts = [[0, 0]];
+    cbs.forEach(c => { pts.push([c[mk], c.Pu]); const r = ax === 'X' ? c.X : c.Y; if (isFinite(r.capM)) pts.push([r.capM, r.capP]); });
+    return padExt(bboxOf(pts), 0.1, 0.1);
+  }
+  if (mode === 'tens') {
+    const Pn = R.Pnt, y0 = Math.min(Pn, ...cbs.map(c => c.Pu)) * 1.12, y1 = Math.max(0.3 * R.phiPnmax, ...cbs.filter(c => c.Pu < 0.3 * R.phiPnmax).map(c => c.Pu));
+    const pts = [[0, y0], [0, y1]];
+    brs.forEach(b => b.forEach(p => { if (p.phiP >= y0 && p.phiP <= y1) pts.push([p.phiM, p.phiP]); if (sh_.nominal && p.P >= y0 && p.P <= y1) pts.push([p.M, p.P]); }));
+    cbs.forEach(c => { if (c.Pu >= y0 && c.Pu <= y1) pts.push([c[mk], c.Pu]); });
+    const e = bboxOf(pts);
+    return padExt({ ...e, y0, y1 }, 0.06, 0.02);
+  }
+  const pts = [[0, 0]];
+  brs.forEach(b => b.forEach(p => { if (sh_.nominal || !sh_.design) pts.push([p.M, p.P]); if (sh_.design) pts.push([p.phiM, p.phiP]); }));
+  if (sh_.combos) cbs.forEach(c => pts.push([c[mk], c.Pu]));
+  const e = bboxOf(pts);
+  return { x0: e.x0 - (e.x1 - e.x0) * 0.06, x1: e.x1 + (e.x1 - e.x0) * 0.08, y0: e.y0 - (e.y1 - e.y0) * 0.05, y1: e.y1 + (e.y1 - e.y0) * 0.05 };
+}
+/* Colocación de etiquetas sin traslapes */
+function placeLabel(boxes, x, y, txt, fs, bounds) {
+  const w = txt.length * fs * 0.62 + 4, h = fs + 3;
+  const cands = [[8, -6, 'start'], [8, 13, 'start'], [-8, -6, 'end'], [-8, 13, 'end'], [0, -10, 'middle'], [0, 20, 'middle'], [14, 4, 'start'], [-14, 4, 'end']];
+  const boxOf = ([dx, dy, an]) => { const x0 = an === 'start' ? x + dx : (an === 'end' ? x + dx - w : x + dx - w / 2); return { x0, y0: y + dy - h + 3, x1: x0 + w, y1: y + dy + 3, dx, dy, an }; };
+  const hit = b => boxes.some(q => !(b.x1 < q.x0 || b.x0 > q.x1 || b.y1 < q.y0 || b.y0 > q.y1));
+  const inside = b => b.x0 >= bounds.x0 && b.x1 <= bounds.x1 && b.y0 >= bounds.y0 && b.y1 <= bounds.y1;
+  let best = null;
+  for (const c of cands) { const b = boxOf(c); if (inside(b) && !hit(b)) { best = b; break; } }
+  if (!best) best = boxOf(cands[0]);
+  boxes.push(best);
+  return best;
+}
+function curveAtP(curve, P) {
+  let best = null;
+  for (let i = 0; i < curve.length - 1; i++) {
+    const p = curve[i], q = curve[i + 1];
+    if ((p.phiP - P) * (q.phiP - P) <= 0 && Math.abs(q.phiP - p.phiP) > 1e-12) {
+      const t = (P - p.phiP) / (q.phiP - p.phiP), M = p.phiM + t * (q.phiM - p.phiM);
+      if (!best || Math.abs(M) > Math.abs(best.M)) best = { M, phi: p.phi + t * (q.phi - p.phi), zone: t < 0.5 ? p.zone : q.zone };
+    }
+  }
+  return best;
+}
+function drawDiagram(ax, st) {
+  const { uF, uM } = diaU(), fF = U.force[uF], fM = U.moment[uM], sh_ = S.show;
+  const VW = 620, VH = 480, ml = 80, mr = 16, mt = 14, mb = 48, pw = VW - ml - mr, ph = VH - mt - mb;
+  const mode = (S.zoom && S.zoom[ax]) || 'all';
+  const ext = (typeof mode === 'object') ? mode : extentFor(ax, mode);
+  const x0 = ext.x0 * fM, x1 = ext.x1 * fM, y0 = ext.y0 * fF, y1 = ext.y1 * fF;
+  const tx = niceTicks(x0, x1, 6), ty = niceTicks(y0, y1, 7);
+  const X = v => ml + (v * fM - x0) / (x1 - x0) * pw;      // v en unidades internas
+  const Y = v => mt + (y1 - v * fF) / (y1 - y0) * ph;
+  const brs = [['+', R.dirs['+' + ax].curve, '+' + ax], ['−', R.dirs['-' + ax].curve, '-' + ax]];
+  const mk = mKeyOf(ax), cid = 'clip' + ax;
+  const o = [], boxes = [], bounds = { x0: ml + 2, x1: VW - mr - 2, y0: mt + 2, y1: VH - mb - 2 };
+  o.push(`<svg viewBox="0 0 ${VW} ${VH}" role="img" aria-label="Diagrama de interacción alrededor de ${ax}" font-size="11.5" style="touch-action:pan-y">`);
+  o.push(`<defs><clipPath id="${cid}"><rect x="${ml}" y="${mt}" width="${pw}" height="${ph}"/></clipPath></defs>`);
+  o.push(`<rect x="${ml}" y="${mt}" width="${pw}" height="${ph}" style="fill:var(--sheet)"/>`);
+  tx.t.forEach(v => o.push(`<line x1="${sv(ml + (v - x0) / (x1 - x0) * pw)}" y1="${mt}" x2="${sv(ml + (v - x0) / (x1 - x0) * pw)}" y2="${VH - mb}" style="stroke:var(--grid);stroke-width:1"/><text x="${sv(ml + (v - x0) / (x1 - x0) * pw)}" y="${VH - mb + 15}" text-anchor="middle" style="fill:var(--ink-2)" font-size="10.5">${fmtTick(v, tx.step)}</text>`));
+  ty.t.forEach(v => o.push(`<line x1="${ml}" y1="${sv(mt + (y1 - v) / (y1 - y0) * ph)}" x2="${VW - mr}" y2="${sv(mt + (y1 - v) / (y1 - y0) * ph)}" style="stroke:var(--grid);stroke-width:1"/><text x="${ml - 6}" y="${sv(mt + (y1 - v) / (y1 - y0) * ph + 3.5)}" text-anchor="end" style="fill:var(--ink-2)" font-size="10.5">${fmtTick(v, ty.step)}</text>`));
+  if (x0 < 0 && x1 > 0) o.push(`<line x1="${sv(X(0))}" y1="${mt}" x2="${sv(X(0))}" y2="${VH - mb}" style="stroke:var(--axis);stroke-width:1.2"/>`);
+  if (y0 < 0 && y1 > 0) o.push(`<line x1="${ml}" y1="${sv(Y(0))}" x2="${VW - mr}" y2="${sv(Y(0))}" style="stroke:var(--axis);stroke-width:1.2"/>`);
+  o.push(`<rect x="${ml}" y="${mt}" width="${pw}" height="${ph}" style="fill:none;stroke:var(--rule);stroke-width:1"/>`);
+  o.push(`<text x="${ml + pw / 2}" y="${VH - 10}" text-anchor="middle" style="fill:var(--ink)" font-size="12" font-weight="500">M${ax.toLowerCase()} (${uM}) · + ${ax === 'X' ? 'comprime arriba' : 'comprime a la izquierda'}</text>`);
+  o.push(`<text transform="translate(15,${mt + ph / 2}) rotate(-90)" text-anchor="middle" style="fill:var(--ink)" font-size="12" font-weight="500">P (${uF}) · compresión +</text>`);
+  o.push(`<g clip-path="url(#${cid})">`);
+  if (sh_.region && sh_.design) o.push(`<polygon points="${R.axes[ax].poly.map(([M, P]) => `${sv(X(M))},${sv(Y(P))}`).join(' ')}" style="fill:var(--ok-bg);opacity:.55"/>`);
+  const cands = [];
+  if (sh_.nominal) brs.forEach(([br, b, dir]) => {
+    o.push(`<polyline points="${b.map(p => `${sv(X(p.M))},${sv(Y(p.P))}`).join(' ')}" style="fill:none;stroke:var(--ink-2);stroke-width:1.3;stroke-dasharray:5 4"/>`);
+    b.forEach(p => cands.push({ x: X(p.M), y: Y(p.P), p, br, dir, kind: 'Nominal' }));
+  });
+  if (sh_.design) {
+    const zc = { comp: 'var(--comp)', trans: 'var(--trans)', tens: 'var(--tens)' };
+    brs.forEach(([br, b, dir]) => {
+      let cur = null, pts = [];
+      const flush = () => { if (pts.length > 1) o.push(`<polyline points="${pts.join(' ')}" style="fill:none;stroke:${zc[cur]};stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round"/>`); };
+      b.forEach(p => {
+        const pt = `${sv(X(p.phiM))},${sv(Y(p.phiP))}`;
+        if (cur === null) { cur = p.zone; pts = [pt]; } else if (p.zone === cur) pts.push(pt); else { pts.push(pt); flush(); cur = p.zone; pts = [pt]; }
+        cands.push({ x: X(p.phiM), y: Y(p.phiP), p, br, dir, kind: 'Diseño' });
+      });
+      flush();
+    });
+    const yc = Y(R.phiPnmax);
+    if (yc > mt && yc < VH - mb) { const b = placeLabel(boxes, ml + 2, yc, `φPn,máx ${fmtTick(R.phiPnmax * fF, 0.1)}`, 10, bounds); o.push(`<text x="${sv(b.an === 'end' ? b.x1 - 2 : b.x0 + 2)}" y="${sv(b.y1 - 3)}" text-anchor="${b.an === 'end' ? 'end' : 'start'}" class="halo" style="fill:var(--comp)" font-size="10">φPn,máx = ${fmtTick(R.phiPnmax * fF, 0.1)}</text>`); }
+  }
+  // combinaciones: rayo hasta la capacidad
+  const hl = HOV !== null ? HOV : S.hlCombo;
+  const cbLbl = [];
+  if (sh_.combos) R.combos.forEach((cb, i) => {
+    const M = cb[mk]; if (!isFinite(M) || !isFinite(cb.Pu)) return;
+    const r = ax === 'X' ? cb.X : cb.Y, on = hl === i, dim = hl !== null && hl !== undefined && !on;
+    const col = !isFinite(r.dc) ? 'var(--warn)' : (r.dc > 1 ? 'var(--bad)' : (r.dc > 0.95 ? 'var(--warn)' : 'var(--ok)'));
+    const px = X(M), py = Y(cb.Pu);
+    if (sh_.rays && isFinite(r.capM)) {
+      const far = r.dc > 1 ? [px, py] : [X(r.capM), Y(r.capP)];
+      o.push(`<line x1="${sv(X(0))}" y1="${sv(Y(0))}" x2="${sv(far[0])}" y2="${sv(far[1])}" style="stroke:${on ? 'var(--accent)' : col};stroke-width:${on ? 2.2 : 1.1};stroke-dasharray:${on ? 'none' : '4 3'};opacity:${dim ? 0.25 : (on ? 1 : 0.7)}"/>`);
+      boxes.push({ x0: X(r.capM) - 5, y0: Y(r.capP) - 5, x1: X(r.capM) + 5, y1: Y(r.capP) + 5 });
+      o.push(`<circle cx="${sv(X(r.capM))}" cy="${sv(Y(r.capP))}" r="${on ? 5 : 3.6}" style="fill:var(--sheet);stroke:${on ? 'var(--accent)' : col};stroke-width:${on ? 2.2 : 1.5};opacity:${dim ? 0.3 : 1}"/>`);
+    }
+    o.push(`<g style="stroke:${col};stroke-width:${on ? 3 : 2.2};opacity:${dim ? 0.35 : 1}"><line x1="${sv(px - 5)}" y1="${sv(py - 5)}" x2="${sv(px + 5)}" y2="${sv(py + 5)}"/><line x1="${sv(px - 5)}" y1="${sv(py + 5)}" x2="${sv(px + 5)}" y2="${sv(py - 5)}"/></g>`);
+    boxes.push({ x0: px - 6, y0: py - 6, x1: px + 6, y1: py + 6 });
+    cbLbl.push({ i, px, py, col, on, dim, txt: `${cb.name.replace(/\s*\(ejemplo\)/, '').replace(/^Caso\s*/, '')} · ${isFinite(r.dc) ? (r.dc * 100).toFixed(0) + ' %' : '—'}` });
+    cands.push({ x: px, y: py, cb: i, kind: 'Combinación' });
+  });
+  // puntos notables
+  const kpL = [];
+  if (sh_.keypts) brs.forEach(([br, , dir]) => {
+    const P = R.dirs[dir].pts;
+    ['A', 'E', 'B', 'C', 'D', 'F'].forEach(k => {
+      const p = P[k]; if (!p) return;
+      if (br === '−' && (k === 'A' || k === 'F')) return;
+      const useNom = sh_.nominal, x = X(useNom ? p.M : p.phiM), y = Y(useNom ? p.P : p.phiP);
+      o.push(`<circle cx="${sv(x)}" cy="${sv(y)}" r="3.6" style="fill:var(--ink);stroke:var(--sheet);stroke-width:1.2"/>`);
+      boxes.push({ x0: x - 4, y0: y - 4, x1: x + 4, y1: y + 4 });
+      kpL.push({ x, y, t: br === '−' ? k + '′' : k });
+    });
+  });
+  kpL.forEach(l => { const b = placeLabel(boxes, l.x, l.y, l.t, 12, bounds); o.push(`<text x="${sv(b.an === 'end' ? b.x1 - 2 : (b.an === 'middle' ? (b.x0 + b.x1) / 2 : b.x0 + 2))}" y="${sv(b.y1 - 3)}" text-anchor="${b.an}" class="halo" style="fill:var(--ink)" font-size="12" font-weight="600">${l.t}</text>`); });
+  cbLbl.sort((a, b) => (a.on ? -1 : 0) - (b.on ? -1 : 0)).forEach(l => {
+    const fs = l.on ? 11.5 : 10.5, b = placeLabel(boxes, l.px, l.py, l.txt, fs, bounds);
+    o.push(`<text x="${sv(b.an === 'end' ? b.x1 - 2 : (b.an === 'middle' ? (b.x0 + b.x1) / 2 : b.x0 + 2))}" y="${sv(b.y1 - 3)}" text-anchor="${b.an}" class="halo" style="fill:${l.on ? 'var(--accent)' : l.col};opacity:${l.dim ? 0.45 : 1}" font-size="${fs}" font-weight="${l.on ? 700 : 500}">${esc(l.txt)}</text>`);
+  });
+  if (st && S.dir[1] === ax) {
+    if (sh_.nominal) o.push(`<circle cx="${sv(X(st.M))}" cy="${sv(Y(st.P))}" r="8" style="fill:none;stroke:var(--accent);stroke-width:2"/>`);
+    if (sh_.design) o.push(`<circle cx="${sv(X(st.phiM))}" cy="${sv(Y(st.phiP))}" r="8" style="fill:none;stroke:var(--accent);stroke-width:2;stroke-dasharray:3 2"/>`);
+  }
+  o.push('</g>');
+  o.push(`<g id="cur${ax}" style="pointer-events:none"></g><rect id="brush${ax}" x="0" y="0" width="0" height="0" style="fill:var(--accent);fill-opacity:.12;stroke:var(--accent);stroke-width:1;stroke-dasharray:4 3;pointer-events:none" visibility="hidden"/>`);
+  o.push(`<rect class="dia-ov" x="${ml}" y="${mt}" width="${pw}" height="${ph}" style="fill:transparent;cursor:crosshair"/>`);
+  o.push('</svg>');
+  $(`#dia${ax}-svg`).innerHTML = o.join('');
+  DIA[ax] = { cands, ml, mt, pw, ph, VW, VH, x0, x1, y0, y1, fF, fM, uF, uM, X, Y, ext };
+  $$(`[data-zm][data-ax="${ax}"]`).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.zm === (typeof mode === 'object' ? 'custom' : mode))));
+  renderReadout(ax, null);
+}
+/* coordenadas del puntero → unidades internas */
+function svgPt(ax, ev) {
+  const svg = $(`#dia${ax}-svg svg`); if (!svg) return null;
+  const pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
+  const m_ = svg.getScreenCTM(); if (!m_) return null;
+  return pt.matrixTransform(m_.inverse());
+}
+function toData(ax, q) {
+  const d = DIA[ax];
+  return { M: (d.x0 + (q.x - d.ml) / d.pw * (d.x1 - d.x0)) / d.fM, P: (d.y1 - (q.y - d.mt) / d.ph * (d.y1 - d.y0)) / d.fF };
+}
+function nearest(ax, q, onlyCb) {
+  const d = DIA[ax]; if (!d) return null;
+  let best = null, bd = 1e9;
+  for (const c of d.cands) { if (onlyCb && c.cb === undefined) continue; const dd = (c.x - q.x) ** 2 + (c.y - q.y) ** 2; if (dd < bd) { bd = dd; best = c; } }
+  return bd < (onlyCb ? 14 * 14 : 22 * 22) ? best : null;
+}
+function inPlot(ax, q) { const d = DIA[ax]; return q && q.x >= d.ml && q.x <= d.ml + d.pw && q.y >= d.mt && q.y <= d.mt + d.ph; }
+function drawCursor(ax, q) {
+  const g = $(`#cur${ax}`), d = DIA[ax]; if (!g || !d) return;
+  if (!q || !inPlot(ax, q)) { g.innerHTML = ''; renderReadout(ax, null); return; }
+  const v = toData(ax, q);
+  const o = [`<line x1="${d.ml}" y1="${sv(q.y)}" x2="${d.ml + d.pw}" y2="${sv(q.y)}" style="stroke:var(--ink-3);stroke-width:0.8;stroke-dasharray:3 3"/>`, `<line x1="${sv(q.x)}" y1="${d.mt}" x2="${sv(q.x)}" y2="${d.mt + d.ph}" style="stroke:var(--ink-3);stroke-width:0.8;stroke-dasharray:3 3"/>`];
+  const hits = {};
+  if (S.show.design) ['+', '-'].forEach(sg => {
+    const h = curveAtP(R.dirs[sg + ax].curve, v.P);
+    if (h) { hits[sg] = h; const x = d.X(h.M); if (x >= d.ml && x <= d.ml + d.pw) o.push(`<circle cx="${sv(x)}" cy="${sv(q.y)}" r="4.5" style="fill:var(--sheet);stroke:var(--accent);stroke-width:2"/>`); }
+  });
+  g.innerHTML = o.join('');
+  renderReadout(ax, { v, hits });
+}
+function renderReadout(ax, cur) {
+  const el = $(`#ro-${ax}`); if (!el || !DIA[ax]) return;
+  const { uF, uM } = DIA[ax], mk = mKeyOf(ax);
+  const f = (x, q, u) => fmt(cv(x, q, u), 1);
+  const hl = HOV !== null ? HOV : S.hlCombo;
+  if (hl !== null && hl !== undefined && R.combos[hl]) {
+    const c = R.combos[hl], r = ax === 'X' ? c.X : c.Y;
+    el.innerHTML = `<b>${esc(c.name)}</b> · P<sub>u</sub> = ${f(c.Pu, 'force', uF)} ${uF} · M<sub>${ax.toLowerCase()}</sub> = ${f(c[mk], 'moment', uM)} ${uM} → en el rayo φP<sub>n</sub> = ${isFinite(r.capP) ? f(r.capP, 'force', uF) : '—'} · φM<sub>n</sub> = ${isFinite(r.capM) ? f(r.capM, 'moment', uM) : '—'} · ${dcChip(r.dc)}`;
+    return;
+  }
+  if (cur) {
+    const h = cur.hits, P = cur.v.P;
+    const side = (sg, lbl) => (h[sg] ? `φM<sub>n</sub>${lbl} = <b>${f(h[sg].M, 'moment', uM)}</b> (φ ${fmt(h[sg].phi, 2)})` : `φM<sub>n</sub>${lbl}: fuera de la curva`);
+    el.innerHTML = `Cursor: P = <b>${f(P, 'force', uF)}</b> ${uF} · M = ${f(cur.v.M, 'moment', uM)} ${uM} · ${side('+', '⁺')} · ${side('-', '⁻')} ${uM}`;
+    return;
+  }
+  el.innerHTML = `<span class="mini">Pasa el cursor para leer φM<sub>n</sub> a cualquier P · toca una combinación para resaltarla · con el mouse, arrastra para acercar y doble clic para ver todo</span>`;
+}
+function showTip(ev, c) {
+  const tip = $('#tip');
+  if (!c || c.cb !== undefined) { tip.hidden = true; return; }
+  const p = c.p, uF = S.out.force, uM = S.out.moment, uL = S.out.len;
+  const kl = keyLabel(c.dir, p.c);
+  tip.innerHTML = `<b>${c.kind} · ${DNt(c.dir)}</b>${kl ? ' · punto ' + kl : ''}<br>c = ${fmt(p.c * U.len[uL], S.dec)} ${uL} · ε<sub>t</sub> = ${fmt(p.et, 5)}<br>Pn = ${fmt(p.P * U.force[uF], S.dec)} ${uF} · Mn = ${fmt(p.M * U.moment[uM], S.dec)} ${uM}<br>M⊥ = ${fmt(p.Mperp * U.moment[uM], S.dec)} ${uM}<br>φ = ${fmt(p.phi, 3)} · φPn = ${fmt(p.phiP * U.force[uF], S.dec)} · φMn = ${fmt(p.phiM * U.moment[uM], S.dec)}`;
+  tip.hidden = false;
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = ev.clientX + 14, y = ev.clientY + 14;
+  if (x + w > window.innerWidth - 8) x = ev.clientX - w - 14;
+  if (y + h > window.innerHeight - 8) y = ev.clientY - h - 14;
+  tip.style.left = x + 'px'; tip.style.top = y + 'px';
+}
+function redrawDiagrams() { const st = selState(); drawDiagram('X', st); drawDiagram('Y', st); markRows(); }
+function markRows() {
+  $$('tr[data-cbi]').forEach(tr => tr.classList.toggle('hl', +tr.dataset.cbi === S.hlCombo));
+}
+/* Interacción con el puntero: cursor, arrastre para acercar y selección */
+const DRAG = {};
+function bindDiagram(ax) {
+  const box = $(`#dia${ax}-svg`);
+  box.addEventListener('pointermove', e => {
+    const q = svgPt(ax, e); if (!q || !DIA[ax]) return;
+    const dr = DRAG[ax];
+    if (dr) {
+      const b = $(`#brush${ax}`); const d = DIA[ax];
+      const xq = Math.max(d.ml, Math.min(d.ml + d.pw, q.x)), yq = Math.max(d.mt, Math.min(d.mt + d.ph, q.y));
+      b.setAttribute('x', sv(Math.min(dr.x, xq))); b.setAttribute('y', sv(Math.min(dr.y, yq)));
+      b.setAttribute('width', sv(Math.abs(xq - dr.x))); b.setAttribute('height', sv(Math.abs(yq - dr.y)));
+      b.setAttribute('visibility', 'visible'); dr.moved = Math.abs(xq - dr.x) > 8 && Math.abs(yq - dr.y) > 8; dr.x2 = xq; dr.y2 = yq;
+      return;
+    }
+    const nc = nearest(ax, q, true);
+    const nh = nc ? nc.cb : null;
+    if (nh !== HOV) { HOV = nh; redrawDiagrams(); }
+    drawCursor(ax, nc ? null : q);
+    showTip(e, nc ? null : nearest(ax, q, false));
+  });
+  box.addEventListener('pointerleave', () => { $('#tip').hidden = true; drawCursor(ax, null); if (HOV !== null) { HOV = null; redrawDiagrams(); } });
+  box.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    const q = svgPt(ax, e); if (!q || !inPlot(ax, q)) return;
+    DRAG[ax] = { x: q.x, y: q.y, moved: false };
+    try { box.setPointerCapture(e.pointerId); } catch (er) { /* sin captura */ }
+    e.preventDefault();
+  });
+  box.addEventListener('pointerup', e => {
+    const dr = DRAG[ax]; DRAG[ax] = null;
+    const b = $(`#brush${ax}`); if (b) b.setAttribute('visibility', 'hidden');
+    const q = svgPt(ax, e);
+    if (dr && dr.moved) {
+      const a = toData(ax, { x: Math.min(dr.x, dr.x2), y: Math.max(dr.y, dr.y2) }), c2 = toData(ax, { x: Math.max(dr.x, dr.x2), y: Math.min(dr.y, dr.y2) });
+      S.zoom[ax] = { x0: a.M, x1: c2.M, y0: a.P, y1: c2.P };
+      redrawDiagrams(); save(); return;
+    }
+    if (!q || !inPlot(ax, q)) return;
+    const c = nearest(ax, q, false);
+    if (c && c.cb !== undefined) { S.hlCombo = S.hlCombo === c.cb ? null : c.cb; redrawDiagrams(); save(); return; }
+    if (c) {
+      S.dir = c.dir;
+      const kl = keyLabel(c.dir, c.p.c);
+      if (kl) S.sel = kl; else { S.sel = 'libre'; S.cFree = c.p.c; }
+      renderAll();
+    }
+  });
+  box.addEventListener('dblclick', () => { S.zoom[ax] = 'all'; redrawDiagrams(); save(); });
+}
+
+/* ---------- Resumen ---------- */
+function renderSummary() {
+  const uc = unitOf('sm.c', 'len'), uP = unitOf('sm.P', 'force'), uM = unitOf('sm.M', 'moment');
+  const SN = { A: 'Compresión pura', E: 'c = D', B: 'Balanceada', C: 'Inicio tensión', D: 'Flexión pura', F: 'Tensión pura' };
+  const P = R.dirs[S.dir].pts;
+  const rows = ['A', 'E', 'B', 'C', 'D', 'F'].filter(k => P[k]).map(k => {
+    const p = P[k];
+    return `<tr${S.sel === k ? ' class="key"' : ''}><td class="t"><b>${k}</b> <span class="mini">${SN[k]}</span></td><td>${fmt(cv(p.c, 'len', uc), S.dec)}</td><td>${fmt(cv(p.P, 'force', uP), S.dec)}</td><td>${fmt(cv(p.M, 'moment', uM), S.dec)}</td><td>${fmt(cv(p.Mperp, 'moment', uM), S.dec)}</td><td>${fmt(p.phi, 3)}</td><td>${fmt(cv(p.phiP, 'force', uP), S.dec)}</td><td>${fmt(cv(p.phiM, 'moment', uM), S.dec)}</td></tr>`;
+  }).join('');
+  $('#sum-wrap').innerHTML = `<table class="tbl sumtbl"><thead><tr><th>Punto</th><th><var>c</var><span class="hu">${usel('sm.c', 'len', uc)}</span></th><th><var>P</var><sub>n</sub><span class="hu">${usel('sm.P', 'force', uP)}</span></th><th><var>M</var><sub>n</sub><span class="hu">${usel('sm.M', 'moment', uM)}</span></th><th><var>M</var><sub>⊥</sub><span class="hu">${uM}</span></th><th><var>φ</var></th><th><var>φP</var><sub>n</sub><span class="hu">${uP}</span></th><th><var>φM</var><sub>n</sub><span class="hu">${uM}</span></th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+/* ---------- Vista ---------- */
+function renderView() {
+  const st = selState();
+  drawSection(st);
+  drawDiagram('X', st);
+  drawDiagram('Y', st);
+  renderSummary();
+  const uL = S.out.len, uF = S.out.force, uM = S.out.moment;
+  const nm = st.key === 'libre' ? 'c libre' : `Punto ${st.key} · ${st.name}`;
+  $('#sec-info').innerHTML = `<span><b>${DNt(S.dir)} · ${nm}</b></span><span>c = <b>${fmt(st.c * U.len[uL], S.dec)}</b> ${uL}</span><span>a = <b>${fmt(st.a * U.len[uL], S.dec)}</b> ${uL}</span><span>Pn = <b>${fmt(st.P * U.force[uF], S.dec)}</b> ${uF}</span><span>Mn = <b>${fmt(st.M * U.moment[uM], S.dec)}</b> ${uM}</span><span>M⊥ = <b>${fmt(st.Mperp * U.moment[uM], S.dec)}</b> ${uM}</span><span>εt = <b>${fmt(st.et, 5)}</b></span><span>φ = <b>${fmt(st.phi, 3)}</b></span><span>${zchip(st.zone)}</span>`;
+  $('#sec-sub').textContent = S.secView === 'planta' ? `${DNt(S.dir)} · orientación real, fibra comprimida ${DIRFIB[S.dir]}` : `${DNt(S.dir)} · sección girada: la fibra ${DIRFIB[S.dir]} queda arriba`;
+  $$('[data-view]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === S.secView)));
+  $$('[data-vopts]').forEach(el => { el.hidden = el.dataset.vopts !== S.secView; });
+  $('#units-sec').innerHTML = S.secView === 'planta' ? `<label>Cotas en ${usel('dim', 'len', dimU())}</label>` :
+    `<label>Longitudes ${usel('dim', 'len', dimU())}</label><label>Esfuerzos ${usel('pf.fs', 'stress', unitOf('pf.fs', 'stress'))}</label><label>Fuerzas ${usel('pf.F', 'force', unitOf('pf.F', 'force'))}</label><label>Momentos ${usel('pf.M', 'moment', unitOf('pf.M', 'moment'))}</label>`;
+  const du = diaU();
+  $$('[data-diau]').forEach(el => { el.innerHTML = `<label>P en ${usel('dia.F', 'force', du.uF)}</label><label>M en ${usel('dia.M', 'moment', du.uM)}</label>`; });
+  $('#diaX-sub').textContent = `${du.uF} · ${du.uM}`;
+  $('#diaY-sub').textContent = `${du.uF} · ${du.uM}`;
+  $$('#ptsel button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.pt === S.sel)));
+  const sl = $('#cslider'); if (document.activeElement !== sl) sl.value = isFinite(st.c) && st.c > 0 ? cToT(st.c) : (st.c === Infinity ? 1000 : 0);
+}
+function syncDirUI() {
+  $$('[data-dir]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.dir === S.dir)));
+  $$('[data-dirname]').forEach(el => { el.innerHTML = DN(S.dir) + ` · compresión en la fibra ${DIRFIB[S.dir]}`; });
+  $$('[data-dirtxt]').forEach(el => { el.textContent = 'Cambia la dirección en las secciones 4 y 5 y en la vista'; });
+}
+
+/* ---------- Ciclo principal ---------- */
+function renderAll(src) {
+  try { R = compute(S.inp); } catch (e) { console.error(e); return; }
+  if (!R.sec.bars.length || !R.sec.rects.length || !isFinite(R.Po)) return;
+  R.chk = checks(R);
+  R.sp = spacingInfo(R);
+  R.V = computeShear(S.inp, R);
+  if (!R.dirs[S.dir]) S.dir = '+X';
+  syncDirUI();
+  renderShearTable();
+  renderSlots();
+  renderSegs();
+  renderLayers();
+  renderDirs();
+  renderCombosOut();
+  renderIter();
+  renderView();
+  renderRev();
+  renderShearCard();
+  markRows();
+  $$('[data-show]').forEach(el => { el.checked = !!S.show[el.dataset.show]; });
+  save();
+}
+
+/* ---------- Eventos ---------- */
+function onInput(e) {
+  const el = e.target;
+  if (el.matches('input.in')) {
+    const k = el.dataset.k, q = el.dataset.q;
+    const raw = el.value.replace(',', '.').trim();
+    const v = parseFloat(raw);
+    const val = q ? v / U[q][S.inU[k]] : v;
+    const ok = raw !== '' && isFinite(v) && validIn(k, val);
+    el.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    if (!ok) return;
+    setK(k, (k.endsWith('.n') || k === 'nVx' || k === 'nVy') ? Math.round(val) : val);
+    renderAll(el);
+  } else if (el.matches('input.rt-in, input.bt-in')) {
+    const i = +el.dataset.i, f = el.dataset.f, v = parseFloat(el.value.replace(',', '.'));
+    const ok = isFinite(v) && (f === 'w' || f === 'h' ? v > 0 : true);
+    el.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    if (!ok) return;
+    (el.matches('.rt-in') ? S.inp.rects : S.inp.barsTbl)[i][f] = v / U.len[S.inU.coord];
+    renderAll(el);
+  } else if (el.matches('input.cb-in')) {
+    const i = +el.dataset.i, f = el.dataset.f;
+    if (f === 'name') { S.inp.combos[i].name = el.value; renderAll(el); return; }
+    const v = parseFloat(el.value.replace(',', '.'));
+    const ok = isFinite(v);
+    el.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    if (!ok) return;
+    const q = (f === 'Mx' || f === 'My') ? 'moment' : 'force';
+    S.inp.combos[i][f] = v / U[q][S.inU[f]];
+    renderAll(el);
+  } else if (el.id === 'cslider') {
+    S.sel = 'libre'; S.cFree = tToC(+el.value);
+    renderSlots(); renderView(); save();
+  }
+}
+function onChange(e) {
+  const el = e.target;
+  if (el.matches('select.us')) { S.over[el.dataset.id] = { u: el.value, q: el.dataset.q }; renderAll(); return; }
+  if (el.matches('select.iu')) {
+    const k = el.dataset.k; S.inU[k] = el.value;
+    buildTables(); syncInputs(); renderAll(); return;
+  }
+  if (el.matches('select.bt-no')) { S.inp.barsTbl[+el.dataset.i].no = +el.value; renderAll(); return; }
+  if (el.id === 'i-shCombo') { S.shCombo = +el.value; renderSlots(); save(); return; }
+  if (el.id === 'i-itAx') { S.itAx = el.value; renderIter(); save(); return; }
+  if (el.matches('select.insel[data-k]')) {
+    const k = el.dataset.k;
+    let v = el.value;
+    if (el.classList.contains('bars')) v = +v;
+    if (k === 'barMode' && v === 'table' && (!S.inp.barsTbl || !S.inp.barsTbl.length)) S.inp.barsTbl = genBars();
+    if (k === 'shape') {
+      if (v === 'custom') {
+        if (S.inp.shape !== 'custom' && R) S.inp.rects = R.sec.rects.map(r => ({ x: r.x, y: r.y, w: r.w, h: r.h }));
+        if (!S.inp.barsTbl || !S.inp.barsTbl.length) S.inp.barsTbl = genBars();
+      }
+    }
+    setK(k, v);
+    if (k === 'shape') { buildTables(); syncInputs(); }
+    if (k === 'barMode') { buildTables(); applyVisibility(); }
+    renderAll(); return;
+  }
+  if (el.id === 'preset') {
+    const p = PRESETS[el.value]; if (!p) return;
+    ['len', 'area', 'force', 'moment', 'stress', 'avs'].forEach(q => { if (p[q]) S.out[q] = p[q]; });
+    S.over = DEF().over; syncUnitsUI(); renderAll(); return;
+  }
+  if (el.matches('[data-qall]')) {
+    const q = el.dataset.qall; S.out[q] = el.value;
+    for (const id in S.over) if (S.over[id].q === q) delete S.over[id];
+    syncUnitsUI(); renderAll(); return;
+  }
+  if (el.id === 'dec') { S.dec = +el.value; renderAll(); return; }
+  if (el.id === 'iter-neg') { S.iterNeg = el.checked; renderIter(); save(); return; }
+  if (el.matches('[data-show]')) { S.show[el.dataset.show] = el.checked; renderView(); save(); }
+}
+function genBars() {
+  try { const Rg = compute({ ...S.inp, barMode: 'gen', shape: S.inp.shape === 'custom' ? 'L' : S.inp.shape }); return Rg.sec.bars.map(b => ({ x: b.x, y: b.y, no: b.no })); } catch (e) { return []; }
+}
+function onClick(e) {
+  const t = e.target.closest('button');
+  if (t) {
+    if (t.dataset.zm) { S.zoom[t.dataset.ax] = t.dataset.zm; redrawDiagrams(); save(); return; }
+    if (t.dataset.view) { S.secView = t.dataset.view; renderView(); save(); return; }
+    if (t.dataset.dir) { S.dir = t.dataset.dir; if (S.sel === 'libre') S.cFree = null; renderAll(); return; }
+    if (t.dataset.pt) { S.sel = t.dataset.pt; if (S.sel === 'libre' && !S.cFree) S.cFree = R.dirs[S.dir].pts.B.c; renderSlots(); renderView(); save(); return; }
+    if (t.dataset.del !== undefined) { S.inp.combos.splice(+t.dataset.del, 1); S.shCombo = null; buildTables(); renderAll(); return; }
+    if (t.dataset.delrect !== undefined) { if (S.inp.rects.length > 1) S.inp.rects.splice(+t.dataset.delrect, 1); buildTables(); renderAll(); return; }
+    if (t.dataset.delbar !== undefined) { if (S.inp.barsTbl.length > 1) S.inp.barsTbl.splice(+t.dataset.delbar, 1); buildTables(); renderAll(); return; }
+    if (t.id === 'addcombo') { S.inp.combos.push({ name: 'Caso ' + (S.inp.combos.length + 1), Pu: 0, Mx: 0, My: 0, Vx: 0, Vy: 0 }); buildTables(); renderAll(); return; }
+    if (t.id === 'addrect') { const last = S.inp.rects[S.inp.rects.length - 1] || { x: 0, y: 0, w: 10, h: 10 }; S.inp.rects.push({ x: last.x + last.w, y: last.y, w: last.w, h: last.h }); buildTables(); renderAll(); return; }
+    if (t.id === 'addbar') { const last = S.inp.barsTbl[S.inp.barsTbl.length - 1] || { x: 3, y: 3, no: 8 }; S.inp.barsTbl.push({ x: last.x + 3, y: last.y, no: last.no }); buildTables(); renderAll(); return; }
+    if (t.id === 'genbars') { S.inp.barsTbl = genBars(); buildTables(); renderAll(); return; }
+    if (t.id === 'ex-p3') { S.inp = P3inp(); S.dir = '+X'; S.sel = 'B'; S.shCombo = null; buildTables(); syncInputs(); renderAll(); return; }
+    if (t.id === 'ex-rect') { S.inp = RECTinp(); S.inU.rec = 'in'; S.dir = '+X'; S.sel = 'B'; S.shCombo = null; buildTables(); syncInputs(); renderAll(); return; }
+    if (t.id === 'copyiter') { copyText(iterTSV()); return; }
+  }
+  const tr = e.target.closest('tr[data-cbi]');
+  if (tr && !e.target.closest('input, select, button, a')) { const i = +tr.dataset.cbi; S.hlCombo = S.hlCombo === i ? null : i; redrawDiagrams(); save(); }
+}
+function copyText(txt) {
+  const msg = $('#copymsg');
+  const done = ok => { msg.textContent = ok ? 'Tabla copiada. Pégala en Excel.' : 'No se pudo copiar; se seleccionó el texto.'; setTimeout(() => { msg.textContent = ''; }, 3500); };
+  const fallback = () => {
+    const ta = document.createElement('textarea'); ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+    let ok = false; try { ok = document.execCommand('copy'); } catch (er) { ok = false; }
+    document.body.removeChild(ta); done(ok);
+  };
+  try { navigator.clipboard.writeText(txt).then(() => done(true), fallback); } catch (er) { fallback(); }
+}
+
+document.addEventListener('input', onInput);
+document.addEventListener('change', onChange);
+document.addEventListener('click', onClick);
+document.addEventListener('toggle', e => { const d = e.target; if (d.matches && d.matches('details.pt')) { S.open[d.dataset.pt] = d.open; save(); } }, true);
+bindDiagram('X');
+bindDiagram('Y');
+document.addEventListener('pointerover', e => {
+  if (e.target.closest && e.target.closest('.svgbox[data-ax]')) return;
+  const tr = e.target.closest && e.target.closest('tr[data-cbi]');
+  const v = tr ? +tr.dataset.cbi : null;
+  if (v !== HOV) { HOV = v; redrawDiagrams(); }
+});
+
+buildStatic();
+syncInputs();
+renderAll();
+})();
+
+</script>
+</body>
+</html>
