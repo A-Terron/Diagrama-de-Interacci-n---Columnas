@@ -24,12 +24,12 @@ Hoja de cálculo interactiva para construir el diagrama de interacción **P–M*
 
 ## Qué hace la hoja
 
-- Define la sección como **unión de rectángulos** (rectangular, L o personalizada) y calcula $A_g$ y el centroide.
+- Define la sección como **unión de rectángulos** (rectangular, L o personalizada) y calcula $`A_g`$ y el centroide.
 - Coloca las barras con un generador (esquinas de estribos + intermedias equidistantes) o desde una tabla de coordenadas.
 - Desarrolla los puntos notables **A, E, B, C, D y F** por **compatibilidad de deformaciones**, capa por capa, como en la hoja de clase.
-- Dibuja las curvas **nominal** y **de diseño** ($\phi P_n$, $\phi M_n$) en las cuatro direcciones: $+M_x$, $-M_x$, $+M_y$, $-M_y$.
-- Revisa cada combinación $(P_u, M_x, M_y)$ con el método **radial D/C** y reporta el momento perpendicular inducido $M_\perp$ de las secciones asimétricas.
-- Diseña el refuerzo transversal: $V_c$ con carga axial, $A_v/s$, separación máxima, soporte lateral y **eslabones** por segmento.
+- Dibuja las curvas **nominal** y **de diseño** ($`\phi P_n`$, $`\phi M_n`$) en las cuatro direcciones: $`+M_x`$, $`-M_x`$, $`+M_y`$, $`-M_y`$.
+- Revisa cada combinación $`(P_u, M_x, M_y)`$ con el método **radial D/C** y reporta el momento perpendicular inducido $`M_\perp`$ de las secciones asimétricas.
+- Diseña el refuerzo transversal: $`V_c`$ con carga axial, $`A_v/s`$, separación máxima, soporte lateral y **eslabones** por segmento.
 
 ## Cómo usarla
 
@@ -37,19 +37,19 @@ Hoja de cálculo interactiva para construir el diagrama de interacción **P–M*
 2. Carga un ejemplo con los botones **Ejemplo P3 · columna L** o **Ejemplo de clase · 80×80**.
 3. Cambia los datos en las **celdas amarillas**. Todo se recalcula al instante; las celdas verdes son resultados.
 4. En la vista **Perfil de cálculo** elige la dirección (±X, ±Y) y el punto (A–F o *c libre*) para ver deformaciones, esfuerzos y fuerzas alineados con la sección.
-5. En los diagramas, pasa el cursor para leer $\phi M_n$ a cualquier $P$, arrastra para hacer zoom y toca una combinación para resaltarla en ambas gráficas.
+5. En los diagramas, pasa el cursor para leer $`\phi M_n`$ a cualquier $`P`$, arrastra para hacer zoom y toca una combinación para resaltarla en ambas gráficas.
 
 La hoja recuerda los últimos datos en el mismo navegador.
 
 ## Caso de prueba: P3-ECR
 
-Columna en L de 0.80 × 1.00 m (ala y alma de 0.45 m), $f'_c$ = 5,000 psi, grado 60, 18 barras.
+Columna en L de 0.80 × 1.00 m (ala y alma de 0.45 m), $`f'_c`$ = 5,000 psi, grado 60, 18 barras.
 
 | Resultado | Valor |
 |---|---|
-| Área bruta y centroide | $A_g$ = 941.627 in² · $G$ = (32.87 ; 57.13) cm |
-| Armado | 8 #10 + 10 #9 = 20.16 in² · $\rho$ = 2.14 % |
-| Capacidad axial | $P_o$ = 5,125.834 kip · $\phi P_{n,máx}$ = 2,665.434 kip · $P_{nt}$ = −1,209.6 kip |
+| Área bruta y centroide | $`A_g`$ = 941.627 in² · $`G`$ = (32.87 ; 57.13) cm |
+| Armado | 8 #10 + 10 #9 = 20.16 in² · $`\rho`$ = 2.14 % |
+| Capacidad axial | $`P_o`$ = 5,125.834 kip · $`\phi P_{n,máx}`$ = 2,665.434 kip · $`P_{nt}`$ = −1,209.6 kip |
 | Revisión de 6 combinaciones | Todas cumplen · D/C máximo 89.6 % (caso 6, eje Y) |
 | Refuerzo transversal | #4 @ 9 cm: 2 estribos + 1 eslabón en el ala + 2 eslabones en el alma |
 
@@ -58,7 +58,7 @@ El desarrollo completo está en el [manual](docs/manual-P3-ECR-columna-L.md).
 ## Alcance y limitaciones
 
 - Columna **corta**: no incluye efectos de esbeltez.
-- Flexión **uniaxial** con eje neutro paralelo al eje de flexión. En secciones asimétricas el momento perpendicular $M_\perp$ se reporta pero no se revisa.
+- Flexión **uniaxial** con eje neutro paralelo al eje de flexión. En secciones asimétricas el momento perpendicular $`M_\perp`$ se reporta pero no se revisa.
 - Cortante con **detalle ordinario**; no cubre la zona confinada de pórticos especiales (ACI 18.7).
 - Todavía no resuelve secciones circulares con zuncho.
 
