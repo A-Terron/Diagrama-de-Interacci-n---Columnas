@@ -474,30 +474,30 @@ Para cualquier $`c`$ se hace lo mismo (Figura 7 muestra el punto B):
 
 1. **Bloque:** $`a = \min(\beta_1 c,\ D)`$.
 2. **Área comprimida:** de cada rectángulo $`j`$ (con profundidades de $`v_{0j}`$ a $`v_{1j}`$) se toma la parte entre 0 y $`a`$:
-   ```math
-   h_j = \max\!\big(0,\ \min(v_{1j}, a) - v_{0j}\big) \qquad A_c = \sum b_j h_j \qquad v_c = \frac{\sum b_j h_j\,(v_{0j} + h_j/2)}{A_c}
-   ```
+
+   $`\displaystyle h_j = \max\!\big(0,\ \min(v_{1j}, a) - v_{0j}\big) \qquad A_c = \sum b_j h_j \qquad v_c = \frac{\sum b_j h_j\,(v_{0j} + h_j/2)}{A_c}`$
+
 3. **Fuerza del concreto:** $`P_c = 0.85 f'_c A_c`$, aplicada a la profundidad $`v_c`$.
 4. **Artificio 1** (triángulos semejantes) en cada capa:
-   ```math
-   \varepsilon_{si} = \varepsilon_{cu}\,\frac{d_i - c}{c}
-   ```
+
+   $`\displaystyle \varepsilon_{si} = \varepsilon_{cu}\,\frac{d_i - c}{c}`$
+
 5. **Artificio 2** (esfuerzo con el signo de clase, limitado a $`f_y`$):
-   ```math
-   f_{si} = -\operatorname{signo}(\varepsilon_{si})\cdot\min\!\left(E_s|\varepsilon_{si}|,\ f_y\right)
-   ```
+
+   $`\displaystyle f_{si} = -\operatorname{signo}(\varepsilon_{si})\cdot\min\!\left(E_s|\varepsilon_{si}|,\ f_y\right)`$
+
 6. **Fuerza de la capa**, restando el concreto desplazado si la capa está dentro del bloque:
-   ```math
-   C_{si} = \begin{cases} A_{si}\,f_{si} & a \lt  d_i \\ A_{si}\,(f_{si} - 0.85 f'_c) & a \ge d_i\end{cases}
-   ```
+
+   $`\displaystyle C_{si} = \begin{cases} A_{si}\,f_{si} & a \lt  d_i \\ A_{si}\,(f_{si} - 0.85 f'_c) & a \ge d_i\end{cases}`$
+
 7. **Resultantes** respecto a $`G`$:
-   ```math
-   P_n = P_c + \sum C_{si} \qquad M_n = P_c\,(\bar v - v_c) + \sum C_{si}\,(\bar v - d_i)
-   ```
+
+   $`\displaystyle P_n = P_c + \sum C_{si} \qquad M_n = P_c\,(\bar v - v_c) + \sum C_{si}\,(\bar v - d_i)`$
+
 8. **Momento inducido** en la otra dirección ($`u`$ = coordenada a lo largo del eje neutro, $`\bar u`$ la de $`G`$):
-   ```math
-   M_\perp = P_c\,(u_c - \bar u) + \sum C_{si}\,(u_i - \bar u)
-   ```
+
+   $`\displaystyle M_\perp = P_c\,(u_c - \bar u) + \sum C_{si}\,(u_i - \bar u)`$
+
 9. **$`\phi`$** con $`\varepsilon_t = \varepsilon_{cu}(d_t - c)/c`$ ([Paso 6](#8-paso-6--factor-de-reducción-φ)).
 
 ```mermaid
@@ -690,22 +690,22 @@ Zona: **controlada por compresión**.
 <summary><b>Cálculo de tres capas del punto B, paso a paso</b></summary>
 
 **A1** ($`d_1`$ = 2.710 in, comprimida y dentro del bloque):
-```math
-\varepsilon_{s1} = 0.003\,\frac{2.710 - 21.697}{21.697} = -0.00263 \qquad E_s|\varepsilon| = 29{,}000\cdot|\varepsilon| = 76.13 > 60 \Rightarrow f_{s1} = +60\ \text{ksi (fluye)}
-```
-```math
-a = 17.358 \ge d_1 \Rightarrow C_{s1} = 5.81\,(60 - 0.85\cdot5) = 323.908\ \text{kip}
-```
+
+$`\displaystyle \varepsilon_{s1} = 0.003\,\frac{2.710 - 21.697}{21.697} = -0.00263 \qquad E_s|\varepsilon| = 29{,}000\cdot|\varepsilon| = 76.13 > 60 \Rightarrow f_{s1} = +60\ \text{ksi (fluye)}`$
+
+
+$`\displaystyle a = 17.358 \ge d_1 \Rightarrow C_{s1} = 5.81\,(60 - 0.85\cdot5) = 323.908\ \text{kip}`$
+
 
 **A4** ($`d_4`$ = 22.225 in, justo debajo del eje neutro):
-```math
-\varepsilon_{s4} = 0.003\,\frac{22.225 - 21.697}{21.697} = 0.0000730 \Rightarrow f_{s4} = -29{,}000\cdot0.0000730 = -2.116\ \text{ksi} \qquad C_{s4} = 2.00\cdot(-2.116) = -4.232\ \text{kip}
-```
+
+$`\displaystyle \varepsilon_{s4} = 0.003\,\frac{22.225 - 21.697}{21.697} = 0.0000730 \Rightarrow f_{s4} = -29{,}000\cdot0.0000730 = -2.116\ \text{ksi} \qquad C_{s4} = 2.00\cdot(-2.116) = -4.232\ \text{kip}`$
+
 
 **A6** ($`d_6 = d_t`$ = 36.660 in, capa extrema a tensión):
-```math
-\varepsilon_{s6} = 0.003\,\frac{36.660 - 21.697}{21.697} = 0.00207 = \varepsilon_{ty} \Rightarrow f_{s6} = -60\ \text{ksi} \qquad C_{s6} = 3.54\cdot(-60) = -212.400\ \text{kip}
-```
+
+$`\displaystyle \varepsilon_{s6} = 0.003\,\frac{36.660 - 21.697}{21.697} = 0.00207 = \varepsilon_{ty} \Rightarrow f_{s6} = -60\ \text{ksi} \qquad C_{s6} = 3.54\cdot(-60) = -212.400\ \text{kip}`$
+
 
 </details>
 
@@ -890,17 +890,17 @@ $`D = 39.370`$ in · $`d_t = 36.660`$ in · $`\bar v = 22.492`$ in · 6 capas
 
 $`c_b = \dfrac{0.003\cdot36.660}{0.003 + 0.0020690} = 21.697`$ in.
 
-```math
-a = \beta_1 c = 0.80\cdot21.697 = 17.358\ \text{in}
-```
 
-```math
-A_c = \sum b_j h_j = 17.717\cdot17.358 = 307.515\ \text{in}^2 \qquad v_c = \frac{\sum A_j v_j}{A_c} = \dfrac{307.515\cdot8.679}{307.515} = 8.679\ \text{in}
-```
+$`\displaystyle a = \beta_1 c = 0.80\cdot21.697 = 17.358\ \text{in}`$
 
-```math
-P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot307.515 = 1{,}306.939\ \text{kip}
-```
+
+
+$`\displaystyle A_c = \sum b_j h_j = 17.717\cdot17.358 = 307.515\ \text{in}^2 \qquad v_c = \frac{\sum A_j v_j}{A_c} = \dfrac{307.515\cdot8.679}{307.515} = 8.679\ \text{in}`$
+
+
+
+$`\displaystyle P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot307.515 = 1{,}306.939\ \text{kip}`$
+
 
 <details>
 <summary><b>Tablas del punto B en −<i>M</i><sub>x</sub> (bloque de compresión y capas)</b></summary>
@@ -923,27 +923,27 @@ P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot307.515 = 1{,}306.939\ \text{kip}
 
 </details>
 
-```math
-P_{nB} = P_c + \sum C_{si} = 1{,}306.939 + (-159.480) = \mathbf{1{,}147.459}\ \text{kip}
-```
 
-```math
-M_{nB} = P_c(\bar v - v_c) + \sum C_{si}(\bar v - d_i) = 1{,}306.939\,(22.492 - 8.679) + 10{,}735.14 = \mathbf{28{,}788.2}\ \text{kip}\cdot\text{in}
-```
+$`\displaystyle P_{nB} = P_c + \sum C_{si} = 1{,}306.939 + (-159.480) = \mathbf{1{,}147.459}\ \text{kip}`$
+
+
+
+$`\displaystyle M_{nB} = P_c(\bar v - v_c) + \sum C_{si}(\bar v - d_i) = 1{,}306.939\,(22.492 - 8.679) + 10{,}735.14 = \mathbf{28{,}788.2}\ \text{kip}\cdot\text{in}`$
+
 
 Como la compresión está en la fibra inferior, el momento con signo global es $`M_x = -M_{nB} = -28{,}788.2`$ kip·in.
 
-```math
-M_y^{\text{inducido}} = 7{,}882.7\ \text{kip}\cdot\text{in} \quad (27.4\ \%\ \text{de } M_x)
-```
 
-```math
-\varepsilon_t = \varepsilon_{cu}\frac{d_t - c}{c} = 0.003\,\frac{36.660 - 21.697}{21.697} = 0.00207 \;\Rightarrow\; \phi = 0.65 \quad (\varepsilon_t = 0.00207 \le \varepsilon_{ty})
-```
+$`\displaystyle M_y^{\text{inducido}} = 7{,}882.7\ \text{kip}\cdot\text{in} \quad (27.4\ \%\ \text{de } M_x)`$
 
-```math
-\phi P_n = 0.6500\cdot1{,}147.459 = 745.848\ \text{kip} \qquad \phi M_x = 0.6500\cdot(-28{,}788.2) = -18{,}712.3\ \text{kip}\cdot\text{in}
-```
+
+
+$`\displaystyle \varepsilon_t = \varepsilon_{cu}\frac{d_t - c}{c} = 0.003\,\frac{36.660 - 21.697}{21.697} = 0.00207 \;\Rightarrow\; \phi = 0.65 \quad (\varepsilon_t = 0.00207 \le \varepsilon_{ty})`$
+
+
+
+$`\displaystyle \phi P_n = 0.6500\cdot1{,}147.459 = 745.848\ \text{kip} \qquad \phi M_x = 0.6500\cdot(-28{,}788.2) = -18{,}712.3\ \text{kip}\cdot\text{in}`$
+
 
 Zona: **controlada por compresión**.
 
@@ -955,17 +955,17 @@ Zona: **controlada por compresión**.
 
 Bisección: $`P_n(c) = 0`$ con $`c = 10.775`$ in (50 iteraciones).
 
-```math
-a = \beta_1 c = 0.80\cdot10.775 = 8.620\ \text{in}
-```
 
-```math
-A_c = \sum b_j h_j = 17.717\cdot8.620 = 152.715\ \text{in}^2 \qquad v_c = \frac{\sum A_j v_j}{A_c} = \dfrac{152.715\cdot4.310}{152.715} = 4.310\ \text{in}
-```
+$`\displaystyle a = \beta_1 c = 0.80\cdot10.775 = 8.620\ \text{in}`$
 
-```math
-P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot152.715 = 649.039\ \text{kip}
-```
+
+
+$`\displaystyle A_c = \sum b_j h_j = 17.717\cdot8.620 = 152.715\ \text{in}^2 \qquad v_c = \frac{\sum A_j v_j}{A_c} = \dfrac{152.715\cdot4.310}{152.715} = 4.310\ \text{in}`$
+
+
+
+$`\displaystyle P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot152.715 = 649.039\ \text{kip}`$
+
 
 <details>
 <summary><b>Tablas del punto D en −<i>M</i><sub>x</sub> (bloque de compresión y capas)</b></summary>
@@ -988,27 +988,27 @@ P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot152.715 = 649.039\ \text{kip}
 
 </details>
 
-```math
-P_{nD} = P_c + \sum C_{si} = 649.039 + (-649.039) = \mathbf{0.000}\ \text{kip}
-```
 
-```math
-M_{nD} = P_c(\bar v - v_c) + \sum C_{si}(\bar v - d_i) = 649.039\,(22.492 - 4.310) + 9{,}967.51 = \mathbf{21{,}768.4}\ \text{kip}\cdot\text{in}
-```
+$`\displaystyle P_{nD} = P_c + \sum C_{si} = 649.039 + (-649.039) = \mathbf{0.000}\ \text{kip}`$
+
+
+
+$`\displaystyle M_{nD} = P_c(\bar v - v_c) + \sum C_{si}(\bar v - d_i) = 649.039\,(22.492 - 4.310) + 9{,}967.51 = \mathbf{21{,}768.4}\ \text{kip}\cdot\text{in}`$
+
 
 Como la compresión está en la fibra inferior, el momento con signo global es $`M_x = -M_{nD} = -21{,}768.4`$ kip·in.
 
-```math
-M_y^{\text{inducido}} = 5{,}428.4\ \text{kip}\cdot\text{in} \quad (24.9\ \%\ \text{de } M_x)
-```
 
-```math
-\varepsilon_t = \varepsilon_{cu}\frac{d_t - c}{c} = 0.003\,\frac{36.660 - 10.775}{10.775} = 0.00721 \;\Rightarrow\; \phi = 0.90 \quad (\varepsilon_t = 0.00721 \ge 0.00507)
-```
+$`\displaystyle M_y^{\text{inducido}} = 5{,}428.4\ \text{kip}\cdot\text{in} \quad (24.9\ \%\ \text{de } M_x)`$
 
-```math
-\phi P_n = 0.9000\cdot0.000 = 0.000\ \text{kip} \qquad \phi M_x = 0.9000\cdot(-21{,}768.4) = -19{,}591.5\ \text{kip}\cdot\text{in}
-```
+
+
+$`\displaystyle \varepsilon_t = \varepsilon_{cu}\frac{d_t - c}{c} = 0.003\,\frac{36.660 - 10.775}{10.775} = 0.00721 \;\Rightarrow\; \phi = 0.90 \quad (\varepsilon_t = 0.00721 \ge 0.00507)`$
+
+
+
+$`\displaystyle \phi P_n = 0.9000\cdot0.000 = 0.000\ \text{kip} \qquad \phi M_x = 0.9000\cdot(-21{,}768.4) = -19{,}591.5\ \text{kip}\cdot\text{in}`$
+
 
 Zona: **controlada por tensión**.
 
@@ -1033,17 +1033,17 @@ $`D = 31.496`$ in · $`d_t = 28.786`$ in · $`\bar v = 12.941`$ in · 5 capas
 
 $`c_b = \dfrac{0.003\cdot28.786}{0.003 + 0.0020690} = 17.037`$ in.
 
-```math
-a = \beta_1 c = 0.80\cdot17.037 = 13.629\ \text{in}
-```
 
-```math
-A_c = \sum b_j h_j = 17.717\cdot13.629 + 21.654\cdot13.629 = 536.591\ \text{in}^2 \qquad v_c = \frac{\sum A_j v_j}{A_c} = \dfrac{241.466\cdot6.815 + 295.125\cdot6.815}{536.591} = 6.815\ \text{in}
-```
+$`\displaystyle a = \beta_1 c = 0.80\cdot17.037 = 13.629\ \text{in}`$
 
-```math
-P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot536.591 = 2{,}280.512\ \text{kip}
-```
+
+
+$`\displaystyle A_c = \sum b_j h_j = 17.717\cdot13.629 + 21.654\cdot13.629 = 536.591\ \text{in}^2 \qquad v_c = \frac{\sum A_j v_j}{A_c} = \dfrac{241.466\cdot6.815 + 295.125\cdot6.815}{536.591} = 6.815\ \text{in}`$
+
+
+
+$`\displaystyle P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot536.591 = 2{,}280.512\ \text{kip}`$
+
 
 <details>
 <summary><b>Tablas del punto B en +<i>M</i><sub>y</sub> (bloque de compresión y capas)</b></summary>
@@ -1065,25 +1065,25 @@ P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot536.591 = 2{,}280.512\ \text{kip}
 
 </details>
 
-```math
-P_{nB} = P_c + \sum C_{si} = 2{,}280.512 + 252.883 = \mathbf{2{,}533.395}\ \text{kip}
-```
 
-```math
-M_{nB} = P_c(\bar v - v_c) + \sum C_{si}(\bar v - d_i) = 2{,}280.512\,(12.941 - 6.815) + 7{,}876.30 = \mathbf{21{,}847.6}\ \text{kip}\cdot\text{in}
-```
+$`\displaystyle P_{nB} = P_c + \sum C_{si} = 2{,}280.512 + 252.883 = \mathbf{2{,}533.395}\ \text{kip}`$
 
-```math
-M_x^{\text{inducido}} = -9{,}764.7\ \text{kip}\cdot\text{in} \quad (44.7\ \%\ \text{de } M_y)
-```
 
-```math
-\varepsilon_t = \varepsilon_{cu}\frac{d_t - c}{c} = 0.003\,\frac{28.786 - 17.037}{17.037} = 0.00207 \;\Rightarrow\; \phi = 0.65 \quad (\varepsilon_t = 0.00207 \le \varepsilon_{ty})
-```
 
-```math
-\phi P_n = 0.6500\cdot2{,}533.395 = 1{,}646.706\ \text{kip} \qquad \phi M_y = 0.6500\cdot(21{,}847.6) = 14{,}200.9\ \text{kip}\cdot\text{in}
-```
+$`\displaystyle M_{nB} = P_c(\bar v - v_c) + \sum C_{si}(\bar v - d_i) = 2{,}280.512\,(12.941 - 6.815) + 7{,}876.30 = \mathbf{21{,}847.6}\ \text{kip}\cdot\text{in}`$
+
+
+
+$`\displaystyle M_x^{\text{inducido}} = -9{,}764.7\ \text{kip}\cdot\text{in} \quad (44.7\ \%\ \text{de } M_y)`$
+
+
+
+$`\displaystyle \varepsilon_t = \varepsilon_{cu}\frac{d_t - c}{c} = 0.003\,\frac{28.786 - 17.037}{17.037} = 0.00207 \;\Rightarrow\; \phi = 0.65 \quad (\varepsilon_t = 0.00207 \le \varepsilon_{ty})`$
+
+
+
+$`\displaystyle \phi P_n = 0.6500\cdot2{,}533.395 = 1{,}646.706\ \text{kip} \qquad \phi M_y = 0.6500\cdot(21{,}847.6) = 14{,}200.9\ \text{kip}\cdot\text{in}`$
+
 
 Zona: **controlada por compresión**.
 
@@ -1095,17 +1095,17 @@ Zona: **controlada por compresión**.
 
 Bisección: $`P_n(c) = 0`$ con $`c = 4.462`$ in (48 iteraciones).
 
-```math
-a = \beta_1 c = 0.80\cdot4.462 = 3.570\ \text{in}
-```
 
-```math
-A_c = \sum b_j h_j = 17.717\cdot3.570 + 21.654\cdot3.570 = 140.537\ \text{in}^2 \qquad v_c = \frac{\sum A_j v_j}{A_c} = \dfrac{63.241\cdot1.785 + 77.295\cdot1.785}{140.537} = 1.785\ \text{in}
-```
+$`\displaystyle a = \beta_1 c = 0.80\cdot4.462 = 3.570\ \text{in}`$
 
-```math
-P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot140.537 = 597.281\ \text{kip}
-```
+
+
+$`\displaystyle A_c = \sum b_j h_j = 17.717\cdot3.570 + 21.654\cdot3.570 = 140.537\ \text{in}^2 \qquad v_c = \frac{\sum A_j v_j}{A_c} = \dfrac{63.241\cdot1.785 + 77.295\cdot1.785}{140.537} = 1.785\ \text{in}`$
+
+
+
+$`\displaystyle P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot140.537 = 597.281\ \text{kip}`$
+
 
 <details>
 <summary><b>Tablas del punto D en +<i>M</i><sub>y</sub> (bloque de compresión y capas)</b></summary>
@@ -1127,25 +1127,25 @@ P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot140.537 = 597.281\ \text{kip}
 
 </details>
 
-```math
-P_{nD} = P_c + \sum C_{si} = 597.281 + (-597.281) = \mathbf{0.000}\ \text{kip}
-```
 
-```math
-M_{nD} = P_c(\bar v - v_c) + \sum C_{si}(\bar v - d_i) = 597.281\,(12.941 - 1.785) + 6{,}754.62 = \mathbf{13{,}418.0}\ \text{kip}\cdot\text{in}
-```
+$`\displaystyle P_{nD} = P_c + \sum C_{si} = 597.281 + (-597.281) = \mathbf{0.000}\ \text{kip}`$
 
-```math
-M_x^{\text{inducido}} = -3{,}083.7\ \text{kip}\cdot\text{in} \quad (23.0\ \%\ \text{de } M_y)
-```
 
-```math
-\varepsilon_t = \varepsilon_{cu}\frac{d_t - c}{c} = 0.003\,\frac{28.786 - 4.462}{4.462} = 0.01635 \;\Rightarrow\; \phi = 0.90 \quad (\varepsilon_t = 0.01635 \ge 0.00507)
-```
 
-```math
-\phi P_n = 0.9000\cdot0.000 = 0.000\ \text{kip} \qquad \phi M_y = 0.9000\cdot(13{,}418.0) = 12{,}076.2\ \text{kip}\cdot\text{in}
-```
+$`\displaystyle M_{nD} = P_c(\bar v - v_c) + \sum C_{si}(\bar v - d_i) = 597.281\,(12.941 - 1.785) + 6{,}754.62 = \mathbf{13{,}418.0}\ \text{kip}\cdot\text{in}`$
+
+
+
+$`\displaystyle M_x^{\text{inducido}} = -3{,}083.7\ \text{kip}\cdot\text{in} \quad (23.0\ \%\ \text{de } M_y)`$
+
+
+
+$`\displaystyle \varepsilon_t = \varepsilon_{cu}\frac{d_t - c}{c} = 0.003\,\frac{28.786 - 4.462}{4.462} = 0.01635 \;\Rightarrow\; \phi = 0.90 \quad (\varepsilon_t = 0.01635 \ge 0.00507)`$
+
+
+
+$`\displaystyle \phi P_n = 0.9000\cdot0.000 = 0.000\ \text{kip} \qquad \phi M_y = 0.9000\cdot(13{,}418.0) = 12{,}076.2\ \text{kip}\cdot\text{in}`$
+
 
 Zona: **controlada por tensión**.
 
@@ -1170,17 +1170,17 @@ $`D = 31.496`$ in · $`d_t = 28.786`$ in · $`\bar v = 18.555`$ in · 5 capas
 
 $`c_b = \dfrac{0.003\cdot28.786}{0.003 + 0.0020690} = 17.037`$ in.
 
-```math
-a = \beta_1 c = 0.80\cdot17.037 = 13.629\ \text{in}
-```
 
-```math
-A_c = \sum b_j h_j = 17.717\cdot13.629 = 241.466\ \text{in}^2 \qquad v_c = \frac{\sum A_j v_j}{A_c} = \dfrac{241.466\cdot6.815}{241.466} = 6.815\ \text{in}
-```
+$`\displaystyle a = \beta_1 c = 0.80\cdot17.037 = 13.629\ \text{in}`$
 
-```math
-P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot241.466 = 1{,}026.230\ \text{kip}
-```
+
+
+$`\displaystyle A_c = \sum b_j h_j = 17.717\cdot13.629 = 241.466\ \text{in}^2 \qquad v_c = \frac{\sum A_j v_j}{A_c} = \dfrac{241.466\cdot6.815}{241.466} = 6.815\ \text{in}`$
+
+
+
+$`\displaystyle P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot241.466 = 1{,}026.230\ \text{kip}`$
+
 
 <details>
 <summary><b>Tablas del punto B en −<i>M</i><sub>y</sub> (bloque de compresión y capas)</b></summary>
@@ -1202,27 +1202,27 @@ P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot241.466 = 1{,}026.230\ \text{kip}
 
 </details>
 
-```math
-P_{nB} = P_c + \sum C_{si} = 1{,}026.230 + (-184.750) = \mathbf{841.481}\ \text{kip}
-```
 
-```math
-M_{nB} = P_c(\bar v - v_c) + \sum C_{si}(\bar v - d_i) = 1{,}026.230\,(18.555 - 6.815) + 8{,}178.84 = \mathbf{20{,}227.1}\ \text{kip}\cdot\text{in}
-```
+$`\displaystyle P_{nB} = P_c + \sum C_{si} = 1{,}026.230 + (-184.750) = \mathbf{841.481}\ \text{kip}`$
+
+
+
+$`\displaystyle M_{nB} = P_c(\bar v - v_c) + \sum C_{si}(\bar v - d_i) = 1{,}026.230\,(18.555 - 6.815) + 8{,}178.84 = \mathbf{20{,}227.1}\ \text{kip}\cdot\text{in}`$
+
 
 Como la compresión está en la fibra derecha, el momento con signo global es $`M_y = -M_{nB} = -20{,}227.1`$ kip·in.
 
-```math
-M_x^{\text{inducido}} = 11{,}329.8\ \text{kip}\cdot\text{in} \quad (56.0\ \%\ \text{de } M_y)
-```
 
-```math
-\varepsilon_t = \varepsilon_{cu}\frac{d_t - c}{c} = 0.003\,\frac{28.786 - 17.037}{17.037} = 0.00207 \;\Rightarrow\; \phi = 0.65 \quad (\varepsilon_t = 0.00207 \le \varepsilon_{ty})
-```
+$`\displaystyle M_x^{\text{inducido}} = 11{,}329.8\ \text{kip}\cdot\text{in} \quad (56.0\ \%\ \text{de } M_y)`$
 
-```math
-\phi P_n = 0.6500\cdot841.481 = 546.962\ \text{kip} \qquad \phi M_y = 0.6500\cdot(-20{,}227.1) = -13{,}147.6\ \text{kip}\cdot\text{in}
-```
+
+
+$`\displaystyle \varepsilon_t = \varepsilon_{cu}\frac{d_t - c}{c} = 0.003\,\frac{28.786 - 17.037}{17.037} = 0.00207 \;\Rightarrow\; \phi = 0.65 \quad (\varepsilon_t = 0.00207 \le \varepsilon_{ty})`$
+
+
+
+$`\displaystyle \phi P_n = 0.6500\cdot841.481 = 546.962\ \text{kip} \qquad \phi M_y = 0.6500\cdot(-20{,}227.1) = -13{,}147.6\ \text{kip}\cdot\text{in}`$
+
 
 Zona: **controlada por compresión**.
 
@@ -1234,17 +1234,17 @@ Zona: **controlada por compresión**.
 
 Bisección: $`P_n(c) = 0`$ con $`c = 10.318`$ in (50 iteraciones).
 
-```math
-a = \beta_1 c = 0.80\cdot10.318 = 8.254\ \text{in}
-```
 
-```math
-A_c = \sum b_j h_j = 17.717\cdot8.254 = 146.234\ \text{in}^2 \qquad v_c = \frac{\sum A_j v_j}{A_c} = \dfrac{146.234\cdot4.127}{146.234} = 4.127\ \text{in}
-```
+$`\displaystyle a = \beta_1 c = 0.80\cdot10.318 = 8.254\ \text{in}`$
 
-```math
-P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot146.234 = 621.494\ \text{kip}
-```
+
+
+$`\displaystyle A_c = \sum b_j h_j = 17.717\cdot8.254 = 146.234\ \text{in}^2 \qquad v_c = \frac{\sum A_j v_j}{A_c} = \dfrac{146.234\cdot4.127}{146.234} = 4.127\ \text{in}`$
+
+
+
+$`\displaystyle P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot146.234 = 621.494\ \text{kip}`$
+
 
 <details>
 <summary><b>Tablas del punto D en −<i>M</i><sub>y</sub> (bloque de compresión y capas)</b></summary>
@@ -1266,27 +1266,27 @@ P_c = 0.85 f'_c A_c = 0.85\cdot5.0\cdot146.234 = 621.494\ \text{kip}
 
 </details>
 
-```math
-P_{nD} = P_c + \sum C_{si} = 621.494 + (-621.494) = \mathbf{0.000}\ \text{kip}
-```
 
-```math
-M_{nD} = P_c(\bar v - v_c) + \sum C_{si}(\bar v - d_i) = 621.494\,(18.555 - 4.127) + 7{,}281.45 = \mathbf{16{,}248.3}\ \text{kip}\cdot\text{in}
-```
+$`\displaystyle P_{nD} = P_c + \sum C_{si} = 621.494 + (-621.494) = \mathbf{0.000}\ \text{kip}`$
+
+
+
+$`\displaystyle M_{nD} = P_c(\bar v - v_c) + \sum C_{si}(\bar v - d_i) = 621.494\,(18.555 - 4.127) + 7{,}281.45 = \mathbf{16{,}248.3}\ \text{kip}\cdot\text{in}`$
+
 
 Como la compresión está en la fibra derecha, el momento con signo global es $`M_y = -M_{nD} = -16{,}248.3`$ kip·in.
 
-```math
-M_x^{\text{inducido}} = 9{,}059.1\ \text{kip}\cdot\text{in} \quad (55.8\ \%\ \text{de } M_y)
-```
 
-```math
-\varepsilon_t = \varepsilon_{cu}\frac{d_t - c}{c} = 0.003\,\frac{28.786 - 10.318}{10.318} = 0.00537 \;\Rightarrow\; \phi = 0.90 \quad (\varepsilon_t = 0.00537 \ge 0.00507)
-```
+$`\displaystyle M_x^{\text{inducido}} = 9{,}059.1\ \text{kip}\cdot\text{in} \quad (55.8\ \%\ \text{de } M_y)`$
 
-```math
-\phi P_n = 0.9000\cdot0.000 = 0.000\ \text{kip} \qquad \phi M_y = 0.9000\cdot(-16{,}248.3) = -14{,}623.5\ \text{kip}\cdot\text{in}
-```
+
+
+$`\displaystyle \varepsilon_t = \varepsilon_{cu}\frac{d_t - c}{c} = 0.003\,\frac{28.786 - 10.318}{10.318} = 0.00537 \;\Rightarrow\; \phi = 0.90 \quad (\varepsilon_t = 0.00537 \ge 0.00507)`$
+
+
+
+$`\displaystyle \phi P_n = 0.9000\cdot0.000 = 0.000\ \text{kip} \qquad \phi M_y = 0.9000\cdot(-16{,}248.3) = -14{,}623.5\ \text{kip}\cdot\text{in}`$
+
 
 Zona: **controlada por tensión**.
 

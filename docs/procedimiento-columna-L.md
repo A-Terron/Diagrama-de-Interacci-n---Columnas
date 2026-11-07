@@ -159,7 +159,7 @@ flowchart TD
 \beta_1 =
 \begin{cases}
 0.85 & f'_c \le 4000\ \text{psi}\\
-0.85 - 0.05\,\dfrac{f'_c - 4000}{1000} & 4000 \lt  f'_c \lt  8000\ \text{psi}\\
+0.85 - 0.05\,\dfrac{f'_c - 4000}{1000} & 4000 < f'_c < 8000\ \text{psi}\\
 0.65 & f'_c \ge 8000\ \text{psi}
 \end{cases}
 \qquad
@@ -282,7 +282,7 @@ P_c = 0.85\,f'_c\,A_c
 \qquad
 C_{si} =
 \begin{cases}
-A_{si}\,f_{si} & a \lt  d_i\\
+A_{si}\,f_{si} & a < d_i\\
 A_{si}\,(f_{si} - 0.85f'_c) & a \ge d_i
 \end{cases}
 ```
@@ -335,7 +335,7 @@ En la L, $`M_A`$ y $`M_F`$ no son exactamente cero si el acero no es simétrico 
 | Zona | Condición | $`\phi`$ (estribos) |
 |---|---|---|
 | Controlada por compresión | $`\varepsilon_t \le \varepsilon_{ty}`$ | 0.65 |
-| Transición | $`\varepsilon_{ty} \lt  \varepsilon_t \lt  \varepsilon_{ty} + 0.003`$ | $`0.65 + 0.25\,\dfrac{\varepsilon_t - \varepsilon_{ty}}{0.003}`$ |
+| Transición | $`\varepsilon_{ty} < \varepsilon_t < \varepsilon_{ty} + 0.003`$ | $`0.65 + 0.25\,\dfrac{\varepsilon_t - \varepsilon_{ty}}{0.003}`$ |
 | Controlada por tensión | $`\varepsilon_t \ge \varepsilon_{ty} + 0.003`$ | 0.90 |
 
 ```math
