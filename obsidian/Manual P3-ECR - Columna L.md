@@ -12,7 +12,7 @@ tags:
 curso: Estructuras de Concreto Reforzado
 examen: Tercer Examen Parcial
 fecha: 2026-11-07
-hoja: https://claude.ai/artifact/NEg3UWf8FL7aGs9RW1aJC9
+hoja: https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/
 ---
 
 # Manual · Solución del P3-ECR con el diagrama de interacción para columnas L
