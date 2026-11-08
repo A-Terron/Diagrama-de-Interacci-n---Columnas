@@ -19,7 +19,7 @@ Hoja de cálculo interactiva para construir el diagrama de interacción **P–M*
 |---|---|---|---|
 | **Hoja interactiva** | [abrir](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/) | [`index.html`](index.html) | Entradas, puntos A–F con todas las sustituciones, diagramas en ±X y ±Y, revisión de combinaciones y cortante. |
 | **Procedimiento técnico** | [leer](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/docs/procedimiento-columna-L.html) | [Markdown](docs/procedimiento-columna-L.md) | Supuestos, tipo de análisis, procedimiento paso a paso, secciones de ACI 318-19 usadas, diferencias con la columna rectangular y validación. |
-| **Manual P3-ECR** | [leer](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/docs/manual-P3-ECR-columna-L.html) | [Markdown](docs/manual-P3-ECR-columna-L.md) | Solución completa de un examen con columna en L: cada fórmula, por qué se aplica, qué significa cada resultado y 23 figuras, con el área comprimida punto por punto y el cálculo de cada D/C. |
+| **Manual P3-ECR** | [leer](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/docs/manual-P3-ECR-columna-L.html) | [Markdown](docs/manual-P3-ECR-columna-L.md) | Solución completa de un examen con columna en L: cada fórmula, por qué se aplica, qué significa cada resultado y 26 figuras: el área comprimida punto por punto, cómo se construye el diagrama (puntos A′–F′ e iteraciones de $`c`$) y el cálculo de cada D/C. |
 | **Manual para Obsidian** | — | [obsidian/](obsidian/) | El mismo manual con callouts, incrustaciones `![[...]]` y enlaces internos de Obsidian. |
 
 > [!TIP]

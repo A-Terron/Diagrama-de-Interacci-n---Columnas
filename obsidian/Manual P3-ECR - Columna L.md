@@ -24,8 +24,8 @@ Este manual resuelve el Tercer Examen Parcial de Estructuras de Concreto Reforza
 > |---|---|
 > | 1 · Armado | 8 #10 (barras rojas) + 10 #9 (intermedias) = **20.16 in²** · $\rho$ = **2.14 %** (entre 1 % y 4 %) |
 > | 2 · Diagramas | Cuatro ramas: $+M_x$, $-M_x$, $+M_y$, $-M_y$ con puntos A–F ([[#7. Paso 5 · Inciso 2 · puntos del diagrama de interacción\|§7]] y Figura 10) |
-> | 3 · Revisión | Las 6 combinaciones **cumplen**. D/C máximo **89.6 %** (caso 6, eje Y) · cálculo de cada D/C en [[#9.4 D/C de cada caso\|§9.4]] |
-> | 4 · Cortante | Estribos y eslabones **#4 @ 9 cm**: 2 estribos + 1 eslabón en el ala + 2 eslabones en el alma ([[#10.7 Esquema final de la sección\|§10.7]]) |
+> | 3 · Revisión | Las 6 combinaciones **cumplen**. D/C máximo **89.6 %** (caso 6, eje Y) · cálculo de cada D/C en [[#10.4 D/C de cada caso\|§10.4]] |
+> | 4 · Cortante | Estribos y eslabones **#4 @ 9 cm**: 2 estribos + 1 eslabón en el ala + 2 eslabones en el alma ([[#11.7 Esquema final de la sección\|§11.7]]) |
 
 ---
 
@@ -39,8 +39,9 @@ Este manual resuelve el Tercer Examen Parcial de Estructuras de Concreto Reforza
 | [[#6. Paso 4 · Direcciones de análisis y capas de acero\|Paso 4]] Direcciones y capas | 4 | 2 |
 | [[#7. Paso 5 · Inciso 2 · puntos del diagrama de interacción\|Paso 5]] Puntos A–F | 5 | 2 |
 | [[#8. Paso 6 · Factor de reducción φ\|Paso 6]] Factor φ | 6 | 2 |
-| [[#9. Paso 7 · Inciso 3 · revisión de las combinaciones\|Paso 7]] Combinaciones | 7 | 3 |
-| [[#10. Paso 8 · Inciso 4 · cortante y refuerzo transversal\|Paso 8]] Cortante | 8 | 4 |
+| [[#9. El diagrama de interacción · puntos A′–F′, construcción e iteraciones\|Diagrama]] Puntos A′–F′, construcción e iteraciones | 5, 6 y 9 | 2 |
+| [[#10. Paso 7 · Inciso 3 · revisión de las combinaciones\|Paso 7]] Combinaciones | 7 | 3 |
+| [[#11. Paso 8 · Inciso 4 · cortante y refuerzo transversal\|Paso 8]] Cortante | 8 | 4 |
 
 Los recuadros tienen siempre el mismo significado:
 
@@ -1087,10 +1088,10 @@ $D = 31.496$ in · $d_t = 28.786$ in · $\bar v = 18.555$ in · 5 capas
 > [!note] Cómo leer esta tabla
 > - En $+M_x$ el punto balanceado tiene mucha más carga axial que en $-M_x$ (2,572 contra 1,147 kip) porque el bloque comprime el ala completa (80 cm de ancho); en $-M_x$ comprime solo el pie del alma (45 cm).
 > - En $M_y$ pasa lo contrario con la flexión pura: comprimir la punta del ala ($-M_y$) deja al alma con 6 barras en tensión y por eso $|M_{nD}|$ es mayor.
-> - La última columna es $|M_\perp/M|$ en B: entre 27 % y 56 %. Es grande; por eso el método de eje neutro paralelo es una simplificación (ver [[#14. Verificación y limitaciones|§14]]).
+> - La última columna es $|M_\perp/M|$ en B: entre 27 % y 56 %. Es grande; por eso el método de eje neutro paralelo es una simplificación (ver [[#15. Verificación y limitaciones|§15]]).
 
 > [!success] Inciso 2
-> Los diagramas son las cuatro curvas de la Figura 10 (nominal y de diseño). Los puntos notables de cada rama están en las tablas de [[#Resumen de la rama +Mx|§7.3]] y [[#7.4 Las otras tres direcciones|§7.4]]. Para el examen se dibujan con al menos los puntos A, E, B, C, D y F de cada rama; la hoja agrega unos 220 puntos intermedios por rama.
+> Los diagramas son las cuatro curvas de la Figura 10 (nominal y de diseño). Los puntos notables de cada rama están en las tablas de [[#Resumen de la rama +Mx|§7.3]] y [[#7.4 Las otras tres direcciones|§7.4]]. Para el examen se dibujan con al menos los puntos A, E, B, C, D y F de cada rama; la hoja calcula 215 puntos por rama. Cómo pasar de A–F a los puntos de diseño A′–F′ y cómo se hacen las iteraciones está en [[#9. El diagrama de interacción · puntos A′–F′, construcción e iteraciones|§9]].
 
 > [!tip] En la hoja
 > Sección 9 (*Tabla de puntos del diagrama*): elige el eje, marca *Incluir rama negativa* y usa **Copiar tabla para Excel** para graficar los puntos.
@@ -1118,11 +1119,291 @@ $$\phi P_n = \min(\phi\,P_n,\ \phi P_{n,máx}) \qquad \phi M_n = \phi\,M_n$$
 
 ---
 
-## 9. Paso 7 · Inciso 3 · revisión de las combinaciones
+## 9. El diagrama de interacción · puntos A′–F′, construcción e iteraciones
+
+**Hoja: secciones 5, 6 y 9** y los diagramas X y Y.
+
+Los pasos 5 y 6 dieron los puntos A–F de cada rama y el factor $\phi$. Esta sección los junta en el diagrama completo: explica por qué hay dos curvas, qué son los puntos con prima (A′, B′, …) y cómo se obtienen los cientos de puntos de cada curva, en la hoja, en Excel y a mano. Los números son de la rama $+M_x$ salvo que se diga otra cosa.
+
+### 9.1 Dos curvas: nominal y de diseño
+
+Cada posición del eje neutro $c$ es un estado de falla: la fibra más comprimida llega a $\varepsilon_{cu} = 0.003$ y, con el procedimiento de [[#7.1 Procedimiento para un eje neutro $c$|§7.1]], sale una pareja $(M_n ; P_n)$. Al unir esas parejas se obtiene la **curva nominal**, que es la resistencia teórica de la sección.
+
+El diseño usa la **curva de diseño**. Cada punto nominal X se convierte en su punto de diseño **X′** (se lee «X prima»), calculado con el $\phi$ de ese mismo $c$:
+
+$$X' = \Big(\phi M_n ;\ \min\big(\phi P_n,\ \phi P_{n,máx}\big)\Big) \qquad \phi = \phi(\varepsilon_t)$$
+
+Son dos operaciones:
+
+1. **Multiplicar por $\phi$.** Las dos coordenadas se multiplican por el mismo número, así que X′ queda sobre la recta O–X, más cerca del origen y con la misma excentricidad $e = M_n/P_n$. Con $\phi$ = 0.65 queda al 65 % de la distancia; con $\phi$ = 0.90, al 90 %.
+2. **Cortar con el techo.** Si $\phi P_n$ supera $\phi P_{n,máx}$, se usa $\phi P_{n,máx}$. El momento no se recorta, así que el punto baja en vertical hasta el techo.
+
+> [!info] ACI 318-19, 22.4.2.1 y Tabla 21.2.2
+> Con estribos, $P_{n,máx} = 0.80\,P_o$ (0.85 con zuncho), porque siempre hay alguna excentricidad accidental. Con $\phi$ = 0.65:
+> $$\phi P_{n,máx} = 0.65 \cdot 0.80 \cdot 5{,}125.834 = 2{,}665.434\ \text{kip}$$
+> $\phi$ vale 0.65 si $\varepsilon_t \le \varepsilon_{ty}$, 0.90 si $\varepsilon_t \ge \varepsilon_{ty} + 0.003$ y varía en línea recta entre ambos ([[#8. Paso 6 · Factor de reducción φ|§8]]).
+
+> [!note] Por qué no basta con multiplicar toda la curva por un solo $\phi$
+> $\phi$ cambia de un punto a otro: vale 0.65 desde A hasta B, crece entre B y C y vale 0.90 desde C hasta F. Por eso la curva de diseño no es una copia a escala de la nominal. Entre B′ y C′ se «abre» hacia afuera, y su momento máximo queda en C′ ($\phi M_n$ = 25,113.6 kip·in), no cerca de B como en la nominal ($M_n$ máximo = 29,850.1 kip·in con $c$ = 18.391 in). Lo muestra la Figura 9.3.
+
+### 9.2 Los puntos A′ a F′
+
+La tabla aplica las dos operaciones a los puntos de $+M_x$. Se agrega el punto **T**, donde la curva de diseño deja el techo. No es uno de los puntos A–F, pero marca la esquina de la curva de diseño.
+
+| Punto | $c$ (in) | $\varepsilon_t$ | Zona | $\phi$ | $P_n$ (kip) | $M_n$ (kip·in) | $\phi P_n$ (kip) | Punto de diseño $(\phi M_n ; \phi P_n)$ |
+|:-:|--:|--:|---|--:|--:|--:|--:|---|
+| **A** | ∞ | −0.00300 | Compresión | 0.650 | 5,125.8 | 84.1 | 3,331.8 → **2,665.4** | A′ = (54.7 ; 2,665.4) |
+| **E** | 39.370 | −0.00021 | Compresión | 0.650 | 4,206.8 | 15,707.1 | 2,734.4 → **2,665.4** | E′ = (10,209.6 ; 2,665.4) |
+| **T** | 38.009 | −0.00011 | Compresión | 0.650 | 4,100.7 | 17,130.8 | 2,665.4 | T = (11,135.0 ; 2,665.4) |
+| **B** | 21.697 | 0.00207 | Compresión | 0.650 | 2,571.7 | 29,605.5 | 1,671.6 | B′ = (19,243.6 ; 1,671.6) |
+| **C** | 13.630 | 0.00507 | Tensión | 0.900 | 1,351.5 | 27,904.0 | 1,216.4 | C′ = (25,113.6 ; 1,216.4) |
+| **D** | 5.632 | 0.01653 | Tensión | 0.900 | 0.0 | 17,198.2 | 0.0 | D′ = (15,478.3 ; 0.0) |
+| **F** | 0.000 | ∞ | Tensión | 0.900 | −1,209.6 | −90.5 | −1,088.6 | F′ = (−81.4 ; −1,088.6) |
+
+- **A′ · compresión pura.** $0.65\,P_o = 3{,}331.8$ kip supera el techo, así que se usa $\phi P_n = 2{,}665.434$ kip. El momento $\phi M_{nA} = 0.65 \cdot 84.08 = 54.65$ kip·in no es cero porque $P_o$ actúa en el centroide plástico y los momentos se miden respecto a G ([[#4.3 Centroide plástico (verificación)|§4.3]]). A′ es el extremo superior de la curva de diseño.
+- **E′ · eje neutro en la fibra extrema, $c = D$.** En $+M_x$, $0.65 \cdot 4{,}206.8 = 2{,}734.4$ kip también supera el techo y E′ queda sobre él. En $-M_x$, $\phi P_n$ = 2,308.1 kip queda debajo del techo.
+- **T · fin del techo.** La curva de diseño deja el techo cuando
+$$0.65\,P_n(c) = \phi P_{n,máx} = 0.65 \cdot 0.80\,P_o \quad\Leftrightarrow\quad P_n(c_T) = P_{n,máx} = 4{,}100.667\ \text{kip}$$
+Hay que buscar $c_T$ por iteración ([[#9.4.5 Iteraciones de búsqueda · puntos D y T|§9.4.5]]): $c_T = 38.009$ in, $M_n = 17{,}130.8$ kip·in y $T = (0.65 \cdot 17{,}130.8 ;\ 2{,}665.434) = (11{,}135.0 ;\ 2{,}665.434)$. Entre A′ y T la curva de diseño es la recta horizontal del techo. En $+M_x$, T está entre E y B ($c_T < c_E = 39.370$ in); en $-M_x$ está entre A y E ($c_T$ = 43.643 in), porque ahí E′ ya quedó debajo del techo.
+- **B′ · condición balanceada.** $\varepsilon_t = \varepsilon_{ty}$: es el último punto controlado por compresión, con $\phi$ = 0.65. $B' = 0.65\,B$.
+- **Entre B′ y C′ · transición.** $\phi$ crece de 0.65 a 0.90 junto con $\varepsilon_t$, así que cada punto se multiplica por un $\phi$ distinto.
+- **C′ · inicio del control por tensión.** $\varepsilon_t = \varepsilon_{ty} + 0.003$, así que $\phi$ = 0.90 y $C' = 0.90\,C$. Desde aquí hasta F todos los puntos se multiplican por 0.90. En $+M_x$, C′ tiene el mayor $\phi M_n$ de la rama.
+- **D′ · flexión pura.** Como $P_n = 0$, $D' = (0.90\,M_{nD} ;\ 0)$: es la resistencia de diseño a flexión sin carga axial.
+- **F′ · tensión pura.** $F' = 0.90\,(M_{nF} ;\ P_{nt}) = (-81.4 ;\ -1{,}088.640)$.
+
+Los mismos puntos en las cuatro ramas, como $(\phi M_n ; \phi P_n)$ en kip·in y kip:
+
+| Punto | $+M_x$ | $-M_x$ | $+M_y$ | $-M_y$ |
+|:-:|---|---|---|---|
+| **A′** | (54.7 ; 2,665.4) | (54.7 ; 2,665.4) | (−295.8 ; 2,665.4) | (−295.8 ; 2,665.4) |
+| **T** | (11,135.0 ; 2,665.4) | (−8,291.8 ; 2,665.4) | (8,304.7 ; 2,665.4) | (−6,572.4 ; 2,665.4) |
+| $c_T$ (in) | 38.009 | 43.643 | 28.724 | 34.836 |
+| **E′** | (10,209.6 ; 2,665.4) · techo | (−11,976.7 ; 2,308.1) | (6,715.9 ; 2,665.4) · techo | (−9,233.7 ; 2,316.8) |
+| **B′** | (19,243.6 ; 1,671.6) | (−18,712.3 ; 745.8) | (14,200.9 ; 1,646.7) | (−13,147.6 ; 547.0) |
+| **C′** | (25,113.6 ; 1,216.4) | (−22,124.7 ; 229.6) | (19,146.2 ; 1,175.9) | (−14,936.2 ; 52.3) |
+| **D′** | (15,478.3 ; 0.0) | (−19,591.5 ; 0.0) | (12,076.2 ; 0.0) | (−14,623.5 ; 0.0) |
+| **F′** | (−81.4 ; −1,088.6) | (−81.4 ; −1,088.6) | (440.8 ; −1,088.6) | (440.8 ; −1,088.6) |
+
+![[P3-09-1-puntos-prima.svg]]
+
+### 9.3 Cómo se construye el diagrama
+
+1. **Una rama a la vez.** Se elige la dirección; en $+M_x$ la fibra comprimida es la superior. Con eso quedan fijos $d_i$, $D$, $d_t$ y $\bar v$ ([[#6. Paso 4 · Direcciones de análisis y capas de acero|§6]]).
+2. **Se recorre el eje neutro** desde $c = \infty$ (toda la sección comprimida, punto A) hasta $c = 0$ (toda en tensión, punto F). En cada $c$ se hace el cálculo de §7.1 y sale el punto nominal; con su $\varepsilon_t$ sale $\phi$ y el punto de diseño.
+3. **Los puntos salen en orden.** Al bajar $c$, $P_n$ siempre disminuye: cada vez hay menos concreto comprimido y más acero en tensión. $M_n$ crece desde casi cero, llega a un máximo cerca de B y vuelve a casi cero en F. Por eso basta con unir cada punto con el siguiente (Figura 9.3).
+4. **La otra rama** ($-M_x$) se calcula igual, con la compresión en la fibra inferior; sus momentos son negativos. Las dos ramas se juntan en A y en F, porque con $c = \infty$ o $c = 0$ el estado no depende del lado comprimido.
+5. **El techo.** En la curva de diseño se traza la horizontal $\phi P_{n,máx}$ desde A′ hasta T, en cada rama.
+6. **El otro eje.** Lo mismo con $+M_y$ y $-M_y$. El resultado son dos diagramas cerrados, uno por eje (Figura 10).
+
+```mermaid
+flowchart TD
+    R["Elegir rama: +Mx, −Mx, +My o −My"] --> G["di, D, dt y v̄ de la rama"]
+    G --> C0["Empezar con c = ∞ (punto A)"]
+    C0 --> S["Estado para c (§7.1): a, Ac, vc, εsi, fsi, Csi"]
+    S --> N["Punto nominal (Mn ; Pn)"]
+    S --> PHI["εt → φ"]
+    N --> X["Punto de diseño (φMn ; mín(φPn, φPn,máx))"]
+    PHI --> X
+    X --> Q{"¿c = 0?"}
+    Q -- no --> DC["Bajar c al siguiente valor"] --> S
+    Q -- sí --> U["Unir los puntos en orden y trazar el techo"]
+    U --> O["Siguiente rama"]
+```
+
+![[P3-09-2-barrido-c.svg]]
+
+> [!note] Cómo leer la forma del diagrama
+> - **Parte superior plana:** el techo $\phi P_{n,máx}$, entre A′ y T.
+> - **Naranja ($\phi$ = 0.65):** controla la compresión; la curva de diseño está al 65 % de la nominal.
+> - **Ocre (transición):** $\phi$ sube de 0.65 a 0.90 y la curva de diseño se acerca a la nominal.
+> - **Azul ($\phi$ = 0.90):** controla la tensión; la curva de diseño está al 90 % de la nominal.
+> - **Asimetría de la L:** $+M_x$ y $-M_x$ no son iguales. Comprimir el ala (80 cm de ancho) da mucha más carga axial en B que comprimir el pie del alma (45 cm) ([[#7.5 Comparación de las cuatro ramas|§7.5]]).
+
+![[P3-09-3-P-M-phi-vs-c.svg]]
+
+### 9.4 Las iteraciones
+
+#### 9.4.1 Qué se itera
+
+Construir el diagrama no es un cálculo que converge a un número: es **repetir el mismo cálculo para muchos valores de $c$**. Cada repetición es una iteración y da una fila de la tabla de la hoja (sección 9). Los puntos A, E, B y C no necesitan búsqueda, porque su $c$ tiene fórmula ($\infty$, $D$, $c_b$ y $c_C$). Solo dos puntos se buscan por tanteo, porque se conoce su $P_n$ pero no su $c$: **D** ($P_n = 0$) y **T** ($P_n = P_{n,máx}$). Se resuelven por bisección ([[#9.4.5 Iteraciones de búsqueda · puntos D y T|§9.4.5]]).
+
+#### 9.4.2 Cómo lo hace la hoja
+
+La hoja calcula **215 valores de $c$ por rama** (860 para los cuatro). Los reparte donde la curva cambia más:
+
+| Tramo | Valores | De → a ($+M_x$, $D$ = 39.370 in) | Separación | Por qué |
+|---|:-:|---|---|---|
+| A | 1 | $c = \infty$ | — | Compresión pura |
+| Cerca de A | 40 | $50D$ = 1,968.5 → $1.6D$ = 62.992 in | Geométrica: cada valor es 8.2 % menor que el anterior | El eje neutro está fuera de la sección y la curva cambia poco |
+| Zona principal | 161 | $1.6D$ → $0.01D$ = 0.3937 in | Constante: $\Delta c = 1.59D/160$ = 0.3912 in en X y 0.3130 in en Y | Aquí está casi toda la curva |
+| Cerca de F | 9 | $0.01D$ → $0.001D$ = 0.03937 in | Geométrica | Casi toda la sección en tensión |
+| Puntos notables | 4 | $c_E = D$, $c_b$, $c_C$ y $c_D$ | Valores exactos | Para que E, B, C y D aparezcan en la tabla |
+| F | 1 | $c = 0$ | — | Tensión pura |
+
+Después se ordenan de mayor a menor y se quita el valor repetido ($0.01D$ está en dos tramos): $1 + 40 + 161 + 9 + 4 + 1 - 1 = 215$.
+
+Algunas filas de la rama $+M_x$:
+
+| Fila | Punto | $c$ (in) | $a$ (in) | $\varepsilon_t$ | $\phi$ | Zona | $P_n$ (kip) | $M_n$ (kip·in) | $\phi P_n$ (kip) | $\phi M_n$ (kip·in) |
+|:-:|:-:|--:|--:|--:|--:|---|--:|--:|--:|--:|
+| 1 | **A** | ∞ | 39.370 | −0.00300 | 0.650 | Compresión | 5,125.8 | 84.1 | 2,665.4 (techo) | 54.7 |
+| 35 |  | 115.050 | 39.370 | −0.00204 | 0.650 | Compresión | 5,123.3 | 134.7 | 2,665.4 (techo) | 87.5 |
+| 42 |  | 62.992 | 39.370 | −0.00125 | 0.650 | Compresión | 5,007.5 | 2,121.9 | 2,665.4 (techo) | 1,379.2 |
+| 72 |  | 51.255 | 39.370 | −0.00085 | 0.650 | Compresión | 4,933.7 | 3,243.0 | 2,665.4 (techo) | 2,108.0 |
+| 103 | **E** | 39.370 | 31.496 | −0.00021 | 0.650 | Compresión | 4,206.8 | 15,707.1 | 2,665.4 (techo) | 10,209.6 |
+| 124 |  | 31.302 | 25.041 | 0.00051 | 0.650 | Compresión | 3,555.4 | 23,078.4 | 2,311.0 | 15,001.0 |
+| 149 | **B** | 21.697 | 17.358 | 0.00207 | 0.650 | Compresión | 2,571.7 | 29,605.5 | 1,671.6 | 19,243.6 |
+| 160 |  | 17.608 | 14.087 | 0.00325 | 0.748 | Transición | 1,974.4 | 29,789.7 | 1,477.0 | 22,285.2 |
+| 171 | **C** | 13.630 | 10.904 | 0.00507 | 0.900 | Tensión | 1,351.5 | 27,904.0 | 1,216.4 | 25,113.6 |
+| 181 |  | 9.783 | 7.827 | 0.00824 | 0.900 | Tensión | 712.2 | 24,237.0 | 641.0 | 21,813.3 |
+| 192 | **D** | 5.632 | 4.506 | 0.01653 | 0.900 | Tensión | 0.0 | 17,198.2 | 0.0 | 15,478.3 |
+| 199 |  | 3.132 | 2.506 | 0.03211 | 0.900 | Tensión | −457.4 | 11,056.0 | −411.6 | 9,950.4 |
+| 205 |  | 0.785 | 0.628 | 0.13711 | 0.900 | Tensión | −1,125.5 | 1,301.8 | −1,013.0 | 1,171.6 |
+| 215 | **F** | 0.000 | 0.000 | ∞ | 0.900 | Tensión | −1,209.6 | −90.5 | −1,088.6 | −81.4 |
+
+- Las filas 1 a 106 están en el techo: $\phi P_n = \phi P_{n,máx}$. E (fila 103) todavía está en él, y T queda entre las filas 106 y 107.
+- Desde $c = D/\beta_1$ = 49.21 in hacia arriba, $a = D$: el bloque ya cubre toda la sección y solo cambian las deformaciones del acero. Por eso la curva casi no se mueve cerca de A.
+- La fila 160 está en transición ($\phi$ = 0.748). Desde C (fila 171) hasta F, $\phi$ = 0.90.
+
+> [!tip] En la hoja
+> Sección 9 (*Tabla de puntos del diagrama*): elige el eje y marca *Incluir rama negativa*. Las filas de los puntos notables tienen la letra en la columna *Punto*. **Copiar tabla para Excel** copia las 215 filas (o las 430 con la rama negativa) para graficarlas.
+
+#### 9.4.3 Cómo hacerlo en Excel
+
+En Excel cada iteración es una fila y cada paso de §7.1 es una columna. Así se arma la rama $+M_x$, con los datos en la fila 10 y las demás filas copiadas hacia abajo:
+
+1. **Nombres** (Fórmulas › Administrador de nombres) para los datos fijos: `fpc` = 5 · `fy` = 60 · `Es` = 29000 · `beta1` = 0.80 · `Dsec` = 39.370 · `dt` = 36.660 · `vbar` = 16.878 · `ety` = 0.002069 · `phiPmax` = 2,665.434.
+2. **Capas.** Cada capa ocupa tres columnas ($\varepsilon$, $f$, $C$), con $A_{si}$ en la fila 7 y $d_i$ en la fila 8 de su primera columna. En $+M_x$ hay 6 capas: capa 1: $A$ = 5.81, $d$ = 2.710 · capa 2: $A$ = 2.00, $d$ = 8.858 · capa 3: $A$ = 4.81, $d$ = 15.007 · capa 4: $A$ = 2.00, $d$ = 22.225 · capa 5: $A$ = 2.00, $d$ = 29.442 · capa 6: $A$ = 3.54, $d$ = 36.660 (in², in).
+3. **Valores de $c$** en la columna B, de mayor a menor. Para que la tabla se parezca a la de la hoja: una fila con $c = 1.6D$, cada fila siguiente $1.59D/160$ menor, hasta $0.01D$; luego se agregan las filas con el $c$ exacto de E, B, C y D, las de A y F (ver el aviso de abajo) y, si se quiere más detalle cerca de A, algunas entre $1.6D$ y $50D$. Al final se ordena todo (Datos › Ordenar, de mayor a menor).
+4. **Fórmulas** de la fila 10, copiadas hacia abajo:
+
+| Columna | Calcula | Fórmula de la fila 10 | Ver |
+|:-:|---|---|---|
+| B | $c$ | valor de la malla (de mayor a menor) | — |
+| C | $a$ | `=MIN(beta1*B10;Dsec)` | §7.1, paso 1 |
+| D | $h_1$ (ala) | `=MIN(17.717;C10)` | §7.2 |
+| E | $h_2$ (alma) | `=MAX(0;MIN(39.370;C10)-17.717)` | §7.2 |
+| F | $A_c$ | `=31.496*D10+17.717*E10` | §7.2 |
+| G | $v_c$ | `=SI(F10>0;(31.496*D10*D10/2+17.717*E10*(17.717+E10/2))/F10;0)` | §7.2 |
+| H | $P_c$ | `=0.85*fpc*F10` | §7.1, paso 3 |
+| I | $\varepsilon_{s1}$ | `=0.003*(I$8-$B10)/$B10` | §7.1, paso 4 (artificio 1) |
+| J | $f_{s1}$ | `=-SIGNO(I10)*MIN(Es*ABS(I10);fy)` | §7.1, paso 5 (artificio 2) |
+| K | $C_{s1}$ | `=I$7*(J10-SI($C10>=I$8;0.85*fpc;0))` | §7.1, paso 6 |
+| L a Z | capas 2 a 6 | las tres fórmulas anteriores, copiadas a la derecha (cada capa con su $A_{si}$ en la fila 7 y su $d_i$ en la fila 8) |  |
+| AA | $P_n$ | `=H10+K10+N10+Q10+T10+W10+Z10` | §7.1, paso 7 |
+| AB | $M_n$ | `=H10*(vbar-G10)+K10*(vbar-I$8)+N10*(vbar-L$8)+Q10*(vbar-O$8)+T10*(vbar-R$8)+W10*(vbar-U$8)+Z10*(vbar-X$8)` | §7.1, paso 7 |
+| AC | $\varepsilon_t$ | `=0.003*(dt-B10)/B10` | §8 |
+| AD | $\phi$ | `=SI(AC10<=ety;0.65;SI(AC10>=ety+0.003;0.9;0.65+0.25*(AC10-ety)/0.003))` | §8 |
+| AE | $\phi P_n$ | `=MIN(AD10*AA10;phiPmax)` | techo |
+| AF | $\phi M_n$ | `=AD10*AB10` |  |
+
+Con estas fórmulas, las filas coinciden con la tabla de la hoja con diferencias menores de 0.1 kip y 0.5 kip·in, que vienen de escribir la geometría con 3 decimales. Los números de las columnas D a G son la geometría de la L en $+M_x$ (en in): el ala va de 0 a $t_f$ con ancho $B$ y el alma de $t_f$ a $H$ con ancho $t_w$. En las otras ramas cambian esos límites ([[#7.2 Área comprimida en la L|§7.2]]).
+
+> [!warning] Los extremos A y F en Excel
+> Excel no acepta $c = \infty$ ni $c = 0$ (dividir entre cero). Usa **$c$ = 1000·D** para A: todas las barras quedan a $-0.003$, el bloque cubre toda la sección y la fila da exactamente $P_o$. Usa **$c$ = 0.0001 in** para F: todas las barras fluyen en tensión y la fila da $P_{nt}$ (el concreto que queda es despreciable).
+
+#### 9.4.4 Una iteración completa · $c$ = 15.000 in en $+M_x$
+
+Cualquier $c$ sirve. Este no está en la malla de la hoja (las filas vecinas tienen $c$ = 15.261 y 14.870 in), así que es un buen ejemplo de una fila «nueva».
+
+$$a = \beta_1 c = 0.80\cdot15.000 = 12.000\ \text{in} \quad < t_f = 17.717\ \text{in}\ \Rightarrow\ \text{el bloque solo toma el ala}$$
+
+$$A_c = 31.496\cdot12.000 = 377.953\ \text{in}^2 \qquad v_c = \dfrac{377.953\cdot6.000}{377.953} = 6.000\ \text{in} \qquad P_c = 0.85\cdot5.0\cdot377.953 = 1{,}606.299\ \text{kip}$$
+
+> [!example]- Tablas de la iteración $c$ = 15.000 in (bloque y capas)
+> | Rectángulo | $b_j$ (in) | $v_{0j}$ (in) | $v_{1j}$ (in) | $h_j=\min(v_{1j},a)-v_{0j}$ (in) | $A_j=b_j h_j$ (in²) | $v_j=v_{0j}+h_j/2$ (in) |
+> |---|--:|--:|--:|--:|--:|--:|
+> | R1 · ala | 31.496 | 0.000 | 17.717 | 12.000 | 377.953 | 6.000 |
+> | R2 · alma | 17.717 | 17.717 | 39.370 | 0.000 | 0.000 | — |
+> | **Σ** | | | | | **377.953** | |
+>
+> | Capa | Barras | $A_{si}$ (in²) | $d_i$ (in) | $\varepsilon_{si}$ | $f_{si}$ (ksi) | ¿$a<d_i$? | $C_{si}$ (kip) | $\bar v-d_i$ (in) | $C_{si}(\bar v-d_i)$ (kip·in) | Estado |
+> |---|---|--:|--:|--:|--:|:-:|--:|--:|--:|---|
+> | A1 | 3 #10 + 2 #9 | 5.81 | 2.710 | −0.00246 | 60.000 | No → resta 0.85f′c | 323.908 | 14.168 | 4,589.22 | Comp. · fluye |
+> | A2 | 2 #9 | 2.00 | 8.858 | −0.00123 | 35.622 | No → resta 0.85f′c | 62.744 | 8.020 | 503.20 | Comp. |
+> | A3 | 3 #10 + 1 #9 | 4.81 | 15.007 | 0.0000013 | −0.039 | Sí | −0.188 | 1.871 | −0.35 | Tens. |
+> | A4 | 2 #9 | 2.00 | 22.225 | 0.00144 | −41.903 | Sí | −83.805 | −5.346 | 448.06 | Tens. |
+> | A5 | 2 #9 | 2.00 | 29.442 | 0.00289 | −60.000 | Sí | −120.000 | −12.564 | 1,507.72 | Tens. · fluye |
+> | A6 | 2 #10 + 1 #9 | 3.54 | 36.660 | 0.00433 | −60.000 | Sí | −212.400 | −19.782 | 4,201.73 | Tens. · fluye |
+> | **Σ** | | **20.16** | | | | | **−29.741** | | **11,249.58** | |
+
+$$P_n = P_c + \sum C_{si} = 1{,}606.299 + (-29.741) = \mathbf{1{,}576.558}\ \text{kip}$$
+
+$$M_n = P_c(\bar v - v_c) + \sum C_{si}(\bar v - d_i) = 1{,}606.299\,(16.878 - 6.000) + 11{,}249.58 = \mathbf{28{,}723.1}\ \text{kip}\cdot\text{in}$$
+
+$$\varepsilon_t = 0.003\,\frac{36.660 - 15.000}{15.000} = 0.00433 \quad (\varepsilon_{ty} < \varepsilon_t < 0.00507:\ \text{transición}) \;\Rightarrow\; \phi = 0.65 + 0.25\,\frac{0.00433 - 0.00207}{0.003} = 0.8386$$
+
+$$\phi P_n = 0.8386\cdot1{,}576.558 = 1{,}322.087\ \text{kip} < \phi P_{n,máx} \qquad \phi M_n = 0.8386\cdot28{,}723.1 = 24{,}086.9\ \text{kip}\cdot\text{in}$$
+
+
+Resultado de esta iteración: punto nominal $(28{,}723.1 ;\ 1{,}576.6)$ y punto de diseño $(24{,}086.9 ;\ 1{,}322.1)$, con $\phi$ = 0.8386. La capa A3 está prácticamente sobre el eje neutro ($d_3$ = 15.007 in ≈ $c$), así que casi no aporta fuerza. La carga $P_n$ queda entre las de las filas vecinas (1,617.8 y 1,555.8 kip), como debe ser.
+
+> [!tip] En la hoja
+> Vista *Perfil de cálculo* → dirección $+X$ → punto *c libre* → escribe $c$ = 15.000 in. La hoja muestra las mismas tablas, los diagramas de deformaciones, esfuerzos y fuerzas, y el momento inducido $M_\perp$ = −7,198.8 kip·in.
+
+#### 9.4.5 Iteraciones de búsqueda · puntos D y T
+
+$P_n$ crece siempre con $c$ (Figura 9.3). Entonces, si en $c_{inf}$ la carga es negativa y en $c_{sup}$ es positiva, el $c$ con $P_n = 0$ está entre los dos. La **bisección** parte el intervalo a la mitad en cada paso y se queda con la mitad donde $P_n$ cambia de signo:
+
+1. Escoger $c_{inf}$ con $P_n < 0$ y $c_{sup}$ con $P_n > 0$. Aquí: $c_{inf} = 0.02D$ = 0.7874 in ($P_n$ = −1,125.3 kip) y $c_{sup} = c_C$ = 13.6301 in ($P_n$ = 1,351.5 kip).
+2. Calcular $c_m = (c_{inf} + c_{sup})/2$ y $P_n(c_m)$ con §7.1.
+3. Si $P_n(c_m) > 0$, el cero está abajo: $c_{sup} = c_m$. Si $P_n(c_m) < 0$, está arriba: $c_{inf} = c_m$.
+4. Repetir hasta que $|P_n(c_m)|$ sea despreciable.
+
+Primeros pasos: $c_m$ = 7.2088 in da $P_n$ = 281.9 kip > 0, así que se baja $c_{sup}$. Luego $c_m$ = 3.9981 in da −294.7 kip < 0, así que se sube $c_{inf}$.
+
+> [!example]- Bisección completa del punto D en $+M_x$ (15 pasos)
+> | $k$ | $c_{inf}$ (in) | $c_{sup}$ (in) | $c_m = (c_{inf} + c_{sup})/2$ | $P_n(c_m)$ (kip) | Siguiente intervalo |
+> |:-:|--:|--:|--:|--:|---|
+> | 1 | 0.7874 | 13.6301 | 7.2088 | 281.915 | baja $c_{sup}$ |
+> | 2 | 0.7874 | 7.2088 | 3.9981 | −294.678 | sube $c_{inf}$ |
+> | 3 | 3.9981 | 7.2088 | 5.6034 | −5.688 | sube $c_{inf}$ |
+> | 4 | 5.6034 | 7.2088 | 6.4061 | 145.362 | baja $c_{sup}$ |
+> | 5 | 5.6034 | 6.4061 | 6.0047 | 72.012 | baja $c_{sup}$ |
+> | 6 | 5.6034 | 6.0047 | 5.8041 | 33.763 | baja $c_{sup}$ |
+> | 7 | 5.6034 | 5.8041 | 5.7037 | 14.195 | baja $c_{sup}$ |
+> | 8 | 5.6034 | 5.7037 | 5.6536 | 4.294 | baja $c_{sup}$ |
+> | 9 | 5.6034 | 5.6536 | 5.6285 | −0.686 | sube $c_{inf}$ |
+> | 10 | 5.6285 | 5.6536 | 5.6410 | 1.807 | baja $c_{sup}$ |
+> | 11 | 5.6285 | 5.6410 | 5.6348 | 0.561 | baja $c_{sup}$ |
+> | 12 | 5.6285 | 5.6348 | 5.6316 | −0.063 | sube $c_{inf}$ |
+> | 13 | 5.6316 | 5.6348 | 5.6332 | 0.249 | baja $c_{sup}$ |
+> | 14 | 5.6316 | 5.6332 | 5.6324 | 0.093 | baja $c_{sup}$ |
+> | 15 | 5.6316 | 5.6324 | 5.6320 | 0.015 | baja $c_{sup}$ |
+>
+> En 15 pasos, $c$ = 5.6320 in con $P_n$ = 0.015 kip. La hoja hace lo mismo con una tolerancia mucho menor (48 pasos, desde un intervalo muy amplio) y obtiene $c_D$ = 5.6319 in.
+
+**Punto T.** Es la misma bisección con otra meta: buscar $c$ tal que $P_n(c) = P_{n,máx}$ = 4,100.667 kip, entre $c_b$ y un $c$ grande. Resultado: $c_T$ = 38.009 in.
+
+> [!tip] En Excel: Buscar objetivo
+> En lugar de la bisección a mano: Datos › Análisis de hipótesis › **Buscar objetivo**. *Definir la celda* = la celda de $P_n$ de una fila; *Con el valor* = 0 (punto D) o 4,100.667 (punto T); *Cambiando la celda* = la celda de $c$ de esa fila.
+
+#### 9.4.6 A mano en el examen
+
+Con 215 filas por rama no se trabaja a mano. En el examen basta con:
+
+1. **A, E, B, C, D y F** de cada rama ([[#7. Paso 5 · Inciso 2 · puntos del diagrama de interacción|§7]]). Para D, dos o tres pasos de bisección y luego interpolación lineal entre los dos $c$ con $P_n$ de signo contrario.
+2. **φ de cada punto** con su $\varepsilon_t$, y los puntos A′–F′. Si $\phi P_n > \phi P_{n,máx}$, se recorta al techo.
+3. **T aproximado.** Si E′ quedó en el techo ($+M_x$ y $+M_y$), se busca en la recta nominal E–B el punto con $P_n = P_{n,máx}$ y se multiplica por 0.65. En $+M_x$:
+$$s = \frac{P_{nE} - P_{n,máx}}{P_{nE} - P_{nB}} = \frac{4{,}206.8 - 4{,}100.67}{4{,}206.8 - 2{,}571.7} = 0.0649 \qquad M_n \approx 15{,}707.1 + 0.0649\,(29{,}605.5 - 15{,}707.1) = 16{,}609.3$$
+$$T \approx (0.65 \cdot 16{,}609.3 ;\ 2{,}665.434) = (10{,}796.0 ;\ 2{,}665.434)$$
+Es 3.0 % menos momento que el valor exacto (11,135.0), del lado seguro. Si E′ quedó debajo del techo ($-M_x$ y $-M_y$), T se busca igual en la recta A–E.
+4. **Más forma, si hace falta:** uno o dos $c$ intermedios entre E y B y entre B y C, donde la curva se dobla más.
+5. **Dibujar:** A′–T por el techo, luego T, B′, C′, D′ y F′ unidos en orden. Repetir con la otra rama y con el otro eje.
+
+> [!success] Lo que hay que recordar
+> - Cada punto del diagrama es un $c$. La curva nominal usa $(M_n ; P_n)$ y la de diseño $(\phi M_n ; \min(\phi P_n, \phi P_{n,máx}))$ con el $\phi$ de ese $c$.
+> - A′–F′ son los puntos A–F multiplicados por su $\phi$ (0.65 en A, E y B; 0.90 en C, D y F) y recortados por el techo. T es donde termina el techo.
+> - Las iteraciones son el barrido de $c$ de $\infty$ a 0 (215 valores por rama en la hoja). Solo D y T necesitan bisección.
+> - Con solo los puntos A′–F′ y T, el D/C sale un poco mayor que con la curva completa, es decir, del lado seguro ([[#10.4 D/C de cada caso|§10.4]]).
+
+---
+
+## 10. Paso 7 · Inciso 3 · revisión de las combinaciones
 
 **Hoja: sección 7.** Se ingresan los 6 casos con $P_u$, $M_x$, $M_y$, $V_x$, $V_y$.
 
-### 9.1 Reglas de la revisión
+### 10.1 Reglas de la revisión
 
 1. **Momentos no simultáneos:** $(P_u, M_x)$ se revisa en el diagrama X y $(P_u, M_y)$ en el diagrama Y, por separado.
 2. **El signo elige la rama:** $M_x > 0$ usa $+M_x$; $M_x < 0$ usa $-M_x$; igual para $M_y$.
@@ -1132,7 +1413,7 @@ $$\frac{D}{C} = \frac{|OU|}{|OC|} \qquad \text{cumple si } D/C \le 1$$
 > [!note] Por qué radial
 > El rayo mantiene constante la excentricidad $e = M_u/P_u$. Si las cargas crecieran en proporción, la columna fallaría en C. D/C dice qué fracción de esa capacidad se está usando.
 
-### 9.2 Resultados
+### 10.2 Resultados
 
 | Caso | $P_u$ | $M_x$ | Rama | $\phi P_n$ | $\phi M_n$ | D/C X | $M_y$ | Rama | $\phi P_n$ | $\phi M_n$ | D/C Y | Resultado |
 |:-:|--:|--:|:-:|--:|--:|--:|--:|:-:|--:|--:|--:|---|
@@ -1147,7 +1428,7 @@ $P_u$ en kip; momentos en kip·in; $\phi P_n$ y $\phi M_n$ son las coordenadas d
 
 ![[P3-10-diagramas.svg]]
 
-### 9.3 Cómo se calcula D/C paso a paso
+### 10.3 Cómo se calcula D/C paso a paso
 
 La hoja hace este cálculo para cada combinación y cada eje. A mano se siguen los mismos seis pasos; solo cambian los números. En lo que sigue, cada punto de la curva de diseño se escribe como $(x ; y) = (\phi M_n ; \phi P_n)$.
 
@@ -1173,7 +1454,7 @@ Las dos divisiones dan lo mismo. Cerca de la flexión pura ($P_u$ pequeña) conv
 > - Sección 7 y panel *Revisión*: D/C en X y en Y de cada combinación.
 > - En los diagramas, toca una combinación: se resalta su rayo y aparecen $\phi P_n$ y $\phi M_n$ del punto C.
 
-### 9.4 D/C de cada caso
+### 10.4 D/C de cada caso
 
 | Caso | Eje · rama | $M_u$ (kip·in) | $P_u$ (kip) | $e$ (in) | $c_1 \to c_2$ (in) | Zona · $\phi$ | $s$ | $\phi M_{n,C}$ (kip·in) | $\phi P_{n,C}$ (kip) | D/C | Solo con A–F |
 |:-:|---|--:|--:|--:|:-:|---|--:|--:|--:|--:|--:|
@@ -1535,7 +1816,7 @@ Desarrollo de cada caso (despliega el que necesites):
 >
 > **Lectura.** C queda entre los puntos notables E y B de la rama $+M_y$, en la zona controlada por compresión. Es el **D/C más alto del examen** y gobierna el inciso 3. $P_u$ es la carga axial más alta y $M_y$ es el mayor momento del caso.
 
-### 9.5 Revisiones axiales
+### 10.5 Revisiones axiales
 
 $$P_{u,máx} = 1{,}800\ \text{kip} \le \phi P_{n,máx} = 2{,}665.434\ \text{kip} \quad \checkmark \qquad P_{u,mín} = -880\ \text{kip} \ge \phi P_{nt} = -1{,}088.640\ \text{kip} \quad \checkmark$$
 
@@ -1552,11 +1833,11 @@ $$P_{u,máx} = 1{,}800\ \text{kip} \le \phi P_{n,máx} = 2{,}665.434\ \text{kip}
 
 ---
 
-## 10. Paso 8 · Inciso 4 · cortante y refuerzo transversal
+## 11. Paso 8 · Inciso 4 · cortante y refuerzo transversal
 
 **Hoja: sección 8.**
 
-### 10.1 Datos para cortante
+### 11.1 Datos para cortante
 
 **Datos del refuerzo para cortante** (hoja: sección 8.2). Son los mismos datos del bloque *Refuerzo propuesto* de la hoja de clase *Cortante en Columnas*:
 
@@ -1600,7 +1881,7 @@ $$V_y:\ b_{w,y} = t_f = 17.717\ \text{in},\quad d_y = B - d_0 = 28.786\ \text{in
 
 ![[P3-12-cortante-geom.svg]]
 
-**Ramas.** $n_x$ son las ramas paralelas a Y que cruzan el alma: las 2 ramas verticales del estribo del alma ($n_x$ = 2). $n_y$ son las ramas paralelas a X que cruzan el ala: las 2 ramas horizontales del estribo del ala, más un eslabón a media altura del ala ($n_y$ = 3, ver [[#10.5 Elección de la separación|§10.5]]).
+**Ramas.** $n_x$ son las ramas paralelas a Y que cruzan el alma: las 2 ramas verticales del estribo del alma ($n_x$ = 2). $n_y$ son las ramas paralelas a X que cruzan el ala: las 2 ramas horizontales del estribo del ala, más un eslabón a media altura del ala ($n_y$ = 3, ver [[#11.5 Elección de la separación|§11.5]]).
 
 **¿Cortante por capacidad?**
 
@@ -1613,7 +1894,7 @@ $$\frac{l_u}{c_1} = \frac{206.69}{17.717} = 11.67 > 5$$
 
 $$\rho_{w,x} = \frac{22.86}{17.717\cdot36.660} = 0.03520 \qquad \rho_{w,y} = \frac{22.86}{17.717\cdot28.786} = 0.04482$$
 
-### 10.2 Resistencia del concreto $V_c$
+### 11.2 Resistencia del concreto $V_c$
 
 > [!info] ACI 318-19, Tabla 22.5.5.1(b) y 22.5.5.1.1–2
 > $$V_c = \left[8\lambda\,\rho_w^{1/3}\sqrt{f'_c} + \frac{N_u}{6A_g}\right] b_w d, \qquad \frac{N_u}{6A_g} \le 0.05 f'_c, \qquad 0 \le V_c \le 5\lambda\sqrt{f'_c}\,b_w d$$
@@ -1629,7 +1910,7 @@ $$V_{c,y} = \left[8\cdot1\cdot0.3552\cdot70.71 + 212.40\right]\cdot17.717\cdot28
 
 $$\phi V_{c,x} = 0.75\cdot229.63 = 172.22\ \text{kip} \qquad \phi V_{c,y} = 0.75\cdot180.31 = 135.23\ \text{kip}$$
 
-### 10.3 Área de refuerzo transversal
+### 11.3 Área de refuerzo transversal
 
 $$\frac{A_{vn}}{s} = \frac{V_u/\phi_v - V_c}{f_{yt}\,d} \qquad \frac{A_{v,mín}}{s} = \max\!\left(0.75\sqrt{f'_c}\,\frac{b_w}{f_{yt}},\ 50\,\frac{b_w}{f_{yt}}\right) \qquad \frac{A_v}{s} = \max\!\left(\frac{A_{vn}}{s},\ \frac{A_{v,mín}}{s}\right)$$
 
@@ -1645,7 +1926,7 @@ $$s_{v,y} = \frac{2\cdot0.20}{0.16194} = 2.470\ \text{in} = 6.27\ \text{cm} \qua
 
 Caso 1, dirección X ($V_u$ = 250 kip, $n_x$ = 2): $A_{vn}/s$ = 0.04715 in²/in → $s_{v,x}$ = 8.484 in = 21.55 cm.
 
-### 10.4 Separación máxima y límite de la sección
+### 11.4 Separación máxima y límite de la sección
 
 > [!info] ACI 318-19, 10.7.6.5.2 y 22.5.1.2
 > $$V_s = \frac{A_v}{s}\,f_{yt}\,d \qquad s_{máx} = \begin{cases}\min(d/2,\ 24\ \text{in}) & V_s \le 4\sqrt{f'_c}\,b_w d \\ \min(d/4,\ 12\ \text{in}) & V_s > 4\sqrt{f'_c}\,b_w d\end{cases} \qquad V_u/\phi - V_c \le 8\sqrt{f'_c}\,b_w d$$
@@ -1668,7 +1949,7 @@ Caso 1 en X: $V_s$ = 103.70 kip ≤ 183.70 kip → $s_{máx}$ = $\min(d_x/2,\ 24
 > [!note] Los casos en tensión
 > En los casos 3, 4 y 5 el término $N_u/6A_g$ es negativo y $V_c$ cae a 19–48 kip. Aun así no controlan porque sus cortantes son menores.
 
-### 10.5 Elección de la separación
+### 11.5 Elección de la separación
 
 ![[P3-13-cortante-s.svg]]
 
@@ -1681,7 +1962,7 @@ Otras opciones válidas: 4 ramas en el ala → 12.5 cm; estribo #5 con 2 ramas �
 > [!tip] En la hoja
 > Cambia $n_y$ de 2 a 3 en la sección 8. La tabla por combinación se recalcula y la separación de diseño pasa a 9.0 cm.
 
-### 10.6 Soporte lateral de las barras y separación por pandeo
+### 11.6 Soporte lateral de las barras y separación por pandeo
 
 **Separación máxima de estribos** (evita que las barras longitudinales se pandeen):
 
@@ -1697,7 +1978,7 @@ No controla (9 cm < 45.0 cm).
 - En s1–s5 y s8 hay 1 barra intermedia con separación libre de 12.57 o 14.46 cm ≤ 15.24 cm: basta con las esquinas.
 - En s6 y s7 hay 2 barras con separación libre de 15.29 cm > 15.24 cm: **cada barra intermedia necesita soporte**. Con la fórmula de clase, que supone todas las barras #10, saldría $h = L_{cc}/(N-1) - \phi_l$ = 15.11 cm < 15.24 cm y la respuesta sería "No"; la diferencia está en que las intermedias son #9. La hoja decide con la separación real (sección 8.10). Como las barras de s6 y s7 están a la misma altura, **2 eslabones horizontales** (uno por nivel) soportan las 4 barras.
 
-### 10.7 Esquema final de la sección
+### 11.7 Esquema final de la sección
 
 ![[P3-15-seccion-final.svg]]
 
@@ -1706,7 +1987,7 @@ No controla (9 cm < 45.0 cm).
 > - Refuerzo transversal **#4 @ 9.0 cm** en toda la altura: 2 estribos rectangulares (ala y alma), 1 eslabón horizontal en el ala (rama extra para $V_y$) y 2 eslabones horizontales en el alma (soporte lateral de s6–s7).
 > - $s$ = 9.0 cm ≤ $s_{máx}$ = 18.28 cm y ≤ $s_x$ = 45.0 cm.
 
-### 10.8 Comparación con la hoja de clase (Mathcad y Excel)
+### 11.8 Comparación con la hoja de clase (Mathcad y Excel)
 
 La sección 8 de la hoja sigue el mismo procedimiento que *Cortante en Columnas* (Mathcad) y la hoja IC de *Diseño de Columnas* (Excel):
 
@@ -1749,7 +2030,7 @@ Los tres primeros detalles de geometría solo cambian el resultado cuando $b \ne
 
 ---
 
-## 11. Resumen de resultados
+## 12. Resumen de resultados
 
 | Inciso | Qué se pidió | Resultado |
 |---|---|---|
@@ -1760,7 +2041,7 @@ Los tres primeros detalles de geometría solo cambian el resultado cuando $b \ne
 
 ---
 
-## 12. Glosario de símbolos
+## 13. Glosario de símbolos
 
 | Símbolo | Significado | P3 |
 |---|---|---|
@@ -1792,8 +2073,8 @@ Los tres primeros detalles de geometría solo cambian el resultado cuando $b \ne
 | $P_o$ | Compresión pura nominal | 5,125.834 kip |
 | $\phi P_{n,máx}$ | Tope de la curva de diseño, $0.65\cdot0.80\,P_o$ | 2,665.434 kip |
 | D/C | Demanda / capacidad medida sobre el rayo desde el origen | ≤ 1 cumple |
-| $b_w$, $d$ | Ancho y peralte que resisten el cortante en cada dirección | tablas §10 |
-| $\rho_w$ | Cuantía longitudinal usada en $V_c$ | tablas §10 |
+| $b_w$, $d$ | Ancho y peralte que resisten el cortante en cada dirección | tablas §11 |
+| $\rho_w$ | Cuantía longitudinal usada en $V_c$ | tablas §11 |
 | $N_u$ | Carga axial de la combinación (+ compresión, − tensión) | $P_u$ |
 | $V_c$, $V_s$ | Cortante resistido por el concreto y por el acero transversal | variable |
 | $A_v/s$ | Área de refuerzo transversal por unidad de longitud | variable |
@@ -1802,7 +2083,7 @@ Los tres primeros detalles de geometría solo cambian el resultado cuando $b \ne
 
 ---
 
-## 13. Secciones de ACI 318-19 utilizadas
+## 14. Secciones de ACI 318-19 utilizadas
 
 | Sección | Para qué se usa |
 |---|---|
@@ -1825,11 +2106,11 @@ Los tres primeros detalles de geometría solo cambian el resultado cuando $b \ne
 
 ---
 
-## 14. Verificación y limitaciones
+## 15. Verificación y limitaciones
 
 - **Verificación del motor de la hoja:** el cálculo exacto por rectángulos coincide con un modelo de fibras de 0.02 in en menos de 0.1 %, y con la sección rectangular 80×80 de clase reproduce los mismos resultados que la hoja v4.
 - **Momento perpendicular:** la revisión ignora $M_\perp$ (27 %–56 % de $M$ en el punto B). Es la simplificación de clase; una revisión más rigurosa giraría el eje neutro hasta anular $M_\perp$ o usaría la superficie de interacción biaxial.
-- **Cortante:** la sección 8 reproduce la hoja de clase (Mathcad y Excel) en el ejemplo 80×80 y en 64 casos de prueba; la única diferencia es el tope de $V_c$ de 22.5.5.1.1, que aquí sí se aplica (§10.8).
+- **Cortante:** la sección 8 reproduce la hoja de clase (Mathcad y Excel) en el ejemplo 80×80 y en 64 casos de prueba; la única diferencia es el tope de $V_c$ de 22.5.5.1.1, que aquí sí se aplica (§11.8).
 - **Columna corta:** no se revisó esbeltez.
 - **$\rho_w$ en $V_c$:** se usó el criterio de la hoja de clase ($A_l\cdot$No.$\phi_l$ con la barra mayor). La hoja permite cambiarlo a $A_{st}$ real o a las barras a más de $2D/3$ (comentario R22.5.5.1); el resultado de este examen no cambia.
 
