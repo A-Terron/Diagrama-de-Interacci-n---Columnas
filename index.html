@@ -413,12 +413,13 @@ tr[data-cbi]{cursor:pointer}
           <div class="step input"><div class="mline"><span class="lhs"><var>b</var><sub>w,y</sub></span><span class="op">:=</span><span class="inbox"><input id="i-bwy" class="in" data-k="shearMan.bwy" data-q="len" inputmode="decimal" autocomplete="off"><select class="iu" data-k="shearMan.bwy" data-q="len" aria-label="Unidad"></select></span></div><div class="note"><span class="tag in">ingresado</span>Ancho que resiste <var>V</var><sub>y</sub></div></div>
           <div class="step input"><div class="mline"><span class="lhs"><var>d</var><sub>y</sub></span><span class="op">:=</span><span class="inbox"><input id="i-dy" class="in" data-k="shearMan.dy" data-q="len" inputmode="decimal" autocomplete="off"><select class="iu" data-k="shearMan.dy" data-q="len" aria-label="Unidad"></select></span></div><div class="note"><span class="tag in">ingresado</span>Peralte para <var>V</var><sub>y</sub></div></div>
         </div>
+        <div class="slot" data-slot="shearData"></div>
         <div class="slot" data-slot="shearAxes"></div>
         <div class="slot" data-slot="shearGeo"></div>
-        <h4 class="subh">8.5 Resultados por combinación</h4>
+        <h4 class="subh">8.6 Resultados por combinación</h4>
         <div class="tscroll" id="shear-wrap"></div>
         <div class="slot" data-slot="shearAll"></div>
-        <h4 class="subh">8.7 Desarrollo paso a paso de una combinación</h4>
+        <h4 class="subh">8.8 Desarrollo paso a paso de una combinación</h4>
         <div class="selrow"><label for="i-shCombo"><span class="tag in">ingresado</span>Combinación <select id="i-shCombo" class="insel"></select></label><span class="mini">Por defecto, la que controla la separación</span></div>
         <div class="slot" data-slot="shearDetail"></div>
         <div class="slot" data-slot="shearSum"></div>
@@ -511,7 +512,7 @@ tr[data-cbi]{cursor:pointer}
       </section>
     </aside>
   </div>
-  <p class="foot">Versión 5.2. Procedimiento de las clases de Diseño de Columnas (octubre de 2026) generalizado a secciones formadas por rectángulos, ACI 318-19 y tabla de varillas ASTM. Columna corta, flexión uniaxial con eje neutro paralelo al eje de flexión; el momento perpendicular inducido se reporta pero no se revisa. Detalles en el <a href="docs/procedimiento-columna-L.html" target="_blank" rel="noopener">procedimiento</a>.</p>
+  <p class="foot">Versión 5.3. Procedimiento de las clases de Diseño de Columnas (octubre de 2026) generalizado a secciones formadas por rectángulos, ACI 318-19 y tabla de varillas ASTM. Columna corta, flexión uniaxial con eje neutro paralelo al eje de flexión; el momento perpendicular inducido se reporta pero no se revisa. Detalles en el <a href="docs/procedimiento-columna-L.html" target="_blank" rel="noopener">procedimiento</a>.</p>
 </div>
 <div class="tooltip" id="tip" hidden></div>
 <script>
@@ -957,8 +958,30 @@ function computeShear(inp, R) {
     const fcl = (N, len) => ({ N, len, clear: (len - (2 * inp.rec + 2 * phes + N * phl)) / (N - 1) });
     faceCls = { hx: fcl(NY, inp.H), hy: fcl(NX, inp.B) };
   }
-  return { fc_psi, sq, lam, fyt, phl, phlmin, noL, noLmin, phes, Aes, Nl, d0, gx, gy, AsVx, AsVy, Ag, phiv, rows, gov, sRaw, sShear, sxRaw, sx, s,
-    least: R.sec.least, luc1: inp.lu / R.sec.least, In, Vprx, Vpry, nuMode, PuMin, PuMax, faceCls };
+  // Barras por cara (hoja de clase): caras completas de longitud B (paralela a X) y H (paralela a Y), con esquinas
+  const nOf = k => { const sg = R.sec.segs.find(q => q.k === k); return sg ? sg.n : 0; };
+  let cara = null;
+  if (inp.shape === 'rect' && inp.faces) {
+    const nI = k => Math.max(0, Math.floor((inp.faces[k] || {}).n || 0));
+    cara = { x: 2 + Math.max(nI('bot'), nI('top')), y: 2 + Math.max(nI('left'), nI('right')), xDef: '2 + n<sub>inf/sup</sub>', yDef: '2 + n<sub>izq/der</sub>',
+      xTxt: 'caras inferior y superior, de longitud B', yTxt: 'caras izquierda y derecha, de longitud H' };
+  } else if (inp.shape === 'L') {
+    cara = { x: 3 + nOf('s1') + nOf('s2'), y: 3 + nOf('s5') + nOf('s6'), xDef: '3 + n<sub>s1</sub> + n<sub>s2</sub>', yDef: '3 + n<sub>s5</sub> + n<sub>s6</sub>',
+      xTxt: 'cara exterior del ala, de longitud B (3 barras rojas + intermedias de s1 y s2)', yTxt: 'cara exterior del alma, de longitud H (3 barras rojas + intermedias de s5 y s6)' };
+  }
+  // Separación libre por segmento entre barras rojas: fórmula de clase (todas las barras con ϕl) y real (diámetro de cada barra)
+  const sp = R.sp || [];
+  const segCls = R.sec.segs.filter(sg => !sg.inner || sg.n > 0).map(sg => {
+    const N = sg.n + 2, info = sp.find(q => q.k === sg.k) || {};
+    const par = Math.abs(sg.p2[1] - sg.p1[1]) > Math.abs(sg.p2[0] - sg.p1[0]) ? 'y' : 'x';   // dirección de la cara
+    const hCls = (sg.len - (N - 1) * phl) / (N - 1);
+    return { k: sg.k, name: sg.name, n: sg.n, N, Lcc: sg.len, par, ax: par === 'y' ? 'x' : 'y', hCls, hReal: info.sclear, needCls: sg.n > 0 && hCls >= 6 - 1e-9, needReal: sg.n > 0 && info.sclear > 6 + 1e-9, ties: info.ties || 0 };
+  });
+  const needAx = a => ({ cls: faceCls ? (a === 'x' ? faceCls.hx.clear : faceCls.hy.clear) >= 6 - 1e-9 : segCls.some(q => q.ax === a && q.needCls),
+    real: segCls.some(q => q.ax === a && q.needReal) });
+  const rhoSheet = BARS[noL].A * Nl / Ag;
+  return { fc_psi, sq, lam, fyt, phl, phlmin, noL, noLmin, phes, Aes, Nl, Al: BARS[noL].A, rhoSheet, d0, gx, gy, AsVx, AsVy, Ag, phiv, rows, gov, sRaw, sShear, sxRaw, sx, s,
+    least: R.sec.least, luc1: inp.lu / R.sec.least, In, Vprx, Vpry, nuMode, PuMin, PuMax, faceCls, cara, segCls, needX: needAx('x'), needY: needAx('y') };
 }
 
 
@@ -1258,6 +1281,7 @@ const SLOTS = {
       { ok: pmax <= R.phiPnmax + 1e-9, t: `P<sub>u,máx</sub> = ${fu(pmax, 'force')} ${pmax <= R.phiPnmax ? '≤' : '&gt;'} φP<sub>n,máx</sub> = ${fu(R.phiPnmax, 'force')}`, ref: 'ACI 22.4.2.1' },
       { ok: pmin >= 0.9 * R.Pnt - 1e-9, t: `P<sub>u,mín</sub> = ${fu(pmin, 'force')} ${pmin >= 0.9 * R.Pnt ? '≥' : '&lt;'} φP<sub>nt</sub> = ${fu(0.9 * R.Pnt, 'force')}`, ref: 'ACI 22.4.3.1' }]);
   },
+  shearData: () => shearData(),
   shearAxes: () => shearAxes(),
   shearGeo: () => shearGeo(),
   shearAll: () => shearAll(),
@@ -1435,10 +1459,35 @@ function renderCombosOut() {
 /* ---------- Cortante ---------- */
 const AXN = a => (R.V.In.strong === a ? 'eje fuerte' : 'eje débil');
 const AXM = a => (a === 'x' ? 'M<sub>x</sub>' : 'M<sub>y</sub>');
+function shearData() {
+  const v = R.V, inp = R.inp, sh = inp.shape;
+  let h = '<h4 class="subh">8.2 Datos del refuerzo para cortante</h4>';
+  h += step({ lhs: V('ϕ', 'l'), def: 'mayor Ø longitudinal', sub: `#${v.noL}`, res: rv('phl', v.phl, 'len'), note: 'Refuerzo longitudinal principal (marcado en la sección)' });
+  h += step({ lhs: V('A', 'l'), def: `tabla ASTM #${v.noL}`, res: rv('Al', v.Al, 'area'), note: 'Área de una barra ϕ<sub>l</sub>' });
+  h += step({ lhs: V('ϕ', 'lmin'), def: 'menor Ø longitudinal', sub: `#${v.noLmin}`, res: rv('phlmin', v.phlmin, 'len'), note: 'Refuerzo longitudinal más pequeño utilizado (marcado en la sección)' });
+  h += step({ lhs: V('ϕ', 'es'), def: 'estribo', sub: `#${inp.est}`, res: rv('phes', v.phes, 'len'), note: 'Refuerzo transversal (ϕ<sub>est</sub> en Mathcad)' });
+  h += step({ lhs: V('A', 'es'), def: `tabla ASTM #${inp.est}`, res: rv('Aes', v.Aes, 'area'), note: 'Área de una rama del estribo (A<sub>est</sub> en Mathcad)' });
+  h += step({ lhs: `No.${V('ϕ', 'l')}`, def: 'total de barras', res: int(v.Nl), note: 'Cantidad de barras longitudinales' });
+  if (v.cara) {
+    h += step({ lhs: 'Barras por cara<sub>x</sub>', def: v.cara.xDef, res: int(v.cara.x), note: `Barras en la ${v.cara.xTxt}, con esquinas` });
+    h += step({ lhs: 'Barras por cara<sub>y</sub>', def: v.cara.yDef, res: int(v.cara.y), note: `Barras en la ${v.cara.yTxt}, con esquinas` });
+  } else h += step({ lhs: 'Barras por cara', def: '—', note: 'Sección personalizada: el soporte lateral se revisa con la tabla de barras', tag: false });
+  h += step({ lhs: V('A', 'g'), def: sh === 'rect' ? '<var>b</var>·<var>h</var> = <var>B</var>·<var>H</var>' : 'Σ áreas de los rectángulos', sub: sh === 'rect' ? `${n(inp.B)}·${n(inp.H)}` : '', res: rv('Ag', v.Ag, 'area'), note: 'Área gruesa de la columna' });
+  h += step({ lhs: '<var>ρ</var>', def: `${V('A', 'l')}·No.${V('ϕ', 'l')} / ${V('A', 'g')}`, sub: `${n(v.Al, 2)}·${v.Nl} / ${n(v.Ag)}`, res: rv('rhoSheet', v.rhoSheet, 'ratio'), note: 'Cuantía de refuerzo de la hoja de cortante. Entre 1 % y 8 %', ref: 'ACI 10.6.1.1' });
+  h += chipsHTML([{ ok: v.rhoSheet >= 0.01 && v.rhoSheet <= 0.08, t: `1 % ≤ ρ = ${fmt(v.rhoSheet * 100, 3)} % ≤ 8 %`, ref: 'ACI 10.6.1.1' }]);
+  if (sh === 'rect' && inp.faces) {
+    const f = inp.faces, nx = inp.nVx, ny = inp.nVy;
+    const mx = Math.min(Math.floor(f.bot.n || 0), Math.floor(f.top.n || 0)), my = Math.min(Math.floor(f.left.n || 0), Math.floor(f.right.n || 0));
+    h += chipsHTML([
+      { ok: nx - 2 <= mx, t: `n<sub>x</sub> − 2 = ${nx - 2} rama(s) extra ≤ ${mx} barras intermedias en las caras inferior y superior` },
+      { ok: ny - 2 <= my, t: `n<sub>y</sub> − 2 = ${ny - 2} rama(s) extra ≤ ${my} barras intermedias en las caras izquierda y derecha` }]);
+  }
+  return h;
+}
 function shearAxes() {
   const v = R.V, In = v.In, uI = 'in⁴';
   const fI = x => fmt(x, 1);
-  let h = '<h4 class="subh">8.2 Ejes fuerte y débil de la sección</h4>';
+  let h = '<h4 class="subh">8.3 Ejes fuerte y débil de la sección</h4>';
   const rows = In.parts.map(p => `<tr><td class="t">${esc(p.name || '')}</td><td>${fmt(p.w, 3)}</td><td>${fmt(p.h, 3)}</td><td>${fmt(p.A, 3)}</td><td>${fmt(p.dx, 3)}</td><td>${fmt(p.dy, 3)}</td><td>${fI(p.Ixo)}</td><td>${fI(p.A * p.dy * p.dy)}</td><td>${fI(p.Ix)}</td><td>${fI(p.Iyo)}</td><td>${fI(p.A * p.dx * p.dx)}</td><td>${fI(p.Iy)}</td><td>${fI(p.Ixy)}</td></tr>`).join('');
   h += `<div class="tscroll"><table class="tbl"><thead><tr><th>Rectángulo</th><th><var>b</var><span class="hu">in</span></th><th><var>h</var><span class="hu">in</span></th><th><var>A</var><span class="hu">in²</span></th><th><var>x</var><sub>i</sub> − <var>x̄</var><span class="hu">in</span></th><th><var>y</var><sub>i</sub> − <var>ȳ</var><span class="hu">in</span></th><th><var>b h</var>³/12<span class="hu">${uI}</span></th><th><var>A</var>(<var>y</var><sub>i</sub> − <var>ȳ</var>)²<span class="hu">${uI}</span></th><th><var>I</var><sub>x,i</sub><span class="hu">${uI}</span></th><th><var>h b</var>³/12<span class="hu">${uI}</span></th><th><var>A</var>(<var>x</var><sub>i</sub> − <var>x̄</var>)²<span class="hu">${uI}</span></th><th><var>I</var><sub>y,i</sub><span class="hu">${uI}</span></th><th><var>A</var>(<var>x</var><sub>i</sub>−<var>x̄</var>)(<var>y</var><sub>i</sub>−<var>ȳ</var>)<span class="hu">${uI}</span></th></tr></thead>
     <tbody>${rows}</tbody><tfoot><tr><td class="t">Σ</td><td></td><td></td><td>${fmt(In.A, 3)}</td><td></td><td></td><td></td><td></td><td>${fI(In.Ix)}</td><td></td><td></td><td>${fI(In.Iy)}</td><td>${fI(In.Ixy)}</td></tr></tfoot></table></div>`;
@@ -1456,10 +1505,7 @@ function shearAxes() {
 }
 function shearGeo() {
   const v = R.V, inp = R.inp, sh = inp.shape;
-  let h = '<h4 class="subh">8.3 Geometría y cuantía para cortante</h4>';
-  h += step({ lhs: V('ϕ', 'l'), def: 'mayor Ø longitudinal', sub: `#${v.noL}`, res: rv('phl', v.phl, 'len'), note: 'Barra longitudinal más grande' }) +
-    step({ lhs: V('ϕ', 'l,mín'), def: 'menor Ø longitudinal', sub: `#${v.noLmin}`, res: rv('phlmin', v.phlmin, 'len'), note: 'Barra longitudinal más pequeña' }) +
-    step({ lhs: V('ϕ', 'es') + ' , ' + V('A', 'es'), def: `estribo #${inp.est}`, res: `${rv('phes', v.phes, 'len')} , ${rv('Aes', v.Aes, 'area')}`, note: 'Diámetro y área de una rama del estribo' });
+  let h = '<h4 class="subh">8.4 Geometría y cuantía para cortante</h4>';
   if (sh !== 'custom') {
     h += step({ lhs: V('d', '0'), def: `<var>rec</var> + ${V('ϕ', 'es')} + ${V('ϕ', 'l')}/2`, sub: `${n(inp.rec)} + ${n(v.phes)} + ${n(v.phl)}/2`, res: rv('sh.d0', v.d0, 'len'), note: 'Del borde al centro de la barra extrema' });
     h += step({ lhs: V('d', 'x'), def: `<var>H</var> − ${V('d', '0')}`, sub: `${n(inp.H)} − ${n(v.d0)}`, res: rv('sh.dx', v.gx.d, 'len'), note: `Peralte para V<sub>x</sub> (${AXN('x')}: acompaña a M<sub>x</sub>, fuerza a lo largo de Y)` }) +
@@ -1470,13 +1516,11 @@ function shearGeo() {
   const sel = `<select class="insel" data-k="rhoArea" aria-label="Área de acero en ρw"><option value="sheet"${inp.rhoArea === 'sheet' ? ' selected' : ''}>A_l·No.ϕl (hoja de clase)</option><option value="real"${inp.rhoArea === 'real' ? ' selected' : ''}>A_st real</option><option value="r2255"${inp.rhoArea === 'r2255' ? ' selected' : ''}>Barras a más de 2D/3 (R22.5.5.1)</option></select>`;
   h += step({ lhs: V('A', 's') + ' en ' + V('ρ', 'w'), def: inp.rhoArea === 'sheet' ? `${V('A', 'l')}·No.${V('ϕ', 'l')} = ${n(BARS[v.noL].A, 2)}·${v.Nl}` : (inp.rhoArea === 'real' ? V('A', 'st') : 'Σ barras con d &gt; 2D/3, rama menor'),
     res: inp.rhoArea === 'r2255' ? `${rv('sh.AsVx', v.AsVx, 'area')} (x) · ${rv('sh.AsVy', v.AsVy, 'area')} (y)` : rv('sh.AsV', v.AsVx, 'area'), note: `Área usada: ${sel}` });
-  const rhoS = BARS[v.noL].A * v.Nl / v.Ag;
-  h += step({ lhs: V('ρ', 'hoja'), def: `${V('A', 'l')}·No.${V('ϕ', 'l')} / ${V('A', 'g')}`, sub: `${n(BARS[v.noL].A * v.Nl, 2)} / ${n(v.Ag)}`, res: rv('rhoS', rhoS, 'ratio'), note: `Cuantía como la calcula la hoja de clase: ${rhoS >= 0.01 && rhoS <= 0.08 ? 'entre 1 % y 8 %' : 'fuera de 1 %–8 %'}`, ref: 'ACI 10.6.1.1' });
   [['x', v.gx, v.AsVx], ['y', v.gy, v.AsVy]].forEach(([a, g, As]) => {
     const rho = As / (g.bw * g.d);
     h += step({ lhs: V('ρ', 'w,' + a), def: `${V('A', 's')} / (${V('b', 'w,' + a)}·${V('d', a)})`, sub: `${n(As, 2)} / (${n(g.bw)}·${n(g.d)})`, res: rv('rhow' + a, rho, 'ratio'), note: `Cuantía para V<sub>c</sub> en el ${AXN(a)} (como el PDF de clase: b<sub>w</sub>·d de cada eje, no A<sub>g</sub>)` });
   });
-  h += '<h4 class="subh">8.4 Cortante de diseño</h4>';
+  h += '<h4 class="subh">8.5 Cortante de diseño</h4>';
   [['x', v.Vprx, 'Mprx'], ['y', v.Vpry, 'Mpry']].forEach(([a, Vpr, k]) => {
     if (Vpr !== null) h += step({ lhs: V('V', 'pr,' + a), def: `2·${V('M', 'pr,' + a)} / ${V('l', 'u')}`, sub: `2·${n(inp[k])} / ${n(inp.lu)}`, res: rv('sh.Vpr' + a, Vpr, 'force'), note: `Cortante asociado a los momentos probables. En cada combinación V<sub>u,${a}</sub> = mín(V<sub>${a}</sub> , V<sub>pr,${a}</sub>), como en la hoja de clase`, ref: 'ACI 18.3.3' });
     else h += step({ lhs: V('V', 'u,' + a), def: `|${V('V', a)}| de cada combinación`, note: `Sin M<sub>pr,${a}</sub>: el cortante de diseño es el del análisis` });
@@ -1493,7 +1537,7 @@ function shearAll() {
   const v = R.V, inp = R.inp; if (!v.rows.length) return '';
   const uF = unitOf('st.F', 'force'), uA = unitOf('st.A', 'avs'), uL = unitOf('sh.sv', 'len');
   const F = x => (x === null || x === undefined) ? '—' : fmt(cv(x, 'force', uF), S.dec), A_ = x => fmt(cv(x, 'avs', uA), S.dec), L_ = x => fmt(cv(x, 'len', uL), 2);
-  let h = '<h4 class="subh">8.6 Todos los cálculos, combinación por combinación</h4>';
+  let h = '<h4 class="subh">8.7 Todos los cálculos, combinación por combinación</h4>';
   [['x', v.gx], ['y', v.gy]].forEach(([a, g]) => {
     const r0 = v.rows[0][a];
     h += `<p class="axline"><b>V<sub>${a}</sub></b> · ${AXN(a)} · b<sub>w</sub> = ${fu(g.bw, 'len')} · d = ${fu(g.d, 'len')} · ρ<sub>w</sub> = ${fmt(r0.rho * 100, 3)} % · 8λρ<sub>w</sub><sup>1/3</sup>√f′c = <b>${fmt(8 * v.lam * Math.cbrt(r0.rho) * v.sq, 2)}</b> psi · V<sub>c,máx</sub> = 5λ√f′c·b<sub>w</sub>d = <b>${F(r0.Vcmax)}</b> ${uF} · A<sub>v,mín</sub>/s = <b>${A_(r0.Avmin)}</b> ${uA} · 4√f′c·b<sub>w</sub>d = ${F(r0.lim4)} · 8√f′c·b<sub>w</sub>d = ${F(r0.lim8)} ${uF}</p>`;
@@ -1552,31 +1596,44 @@ function shearSum() {
   const ncm = x => n(x * 2.54, 2);
   const totTies = uniqueTies(R).length;
   const g = v.gov;
-  let h = '<h4 class="subh">8.8 Separación de diseño</h4>';
+  let h = '<h4 class="subh">8.9 Separación de diseño</h4>';
   h += step({ lhs: V('s', 'cortante'), def: 'Floor(mín de todas las combinaciones y ejes (s<sub>v</sub> , s<sub>máx</sub>) , 0.5 cm)', sub: g ? `Floor(${ncm(v.sRaw)} cm , 0.5 cm)` : '', res: rv('sh.s', v.sShear, 'len', true), note: g ? `Controla ${esc(v.rows[g.i].name)}, V<sub>${g.k}</sub> (${AXN(g.k)})` : '' });
   h += step({ lhs: V('s', 'x'), def: `Floor(mín(16·${V('ϕ', 'l,mín')} , 48·${V('ϕ', 'es')} , menor dimensión) , 0.5 cm)`, sub: `Floor(mín(${ncm(16 * v.phlmin)} , ${ncm(48 * v.phes)} , ${ncm(v.least)}) cm , 0.5 cm)`, res: rv('sh.sx', v.sx, 'len'), note: 'Separación por pandeo de las barras longitudinales', ref: 'ACI 25.7.2.1' });
   h += step({ lhs: '<var>s</var>', def: `mín(${V('s', 'cortante')} , ${V('s', 'x')})`, res: rv('sh.sf', v.s, 'len', true), note: 'Separación de estribos y eslabones' });
-  h += '<h4 class="subh">8.9 Soporte lateral de las barras (ramas y eslabones)</h4>';
+  h += '<h4 class="subh">8.10 Soporte lateral de las barras</h4>';
+  const nmA = a => `eje ${a === v.In.strong ? 'fuerte' : 'débil'}`;
   if (v.faceCls) {
-    [['x', v.faceCls.hx, 'H', 'izquierda y derecha'], ['y', v.faceCls.hy, 'B', 'inferior y superior']].forEach(([a, f, L, caras]) => {
-      h += step({ lhs: V('h', a), def: `[<var>${L}</var> − (2·<var>rec</var> + 2·${V('ϕ', 'es')} + N·${V('ϕ', 'l')})] / (N − 1)`, sub: `[${n(f.len)} − (2·${n(inp.rec)} + 2·${n(v.phes)} + ${f.N}·${n(v.phl)})] / (${f.N} − 1)`, res: rv('sh.h' + a, f.clear, 'len'),
-        note: `Separación libre entre barras de las caras ${caras} (fórmula de la hoja de clase, N = ${f.N} barras por cara): ${f.clear > 6 ? '&gt; 6 in, cada barra necesita rama' : '≤ 6 in, basta amarrar barras alternas'}`, ref: 'ACI 25.7.2.3' });
+    [['x', v.faceCls.hx, 'H', 'y', 'izquierda y derecha'], ['y', v.faceCls.hy, 'B', 'x', 'inferior y superior']].forEach(([a, f, L, c, caras]) => {
+      const bc = `Barras por cara<sub>${c}</sub>`;
+      h += step({ lhs: V('h', a), def: `[<var>${L}</var> − (2·<var>rec</var> + 2·${V('ϕ', 'es')} + ${bc}·${V('ϕ', 'l')})] / (${bc} − 1)`, sub: `[${n(f.len)} − (2·${n(inp.rec)} + 2·${n(v.phes)} + ${f.N}·${n(v.phl)})] / (${f.N} − 1)`, res: rv('sh.h' + a, f.clear, 'len'),
+        note: `Separación entre barras longitudinales en el ${nmA(a)} (caras ${caras})` });
     });
   }
-  if (R.sp.length) {
+  if (v.segCls && v.segCls.length) {
     const uL = unitOf('sg-cl', 'len');
-    const rows = R.sp.map(sp => `<tr><td class="t">${sp.k}</td><td class="t tl">${esc(sp.name || '')}</td><td>${sp.n}</td><td>${fmt(cv(sp.sc, 'len', uL), 2)}</td><td>${fmt(cv(sp.sclear, 'len', uL), 2)}</td><td class="t">${sp.n ? (sp.over6 ? '&gt; 6 in: todas' : '≤ 6 in: alternas') : '—'}</td><td>${sp.ties}</td></tr>`).join('');
-    h += `<div class="tscroll"><table class="tbl"><thead><tr><th>Segmento</th><th>Ubicación</th><th>Barras intermedias</th><th>s<sub>centro a centro</sub><span class="hu">${uL}</span></th><th>Libre<span class="hu">${uL}</span></th><th>Barras que se amarran</th><th>Eslabones</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-    h += `<p class="lead">Libre = s<sub>cc</sub> − (ϕ<sub>esquina</sub>/2 + ϕ<sub>intermedia</sub>/2) con el diámetro real de cada barra. Si pasa de 6 in, cada barra intermedia necesita rama o eslabón; si no, basta con barras alternas (ACI 25.7.2.3). Eslabones físicos: ${totTies}${inp.shape === 'L' ? ' (un eslabón que une dos barras enfrentadas se cuenta una vez)' : ''}.</p>`;
+    const rows = v.segCls.map(q => `<tr><td class="t">${q.k}</td><td class="t tl">${esc(q.name || '')}</td><td class="t tl">${q.par === 'y' ? 'Y' : 'X'} · h<sub>${q.ax}</sub></td><td>${q.N}</td><td>${fmt(cv(q.Lcc, 'len', uL), 2)}</td><td>${fmt(cv(q.hCls, 'len', uL), 2)}</td><td>${fmt(cv(q.hReal, 'len', uL), 2)}</td><td class="t">${q.n ? (q.needReal ? '<span class="chip warn">Sí</span>' : 'No') : '—'}</td><td>${q.ties}</td></tr>`).join('');
+    h += `<div class="tscroll"><table class="tbl"><thead><tr><th>Segmento</th><th>Ubicación</th><th>Paralelo a</th><th>Barras N</th><th>L<sub>cc</sub><span class="hu">${uL}</span></th><th>h, fórmula de clase<span class="hu">${uL}</span></th><th>h real<span class="hu">${uL}</span></th><th>¿Necesario? (&gt; 6 in)</th><th>Eslabones</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    h += `<p class="lead">Cada segmento va entre dos barras de esquina de estribo. <b>Fórmula de clase</b> por segmento: h = [L<sub>cc</sub> − (N − 1)·ϕ<sub>l</sub>] / (N − 1), con todas las barras de diámetro ϕ<sub>l</sub>; en una cara completa de la rectangular es lo mismo que [h − (2rec + 2ϕ<sub>es</sub> + N·ϕ<sub>l</sub>)] / (N − 1). <b>h real</b> usa el diámetro de cada barra: L<sub>cc</sub>/(N − 1) − (ϕ<sub>esquina</sub>/2 + ϕ<sub>intermedia</sub>/2). La hoja decide con el valor real (ACI 25.7.2.3: ninguna barra sin soporte a más de 6 in libres).${inp.shape === 'L' ? ' En la L no se usa la cara completa porque las barras están equiespaciadas dentro de cada segmento, no a lo largo de toda la cara.' : ''}</p>`;
   }
+  [['x', v.needX], ['y', v.needY]].forEach(([a, nd]) => {
+    const segs = (v.segCls || []).filter(q => q.ax === a && q.needReal).map(q => q.k);
+    h += step({ lhs: `¿Necesario ${nmA(a)}?`, def: v.faceCls ? `si ${V('h', a)} &gt; 6 in` : `si algún segmento paralelo a ${a === 'x' ? 'Y' : 'X'} tiene h &gt; 6 in`, res: `<span class="rv"><b class="num">${nd.real ? 'Sí' : 'No'}</b></span>`,
+      note: nd.real ? `Hay barras a más de 6 in libres${segs.length ? ' (' + segs.join(', ') + ')' : ''}: cada barra intermedia necesita rama o eslabón` + (nd.cls !== nd.real ? '. Con la fórmula de clase (todas las barras con ϕ<sub>l</sub>) saldría "No"' : '') : 'Basta con soportar esquinas y barras alternas' + (nd.cls !== nd.real ? '. Con la fórmula de clase saldría "Sí"' : ''), ref: 'ACI 25.7.2.3' });
+  });
   const PuMax = v.PuMax;
-  h += '<h4 class="subh">8.10 Revisión de la carga axial máxima</h4>';
+  h += '<h4 class="subh">8.11 Revisión de la carga axial máxima</h4>';
   h += step({ lhs: V('P', 'u,máx'), def: 'mayor P<sub>u</sub> de las combinaciones', res: rv('sh.Pumax', PuMax, 'force'), note: `${PuMax <= R.phiPnmax ? '≤' : '&gt;'} φP<sub>n,máx</sub> = ${fu(R.phiPnmax, 'force')}`, ref: 'ACI 22.4.2.1' });
   h += chipsHTML([{ ok: PuMax <= R.phiPnmax, t: `P<sub>u,máx</sub> ${PuMax <= R.phiPnmax ? '≤' : '&gt;'} φP<sub>n,máx</sub>${PuMax <= R.phiPnmax ? ': cumple' : ': no cumple, aumentar sección o acero'}` }]);
+  h += '<h4 class="subh">8.12 Resumen de resultados</h4>';
   h += `<div class="tscroll"><table class="tbl"><tbody>
-    <tr><td class="t">Refuerzo transversal</td><td class="t">${inp.shape === 'L' ? '2 estribos rectangulares' : (inp.shape === 'rect' ? '1 estribo perimetral' : 'según tabla')} #${inp.est}${totTies ? ` + ${totTies} eslabón(es) #${inp.est}` : ''}</td></tr>
-    <tr><td class="t">Ramas que resisten V<sub>x</sub> (${AXN('x')}) / V<sub>y</sub> (${AXN('y')})</td><td class="t">${inp.nVx} / ${inp.nVy}</td></tr>
-    <tr><td class="t">Separación</td><td class="t">${fu(v.s, 'len', 'sh.sf')}</td></tr></tbody></table></div>`;
+    <tr><td class="t">Diámetro del refuerzo transversal ϕ<sub>es</sub></td><td class="t tl">#${inp.est} · ${fu(v.phes, 'len')}</td></tr>
+    <tr><td class="t">Refuerzo transversal</td><td class="t tl">${inp.shape === 'L' ? '2 estribos rectangulares' : (inp.shape === 'rect' ? '1 estribo perimetral' : 'según tabla')} #${inp.est}${totTies ? ` + ${totTies} eslabón(es) #${inp.est}` : ''}</td></tr>
+    <tr><td class="t">Ramas en el ${AXN('x')} n<sub>x</sub></td><td class="t tl">${inp.nVx}</td></tr>
+    <tr><td class="t">Ramas en el ${AXN('y')} n<sub>y</sub></td><td class="t tl">${inp.nVy}</td></tr>
+    <tr><td class="t">Separación del refuerzo transversal s</td><td class="t tl">${fu(v.s, 'len', 'sh.sf')}</td></tr>
+    <tr><td class="t">Soporte lateral en el ${AXN('x')}</td><td class="t tl">${v.needX.real ? 'Sí' : 'No'}</td></tr>
+    <tr><td class="t">Soporte lateral en el ${AXN('y')}</td><td class="t tl">${v.needY.real ? 'Sí' : 'No'}</td></tr>
+    <tr><td class="t">Separación del soporte lateral s<sub>x</sub></td><td class="t tl">${fu(v.sx, 'len', 'sh.sx')}</td></tr></tbody></table></div>`;
   return h;
 }
 function renderShearCard() {

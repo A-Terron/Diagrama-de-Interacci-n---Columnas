@@ -1557,11 +1557,26 @@ P_{u,máx} = 1{,}800\ \text{kip} \le \phi P_{n,máx} = 2{,}665.434\ \text{kip} \
 
 ### 10.1 Datos para cortante
 
+**Datos del refuerzo para cortante** (hoja: sección 8.2). Son los mismos datos del bloque *Refuerzo propuesto* de la hoja de clase *Cortante en Columnas*:
+
+| Dato | Definición | Valor | Para qué sirve |
+|---|---|--:|---|
+| $`\phi_l`$ | Mayor Ø longitudinal | #10 = 1.270 in | $`d_x`$, $`d_y`$ y la fórmula de clase de separación libre |
+| $`A_l`$ | Tabla ASTM #10 | 1.27 in² | Cuantía de la hoja y $`\rho_w`$ |
+| $`\phi_{l,mín}`$ | Menor Ø longitudinal | #9 = 1.128 in | $`s_x = 16\,\phi_{l,mín}`$ |
+| $`\phi_{es}`$, $`A_{es}`$ | Estribo #4 | 0.500 in · 0.20 in² | $`d_0`$, $`s_v = nA_{es}/(A_v/s)`$, $`s_x = 48\,\phi_{es}`$ |
+| No.$`\phi_l`$ | Total de barras | 18 | Cuantía de la hoja y $`\rho_w`$ |
+| Barras por cara$`_x`$ | $`3 + n_{s1} + n_{s2}`$ (cara exterior del ala, 80 cm) | 5 | Barras de la cara completa paralela a X |
+| Barras por cara$`_y`$ | $`3 + n_{s5} + n_{s6}`$ (cara exterior del alma, 100 cm) | 6 | Barras de la cara completa paralela a Y |
+| $`\rho`$ | $`A_l\cdot`$No.$`\phi_l / A_g`$ = 1.27·18 / 941.627 | 2.43 % | Revisión 1 %–8 % de la hoja de clase (ACI 10.6.1.1) |
+
+En la rectangular las barras por cara son $`2 + n`$ (dos esquinas más las intermedias). En la L cada cara exterior completa tiene **3 barras rojas** (las dos esquinas y la del cruce de estribos, N2 o N4) más las intermedias de sus dos segmentos. La cuantía de la hoja (2.43 %) es mayor que la real (2.14 %) porque supone que las 18 barras son #10.
+
 ```math
-\phi_v = 0.75 \quad\text{(ACI 21.2.1)} \qquad \phi_l = \#10 = 1.270\ \text{in} \qquad \phi_{l,mín} = \#9 = 1.128\ \text{in}
+\phi_v = 0.75 \quad\text{(ACI 21.2.1)}
 ```
 
-**Eje fuerte y eje débil** (hoja: sección 8.2). Como en la hoja de clase, el cortante se revisa en los dos ejes. Para saber cuál es el fuerte se comparan las inercias de la sección bruta respecto a $`G`$, con el teorema de Steiner (distancias medidas desde $`\bar x`$ = 12.941 in y $`\bar y`$ = 22.492 in; inercias en in⁴):
+**Eje fuerte y eje débil** (hoja: sección 8.3). Como en la hoja de clase, el cortante se revisa en los dos ejes. Para saber cuál es el fuerte se comparan las inercias de la sección bruta respecto a $`G`$, con el teorema de Steiner (distancias medidas desde $`\bar x`$ = 12.941 in y $`\bar y`$ = 22.492 in; inercias en in⁴):
 
 | Rectángulo | $`b`$ (in) | $`h`$ (in) | $`A`$ (in²) | $`x_i-\bar x`$ (in) | $`y_i-\bar y`$ (in) | $`bh^3/12`$ | $`A(y_i-\bar y)^2`$ | $`I_{x,i}`$ | $`hb^3/12`$ | $`A(x_i-\bar x)^2`$ | $`I_{y,i}`$ | $`A(x_i-\bar x)(y_i-\bar y)`$ |
 |---|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|
@@ -1731,7 +1746,7 @@ No controla (9 cm < 45.0 cm).
 ![Figura 14](img/P3-14-soporte-lateral.svg)
 
 - En s1–s5 y s8 hay 1 barra intermedia con separación libre de 12.57 o 14.46 cm ≤ 15.24 cm: basta con las esquinas.
-- En s6 y s7 hay 2 barras con separación libre de 15.29 cm > 15.24 cm: **cada barra intermedia necesita soporte**. Como las barras de s6 y s7 están a la misma altura, **2 eslabones horizontales** (uno por nivel) soportan las 4 barras.
+- En s6 y s7 hay 2 barras con separación libre de 15.29 cm > 15.24 cm: **cada barra intermedia necesita soporte**. Con la fórmula de clase, que supone todas las barras #10, saldría $`h = L_{cc}/(N-1) - \phi_l`$ = 15.11 cm < 15.24 cm y la respuesta sería "No"; la diferencia está en que las intermedias son #9. La hoja decide con la separación real (sección 8.10). Como las barras de s6 y s7 están a la misma altura, **2 eslabones horizontales** (uno por nivel) soportan las 4 barras.
 
 ### 10.7 Esquema final de la sección
 
@@ -1758,9 +1773,20 @@ La sección 8 de la hoja sigue el mismo procedimiento que *Cortante en Columnas*
 | $`A_v/s`$, $`s_v`$, $`s_{máx}`$, límite $`8\sqrt{f'_c}\,b_wd`$ | ACI 22.5.8.5.3, 10.6.2.2, 10.7.6.5.2, 22.5.1.2 | Igual |
 | Separación | Floor(mín($`s_v`$, $`s_{máx}`$), 0.5 cm) | Igual, sobre todas las combinaciones y los dos ejes |
 | $`s_x`$ | Floor(mín($`16\phi_{l,mín}`$, $`48\phi_{es}`$, mín($`b`$, $`h`$)), 0.5 cm) | Igual; en la L la menor dimensión es el espesor de las patas |
-| Soporte lateral | $`h_x = [h - (2rec + 2\phi_{es} + N\phi_l)]/(N-1)`$ | Igual en la rectangular; en la L se mide por segmento con el diámetro real de cada barra |
+| Datos del refuerzo | $`\phi_l`$, $`A_l`$, $`\phi_{l,mín}`$, $`\phi_{est}`$, $`A_{est}`$, No.$`\phi_l`$, Barras por cara$`_x`$ y $`_y`$, $`\rho = A_l`$No.$`\phi_l/A_g`$ | Los mismos datos (sección 8.2), para la rectangular y para la L |
+| Soporte lateral | $`h_x = [h - (2rec + 2\phi_{es} + N\phi_l)]/(N-1)`$; ¿necesario? si $`h_x \ge 6`$ in | Igual en la rectangular. En la L la misma fórmula se aplica a cada segmento entre barras rojas, y además se da la separación con el diámetro real de cada barra |
 
-**Verificación.** Con el ejemplo de clase 80×80 (botón *Ejemplo de clase · 80×80*: $`M_{pr,x}`$ = 10,000 y $`M_{pr,y}`$ = 8,000 kip·in, $`l_u`$ = 2.90 m, $`P_{u,mín}`$ = 0, estribo #4 con 3 ramas) la hoja da los mismos valores de Mathcad y Excel: $`V_{pr,x}`$ = 175.172 kip, $`V_c`$ = 110.943 kip, $`\phi V_c`$ = 83.207 kip, $`A_v/s`$ = 0.0705 in²/in, $`s`$ = 21.5 cm, $`s_x`$ = 35.5 cm y $`h_x`$ = 14.285 cm. Además se compararon 64 casos (cuatro secciones rectangulares, cuatro cargas $`P_{u,mín}`$, estribos #3 y #4 y los dos criterios de $`\rho_w`$): todos los valores coinciden hasta el último decimal, salvo cuando la compresión es tan alta que $`V_c`$ pasa el tope de 22.5.5.1.1, que la hoja de clase no aplica.
+**Contraste con el archivo de Mathcad.** Se evaluaron las fórmulas de *Cortante en Columnas.mcdx* tal como están escritas, con sus datos (80×80 cm, $`f'_c`$ = 4,000 psi, 4 #8 + 12 #7, estribo #3 con 3 ramas, $`V_{ax}`$ = 200 y $`V_{ay}`$ = 175 kip, $`P_{u,mín}`$ = 0, $`l_u`$ = 2.90 m), y la hoja con los mismos datos. Las 36 variables coinciden: $`V_c`$ = 111.261 kip, $`\phi V_c`$ = 83.446 kip, $`A_{vn}/s`$ = 0.0889 y 0.0699 in²/in, $`s_v`$ = 9.42 y 12.00 cm, $`s`$ = 9.0 cm, $`s_x`$ = 35.5 cm, $`h_x`$ = $`h_y`$ = 14.44 cm y "No" en los dos soportes laterales. Al revisar las fórmulas del archivo aparecieron cinco detalles que la hoja corrige:
+
+- $`V_{pr} = 2M_{pr}/l_u\cdot100`$: con $`M_{pr}`$ en kip·in el factor 100 hace que $`V_{pr}`$ salga 100 veces mayor y $`V_u`$ siempre sea $`V_a`$. La hoja usa $`V_{pr} = 2M_{pr}/l_u`$.
+- $`V_{c,y}`$ usa $`b`$ en $`\rho_w`$ y en $`b_w d`$, mientras $`A_{v,mín,y}`$ y $`s_{máx,y}`$ usan $`h`$. La hoja usa $`h`$ en todo el eje débil.
+- $`h_y`$ usa $`h`$ en lugar de $`b`$.
+- *Necesario.eje.débil?* revisa $`h_x`$ en lugar de $`h_y`$.
+- $`V_c`$ no tiene el tope $`5\lambda\sqrt{f'_c}\,b_w d`$.
+
+Los tres primeros detalles de geometría solo cambian el resultado cuando $`b \ne h`$; en el ejemplo de clase, de 80×80, no se notan.
+
+**Verificación con la hoja v4.** Con el ejemplo de clase 80×80 (botón *Ejemplo de clase · 80×80*: $`M_{pr,x}`$ = 10,000 y $`M_{pr,y}`$ = 8,000 kip·in, $`l_u`$ = 2.90 m, $`P_{u,mín}`$ = 0, estribo #4 con 3 ramas) la hoja da los mismos valores de Mathcad y Excel: $`V_{pr,x}`$ = 175.172 kip, $`V_c`$ = 110.943 kip, $`\phi V_c`$ = 83.207 kip, $`A_v/s`$ = 0.0705 in²/in, $`s`$ = 21.5 cm, $`s_x`$ = 35.5 cm y $`h_x`$ = 14.285 cm. Además se compararon 64 casos (cuatro secciones rectangulares, cuatro cargas $`P_{u,mín}`$, estribos #3 y #4 y los dos criterios de $`\rho_w`$): todos los valores coinciden hasta el último decimal, salvo cuando la compresión es tan alta que $`V_c`$ pasa el tope de 22.5.5.1.1, que la hoja de clase no aplica.
 
 **Qué cambia en el P3 según el criterio** ($`n_x`$ = 2, $`n_y`$ = 3):
 
