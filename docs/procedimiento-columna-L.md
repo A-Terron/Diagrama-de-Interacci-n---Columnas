@@ -68,7 +68,7 @@ La hoja ya no lleva párrafos de instrucciones: todo lo que explica el procedimi
 │       ├── fig3-deformaciones.svg        Compatibilidad de deformaciones (+Mx, punto B)
 │       ├── fig4-diagramas-P3.svg         Diagramas X y Y del caso de prueba
 │       ├── fig5-rectangular-vs-L.svg     Diferencias con la sección rectangular
-│       └── P3-01 … P3-15                 Figuras del manual (P3-08-1 … P3-08-7: área comprimida)
+│       └── P3-01 … P3-15                 Figuras del manual (P3-08-1 … P3-08-7: área comprimida; P3-11-1: D/C de cada caso)
 └── obsidian/
     └── Manual P3-ECR - Columna L.md      Manual en formato Obsidian
 ```

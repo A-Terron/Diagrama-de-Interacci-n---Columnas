@@ -19,7 +19,7 @@ Hoja de cálculo interactiva para construir el diagrama de interacción **P–M*
 |---|---|---|---|
 | **Hoja interactiva** | [abrir](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/) | [`index.html`](index.html) | Entradas, puntos A–F con todas las sustituciones, diagramas en ±X y ±Y, revisión de combinaciones y cortante. |
 | **Procedimiento técnico** | [leer](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/docs/procedimiento-columna-L.html) | [Markdown](docs/procedimiento-columna-L.md) | Supuestos, tipo de análisis, procedimiento paso a paso, secciones de ACI 318-19 usadas, diferencias con la columna rectangular y validación. |
-| **Manual P3-ECR** | [leer](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/docs/manual-P3-ECR-columna-L.html) | [Markdown](docs/manual-P3-ECR-columna-L.md) | Solución completa de un examen con columna en L: cada fórmula, por qué se aplica, qué significa cada resultado y 22 figuras, con el área comprimida punto por punto. |
+| **Manual P3-ECR** | [leer](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/docs/manual-P3-ECR-columna-L.html) | [Markdown](docs/manual-P3-ECR-columna-L.md) | Solución completa de un examen con columna en L: cada fórmula, por qué se aplica, qué significa cada resultado y 23 figuras, con el área comprimida punto por punto y el cálculo de cada D/C. |
 | **Manual para Obsidian** | — | [obsidian/](obsidian/) | El mismo manual con callouts, incrustaciones `![[...]]` y enlaces internos de Obsidian. |
 
 > [!TIP]
@@ -53,7 +53,7 @@ Columna en L de 0.80 × 1.00 m (ala y alma de 0.45 m), $`f'_c`$ = 5,000 psi, gra
 | Área bruta y centroide | $`A_g`$ = 941.627 in² · $`G`$ = (32.87 ; 57.13) cm |
 | Armado | 8 #10 + 10 #9 = 20.16 in² · $`\rho`$ = 2.14 % |
 | Capacidad axial | $`P_o`$ = 5,125.834 kip · $`\phi P_{n,máx}`$ = 2,665.434 kip · $`P_{nt}`$ = −1,209.6 kip |
-| Revisión de 6 combinaciones | Todas cumplen · D/C máximo 89.6 % (caso 6, eje Y) |
+| Revisión de 6 combinaciones | Todas cumplen · D/C máximo 89.6 % (caso 6, eje Y) · las 12 D/C desarrolladas paso a paso en el manual |
 | Refuerzo transversal | #4 @ 9 cm: 2 estribos + 1 eslabón en el ala + 2 eslabones en el alma |
 
 El desarrollo completo está en el [manual](https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/docs/manual-P3-ECR-columna-L.html) ([versión Markdown](docs/manual-P3-ECR-columna-L.md)).

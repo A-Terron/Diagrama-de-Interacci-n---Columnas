@@ -12,19 +12,19 @@ tags:
 curso: Estructuras de Concreto Reforzado
 examen: Tercer Examen Parcial
 fecha: 2026-11-07
-hoja: https://a-terron.github.io/Diagrama-de-Interacci-n---Columnas/
+hoja: https://claude.ai/artifact/NEg3UWf8FL7aGs9RW1aJC9
 ---
 
 # Manual · Solución del P3-ECR con el diagrama de interacción para columnas L
 
-Este manual resuelve el Tercer Examen Parcial de Estructuras de Concreto Reforzado paso a paso, en el mismo orden que la hoja interactiva **Diagrama de Interacción · Columna L** (v5.1). En cada paso explica qué dato se usa, de dónde sale cada fórmula, por qué se hace así y qué significa el resultado. Todos los números salen del mismo motor de cálculo de la hoja.
+Este manual resuelve el Tercer Examen Parcial de Estructuras de Concreto Reforzado paso a paso, en el mismo orden que la hoja interactiva **Diagrama de Interacción · Columna L** (v5.3). En cada paso explica qué dato se usa, de dónde sale cada fórmula, por qué se hace así y qué significa el resultado. Todos los números salen del mismo motor de cálculo de la hoja.
 
 > [!abstract] Respuestas del examen
 > | Inciso | Resultado |
 > |---|---|
 > | 1 · Armado | 8 #10 (barras rojas) + 10 #9 (intermedias) = **20.16 in²** · $\rho$ = **2.14 %** (entre 1 % y 4 %) |
 > | 2 · Diagramas | Cuatro ramas: $+M_x$, $-M_x$, $+M_y$, $-M_y$ con puntos A–F ([[#7. Paso 5 · Inciso 2 · puntos del diagrama de interacción\|§7]] y Figura 10) |
-> | 3 · Revisión | Las 6 combinaciones **cumplen**. D/C máximo **89.6 %** (caso 6, eje Y) |
+> | 3 · Revisión | Las 6 combinaciones **cumplen**. D/C máximo **89.6 %** (caso 6, eje Y) · cálculo de cada D/C en [[#9.4 D/C de cada caso\|§9.4]] |
 > | 4 · Cortante | Estribos y eslabones **#4 @ 9 cm**: 2 estribos + 1 eslabón en el ala + 2 eslabones en el alma ([[#10.7 Esquema final de la sección\|§10.7]]) |
 
 ---
@@ -1147,21 +1147,395 @@ $P_u$ en kip; momentos en kip·in; $\phi P_n$ y $\phi M_n$ son las coordenadas d
 
 ![[P3-10-diagramas.svg]]
 
-### 9.3 Ejemplo: D/C del caso 6 en Y
+### 9.3 Cómo se calcula D/C paso a paso
 
-Carga $U = (M_y, P_u) = (11{,}400 ;\ 1{,}800)$. El rayo corta la curva $+M_y$ en el tramo entre dos puntos calculados:
+La hoja hace este cálculo para cada combinación y cada eje. A mano se siguen los mismos seis pasos; solo cambian los números. En lo que sigue, cada punto de la curva de diseño se escribe como $(x ; y) = (\phi M_n ; \phi P_n)$.
 
-$$p_1 = (12{,}692.1 ;\ 2{,}015.8) \qquad p_2 = (12{,}867.5 ;\ 1{,}977.4)$$
-
-El punto de corte cumple $t\,U = p_1 + s\,(p_2 - p_1)$. Con $\Delta x = 175.36$ y $\Delta y = -38.46$:
-
-$$t = \frac{x_1\,\Delta y - y_1\,\Delta x}{M_u\,\Delta y - P_u\,\Delta x} = \frac{-841{,}637}{-754{,}095} = 1.1161$$
-
-$$C = t\,U = (12{,}723.4 ;\ 2{,}009.0) \qquad \frac{D}{C} = \frac{|OU|}{|OC|} = \frac{11{,}541.2}{12{,}881.0} = \frac{1}{t} = 0.8960 = \mathbf{89.6\ \%}$$
+1. **Carga y rama.** $U = (M_u ; P_u)$, con $M_u = M_x$ en el diagrama X y $M_u = M_y$ en el diagrama Y. El signo de $M_u$ elige la rama ($+$ o $-$). El signo de $P_u$ dice en qué mitad está el corte: con $P_u > 0$ (compresión), entre A y D; con $P_u < 0$ (tensión), entre D y F.
+2. **Excentricidad.** $e = M_u/P_u$. Es la distancia a la que actúa $P_u$ respecto del centroide. Todos los puntos del rayo O–U tienen esa misma $e$, así que el punto de capacidad C también la tiene.
+3. **Tramo de la curva que corta el rayo.** Cada punto de la tabla de iteración (hoja, sección 9) tiene su propia excentricidad $e_i = \phi M_{n,i}/\phi P_{n,i}$. Se buscan dos filas **consecutivas** p1 y p2 de la rama, en la misma mitad que $U$, con $e$ entre $e_1$ y $e_2$. Ahí el rayo cruza la curva. Si un punto está en el techo, su $\phi P_n$ es $\phi P_{n,máx}$.
+4. **Interpolación lineal.** Entre p1 y p2 la curva se reemplaza por una recta: $C = p_1 + s\,(p_2 - p_1)$, con $0 \le s \le 1$. Como C tiene que estar sobre el rayo, $x_C = e\,y_C$:
+$$x_1 + s\,\Delta x = e\,(y_1 + s\,\Delta y) \quad\Rightarrow\quad s = \frac{e\,y_1 - x_1}{\Delta x - e\,\Delta y} \qquad \Delta x = x_2 - x_1,\ \ \Delta y = y_2 - y_1$$
+5. **Punto de capacidad C.** $\phi M_{n,C} = x_1 + s\,\Delta x$ y $\phi P_{n,C} = y_1 + s\,\Delta y$. Comprobación: $\phi M_{n,C}/\phi P_{n,C} = e$.
+6. **Relación D/C.** Como U y C están sobre el mismo rayo, la razón es la misma en carga, en momento y en distancia al origen:
+$$\frac{D}{C} = \frac{P_u}{\phi P_{n,C}} = \frac{M_u}{\phi M_{n,C}} = \frac{|OU|}{|OC|} \qquad \text{cumple si } D/C \le 1$$
+Las dos divisiones dan lo mismo. Cerca de la flexión pura ($P_u$ pequeña) conviene usar la de momentos, y cerca de la compresión pura ($M_u$ pequeño) la de cargas, para no dividir números chicos.
 
 ![[P3-11-rayo-DC.svg]]
 
-### 9.4 Revisiones axiales
+> [!note] La fórmula de la hoja
+> La hoja resuelve los pasos 4 a 6 de una vez. Busca el factor $t$ que lleva U hasta la curva, $t\,U = p_1 + s\,(p_2 - p_1)$:
+> $$t = \frac{x_1\,\Delta y - y_1\,\Delta x}{M_u\,\Delta y - P_u\,\Delta x} \qquad C = t\,U \qquad \frac{D}{C} = \frac{1}{t}$$
+> Para el caso 6 en Y: $t = \dfrac{-841{,}637}{-754{,}095} = 1.1161$ y $D/C = 1/t = 0.8960$, igual que con $s$ en el desarrollo de abajo. $t$ también dice cuánto podrían crecer las cargas, en la misma proporción, antes de llegar a la curva.
+
+> [!tip] En la hoja
+> - Sección 9 (*Tabla de puntos del diagrama*): elige el eje y marca *Incluir rama negativa* para ver las filas p1 y p2 de cada caso.
+> - Sección 7 y panel *Revisión*: D/C en X y en Y de cada combinación.
+> - En los diagramas, toca una combinación: se resalta su rayo y aparecen $\phi P_n$ y $\phi M_n$ del punto C.
+
+### 9.4 D/C de cada caso
+
+| Caso | Eje · rama | $M_u$ (kip·in) | $P_u$ (kip) | $e$ (in) | $c_1 \to c_2$ (in) | Zona · $\phi$ | $s$ | $\phi M_{n,C}$ (kip·in) | $\phi P_{n,C}$ (kip) | D/C | Solo con A–F |
+|:-:|---|--:|--:|--:|:-:|---|--:|--:|--:|--:|--:|
+| 1 | X · $+M_x$ | 8,800 | 1,200 | 7.333 | 29.345 → 28.954 | Comp. · 0.65 | 0.3888 | 16,049.8 | 2,188.6 | **54.83 %** | 57.23 % (E–B) |
+| 1 | Y · $+M_y$ | 14,200 | 1,200 | 11.833 | 13.774 → 13.461 | Trans. · 0.750–0.762 | 0.6677 | 16,812.5 | 1,420.8 | **84.46 %** | 85.10 % (B–C) |
+| 2 | X · $-M_x$ | −5,075 | 1,600 | −3.172 | 43.821 → 43.430 | Comp. · 0.65 · borde del techo | 0.7732 | −8,411.4 | 2,651.9 | **60.33 %** | 65.72 % (A–E) |
+| 2 | Y · $-M_y$ | −8,600 | 1,600 | −5.375 | 28.797 → 28.484 | Comp. · 0.65 | 0.0577 | −10,861.0 | 2,020.6 | **79.18 %** | 84.55 % (E–B) |
+| 3 | X · $+M_x$ | 2,400 | −670 | −3.582 | 1.959 → 1.567 | Tens. · 0.90 | 0.6913 | 3,162.8 | −882.9 | **75.88 %** | 77.37 % (D–F) |
+| 3 | Y · $+M_y$ | 2,000 | −670 | −2.985 | 1.567 → 1.254 | Tens. · 0.90 | 0.1420 | 2,702.2 | −905.2 | **74.01 %** | 75.86 % (D–F) |
+| 4 | X · $+M_x$ | 1,000 | −880 | −1.136 | 0.785 → 0.394 | Tens. · 0.90 | 0.0310 | 1,152.5 | −1,014.2 | **86.77 %** | 87.72 % (D–F) |
+| 4 | Y · $+M_y$ | 1,050 | −880 | −1.193 | 0.628 → 0.315 | Tens. · 0.90 | 0.3704 | 1,225.3 | −1,027.0 | **85.69 %** | 86.58 % (D–F) |
+| 5 | X · $-M_x$ | −1,125 | −630 | 1.786 | 1.567 → 1.176 | Tens. · 0.90 | 0.2993 | −1,803.6 | −1,010.0 | **62.38 %** | 63.37 % (D–F) |
+| 5 | Y · $-M_y$ | −4,000 | −630 | 6.349 | 2.819 → 2.506 | Tens. · 0.90 | 0.6768 | −4,875.8 | −767.9 | **82.04 %** | 86.97 % (D–F) |
+| 6 | X · $+M_x$ | 3,300 | 1,800 | 1.833 | 46.560 → 46.169 | Comp. · 0.65 · techo | 0.4776 | 4,886.6 | 2,665.4 | **67.53 %** | 67.53 % (A–E) |
+| 6 | Y · $+M_y$ | 11,400 | 1,800 | 6.333 | 20.033 → 19.720 | Comp. · 0.65 | 0.1784 | 12,723.4 | 2,009.0 | **89.60 %** ◀ | 93.63 % (E–B) |
+
+$s$ ubica C entre p1 ($s = 0$) y p2 ($s = 1$). $c_1$ y $c_2$ identifican las filas de la tabla de iteración. ◀ marca el D/C que gobierna.
+
+![[P3-11-1-rayos-casos.svg]]
+
+> [!tip] A mano con solo los puntos A–F
+> En el examen se puede repetir el mismo procedimiento usando como p1 y p2 los dos puntos notables entre los que pasa el rayo (última columna). Con solo 6 puntos por rama, la recta entre ellos queda **por dentro** de la curva, así que el D/C sale un poco **mayor** (del lado seguro): hasta 5.4 puntos más en este examen, con un máximo de 93.6 % que también cumple. En el caso 6 en X sale igual porque el corte está en el techo, que es recto.
+
+Desarrollo de cada caso (despliega el que necesites):
+
+> [!example]- Caso 1 · eje X · rama $+M_x$ · D/C = 54.83 %
+> **1 · Carga y rama.** $U = (M_x ;\ P_u) = (8{,}800 ;\ 1{,}200)$. $M_x > 0$ → rama $+M_x$; $P_u > 0$ → compresión: el corte está entre A y D.
+>
+> **2 · Excentricidad.**
+> $$e = \frac{M_x}{P_u} = \frac{8{,}800}{1{,}200} = 7.3333\ \text{in}$$
+>
+> **3 · Tramo que corta el rayo.** Hoja, sección 9: eje X, rama +, filas con $c$ = 29.345 y 28.954 in.
+>
+> | Punto | $c$ (in) | $\varepsilon_t$ | $\phi$ | Zona | $\phi P_n$ (kip) | $\phi M_n$ (kip·in) | $e_i = \phi M_n/\phi P_n$ (in) |
+> |---|--:|--:|--:|---|--:|--:|--:|
+> | **p1** | 29.345 | 0.00075 | 0.6500 | Comp. | 2,197.66 | 15,976.90 | 7.2700 |
+> | **p2** | 28.954 | 0.00080 | 0.6500 | Comp. | 2,174.39 | 16,164.37 | 7.4340 |
+>
+> $e$ = 7.3333 in está entre $e_1$ = 7.2700 in y $e_2$ = 7.4340 in: el rayo pasa entre p1 y p2. Se nombra $p_1 = (x_1 ; y_1)$ y $p_2 = (x_2 ; y_2)$ con $x = \phi M_n$ y $y = \phi P_n$.
+>
+> **4 · Interpolación.** $\Delta x = x_2 - x_1 = 187.46$ kip·in · $\Delta y = y_2 - y_1 = -23.27$ kip
+> $$s = \frac{e\,y_1 - x_1}{\Delta x - e\,\Delta y} = \frac{(7.3333)(2{,}197.66) - 15{,}976.90}{187.46 - (7.3333)(-23.27)} = \frac{139.24}{358.09} = 0.3888$$
+>
+> **5 · Punto de capacidad C.**
+> $$\phi M_{n,C} = x_1 + s\,\Delta x = 15{,}976.90 + 0.3888\,(187.46) = 16{,}049.8\ \text{kip}\cdot\text{in}$$
+> $$\phi P_{n,C} = y_1 + s\,\Delta y = 2{,}197.66 + 0.3888\,(-23.27) = 2{,}188.6\ \text{kip}$$
+>
+> **6 · Relación demanda/capacidad.**
+> $$\frac{D}{C} = \frac{P_u}{\phi P_{n,C}} = \frac{1{,}200}{2{,}188.6} = 0.5483 = \mathbf{54.83\ \%} \le 1 \ \checkmark$$
+> Comprobación con momentos: $M_x/\phi M_{n,C}$ = 8,800/16,049.8 = 0.5483. Con la misma excentricidad, las cargas podrían crecer 1.82 veces antes de llegar a C ($t = 1/(D/C)$).
+>
+> **Lectura.** C queda entre los puntos notables E y B de la rama $+M_x$, en la zona controlada por compresión.
+
+> [!example]- Caso 1 · eje Y · rama $+M_y$ · D/C = 84.46 %
+> **1 · Carga y rama.** $U = (M_y ;\ P_u) = (14{,}200 ;\ 1{,}200)$. $M_y > 0$ → rama $+M_y$; $P_u > 0$ → compresión: el corte está entre A y D.
+>
+> **2 · Excentricidad.**
+> $$e = \frac{M_y}{P_u} = \frac{14{,}200}{1{,}200} = 11.8333\ \text{in}$$
+>
+> **3 · Tramo que corta el rayo.** Hoja, sección 9: eje Y, rama +, filas con $c$ = 13.774 y 13.461 in.
+>
+> | Punto | $c$ (in) | $\varepsilon_t$ | $\phi$ | Zona | $\phi P_n$ (kip) | $\phi M_n$ (kip·in) | $e_i = \phi M_n/\phi P_n$ (in) |
+> |---|--:|--:|--:|---|--:|--:|--:|
+> | **p1** | 13.774 | 0.00327 | 0.7501 | Trans. | 1,437.67 | 16,638.89 | 11.5735 |
+> | **p2** | 13.461 | 0.00342 | 0.7622 | Trans. | 1,412.37 | 16,898.98 | 11.9650 |
+>
+> $e$ = 11.8333 in está entre $e_1$ = 11.5735 in y $e_2$ = 11.9650 in: el rayo pasa entre p1 y p2. Se nombra $p_1 = (x_1 ; y_1)$ y $p_2 = (x_2 ; y_2)$ con $x = \phi M_n$ y $y = \phi P_n$.
+>
+> **4 · Interpolación.** $\Delta x = x_2 - x_1 = 260.09$ kip·in · $\Delta y = y_2 - y_1 = -25.30$ kip
+> $$s = \frac{e\,y_1 - x_1}{\Delta x - e\,\Delta y} = \frac{(11.8333)(1{,}437.67) - 16{,}638.89}{260.09 - (11.8333)(-25.30)} = \frac{373.50}{559.42} = 0.6677$$
+>
+> **5 · Punto de capacidad C.**
+> $$\phi M_{n,C} = x_1 + s\,\Delta x = 16{,}638.89 + 0.6677\,(260.09) = 16{,}812.5\ \text{kip}\cdot\text{in}$$
+> $$\phi P_{n,C} = y_1 + s\,\Delta y = 1{,}437.67 + 0.6677\,(-25.30) = 1{,}420.8\ \text{kip}$$
+>
+> **6 · Relación demanda/capacidad.**
+> $$\frac{D}{C} = \frac{P_u}{\phi P_{n,C}} = \frac{1{,}200}{1{,}420.8} = 0.8446 = \mathbf{84.46\ \%} \le 1 \ \checkmark$$
+> Comprobación con momentos: $M_y/\phi M_{n,C}$ = 14,200/16,812.5 = 0.8446. Con la misma excentricidad, las cargas podrían crecer 1.18 veces antes de llegar a C ($t = 1/(D/C)$).
+>
+> **Lectura.** C queda entre los puntos notables B y C de la rama $+M_y$, en la zona de transición. p1 y p2 están en la **zona de transición**: $\phi$ pasa de 0.750 a 0.762 entre ellos. No hace falta interpolar $\phi$ por separado, porque los puntos de la curva de diseño ya están multiplicados por su propio $\phi$.
+
+> [!example]- Caso 2 · eje X · rama $-M_x$ · D/C = 60.33 %
+> **1 · Carga y rama.** $U = (M_x ;\ P_u) = (-5{,}075 ;\ 1{,}600)$. $M_x < 0$ → rama $-M_x$; $P_u > 0$ → compresión: el corte está entre A y D.
+>
+> **2 · Excentricidad.**
+> $$e = \frac{M_x}{P_u} = \frac{-5{,}075}{1{,}600} = -3.1719\ \text{in}$$
+>
+> **3 · Tramo que corta el rayo.** Hoja, sección 9: eje X, rama −, filas con $c$ = 43.821 y 43.430 in.
+>
+> | Punto | $c$ (in) | $\varepsilon_t$ | $\phi$ | Zona | $\phi P_n$ (kip) | $\phi M_n$ (kip·in) | $e_i = \phi M_n/\phi P_n$ (in) |
+> |---|--:|--:|--:|---|--:|--:|--:|
+> | **p1** | 43.821 | −0.00049 | 0.6500 | Comp. · techo | 2,665.43 | −8,118.28 | −3.0458 |
+> | **p2** | 43.430 | −0.00047 | 0.6500 | Comp. | 2,647.89 | −8,497.39 | −3.2091 |
+>
+> $e$ = −3.1719 in está entre $e_1$ = −3.0458 in y $e_2$ = −3.2091 in: el rayo pasa entre p1 y p2. Se nombra $p_1 = (x_1 ; y_1)$ y $p_2 = (x_2 ; y_2)$ con $x = \phi M_n$ y $y = \phi P_n$.
+>
+> **4 · Interpolación.** $\Delta x = x_2 - x_1 = -379.11$ kip·in · $\Delta y = y_2 - y_1 = -17.55$ kip
+> $$s = \frac{e\,y_1 - x_1}{\Delta x - e\,\Delta y} = \frac{(-3.1719)(2{,}665.43) - (-8{,}118.28)}{-379.11 - (-3.1719)(-17.55)} = \frac{-336.15}{-434.76} = 0.7732$$
+>
+> **5 · Punto de capacidad C.**
+> $$\phi M_{n,C} = x_1 + s\,\Delta x = -8{,}118.28 + 0.7732\,(-379.11) = -8{,}411.4\ \text{kip}\cdot\text{in}$$
+> $$\phi P_{n,C} = y_1 + s\,\Delta y = 2{,}665.43 + 0.7732\,(-17.55) = 2{,}651.9\ \text{kip}$$
+>
+> **6 · Relación demanda/capacidad.**
+> $$\frac{D}{C} = \frac{P_u}{\phi P_{n,C}} = \frac{1{,}600}{2{,}651.9} = 0.6033 = \mathbf{60.33\ \%} \le 1 \ \checkmark$$
+> Comprobación con momentos: $M_x/\phi M_{n,C}$ = −5,075/−8,411.4 = 0.6033. Con la misma excentricidad, las cargas podrían crecer 1.66 veces antes de llegar a C ($t = 1/(D/C)$).
+>
+> **Lectura.** C queda entre los puntos notables A y E de la rama $-M_x$, en la zona controlada por compresión. $M_x < 0$ y $P_u > 0$, así que $e < 0$ y se usa la rama $-M_x$. **p1 está en el techo**: su $\phi P_n$ es $\phi P_{n,máx}$ = 2,665.43 kip, porque $0.65\,P_n$ sería mayor. El rayo corta justo debajo del techo, en el tramo inclinado hacia p2.
+
+> [!example]- Caso 2 · eje Y · rama $-M_y$ · D/C = 79.18 %
+> **1 · Carga y rama.** $U = (M_y ;\ P_u) = (-8{,}600 ;\ 1{,}600)$. $M_y < 0$ → rama $-M_y$; $P_u > 0$ → compresión: el corte está entre A y D.
+>
+> **2 · Excentricidad.**
+> $$e = \frac{M_y}{P_u} = \frac{-8{,}600}{1{,}600} = -5.3750\ \text{in}$$
+>
+> **3 · Tramo que corta el rayo.** Hoja, sección 9: eje Y, rama −, filas con $c$ = 28.797 y 28.484 in.
+>
+> | Punto | $c$ (in) | $\varepsilon_t$ | $\phi$ | Zona | $\phi P_n$ (kip) | $\phi M_n$ (kip·in) | $e_i = \phi M_n/\phi P_n$ (in) |
+> |---|--:|--:|--:|---|--:|--:|--:|
+> | **p1** | 28.797 | −0.0000011 | 0.6500 | Comp. | 2,022.67 | −10,851.87 | −5.3651 |
+> | **p2** | 28.484 | 0.0000318 | 0.6500 | Comp. | 1,987.74 | −11,009.83 | −5.5389 |
+>
+> $e$ = −5.3750 in está entre $e_1$ = −5.3651 in y $e_2$ = −5.5389 in: el rayo pasa entre p1 y p2. Se nombra $p_1 = (x_1 ; y_1)$ y $p_2 = (x_2 ; y_2)$ con $x = \phi M_n$ y $y = \phi P_n$.
+>
+> **4 · Interpolación.** $\Delta x = x_2 - x_1 = -157.96$ kip·in · $\Delta y = y_2 - y_1 = -34.92$ kip
+> $$s = \frac{e\,y_1 - x_1}{\Delta x - e\,\Delta y} = \frac{(-5.3750)(2{,}022.67) - (-10{,}851.87)}{-157.96 - (-5.3750)(-34.92)} = \frac{-19.95}{-345.66} = 0.0577$$
+>
+> **5 · Punto de capacidad C.**
+> $$\phi M_{n,C} = x_1 + s\,\Delta x = -10{,}851.87 + 0.0577\,(-157.96) = -10{,}861.0\ \text{kip}\cdot\text{in}$$
+> $$\phi P_{n,C} = y_1 + s\,\Delta y = 2{,}022.67 + 0.0577\,(-34.92) = 2{,}020.6\ \text{kip}$$
+>
+> **6 · Relación demanda/capacidad.**
+> $$\frac{D}{C} = \frac{P_u}{\phi P_{n,C}} = \frac{1{,}600}{2{,}020.6} = 0.7918 = \mathbf{79.18\ \%} \le 1 \ \checkmark$$
+> Comprobación con momentos: $M_y/\phi M_{n,C}$ = −8,600/−10,861.0 = 0.7918. Con la misma excentricidad, las cargas podrían crecer 1.26 veces antes de llegar a C ($t = 1/(D/C)$).
+>
+> **Lectura.** C queda entre los puntos notables E y B de la rama $-M_y$, en la zona controlada por compresión. $M_y < 0$ y $P_u > 0$: $e < 0$ y se usa la rama $-M_y$, con la punta del ala (fibra derecha) comprimida.
+
+> [!example]- Caso 3 · eje X · rama $+M_x$ · D/C = 75.88 %
+> **1 · Carga y rama.** $U = (M_x ;\ P_u) = (2{,}400 ;\ -670)$. $M_x > 0$ → rama $+M_x$; $P_u < 0$ → tensión: el corte está entre D y F.
+>
+> **2 · Excentricidad.**
+> $$e = \frac{M_x}{P_u} = \frac{2{,}400}{-670} = -3.5821\ \text{in}$$
+>
+> **3 · Tramo que corta el rayo.** Hoja, sección 9: eje X, rama +, filas con $c$ = 1.959 y 1.567 in.
+>
+> | Punto | $c$ (in) | $\varepsilon_t$ | $\phi$ | Zona | $\phi P_n$ (kip) | $\phi M_n$ (kip·in) | $e_i = \phi M_n/\phi P_n$ (in) |
+> |---|--:|--:|--:|---|--:|--:|--:|
+> | **p1** | 1.959 | 0.05315 | 0.9000 | Tens. | −760.59 | 4,930.10 | −6.4819 |
+> | **p2** | 1.567 | 0.06717 | 0.9000 | Tens. | −937.58 | 2,373.53 | −2.5316 |
+>
+> $e$ = −3.5821 in está entre $e_1$ = −6.4819 in y $e_2$ = −2.5316 in: el rayo pasa entre p1 y p2. Se nombra $p_1 = (x_1 ; y_1)$ y $p_2 = (x_2 ; y_2)$ con $x = \phi M_n$ y $y = \phi P_n$.
+>
+> **4 · Interpolación.** $\Delta x = x_2 - x_1 = -2{,}556.57$ kip·in · $\Delta y = y_2 - y_1 = -176.99$ kip
+> $$s = \frac{e\,y_1 - x_1}{\Delta x - e\,\Delta y} = \frac{(-3.5821)(-760.59) - 4{,}930.10}{-2{,}556.57 - (-3.5821)(-176.99)} = \frac{-2{,}205.60}{-3{,}190.55} = 0.6913$$
+>
+> **5 · Punto de capacidad C.**
+> $$\phi M_{n,C} = x_1 + s\,\Delta x = 4{,}930.10 + 0.6913\,(-2{,}556.57) = 3{,}162.8\ \text{kip}\cdot\text{in}$$
+> $$\phi P_{n,C} = y_1 + s\,\Delta y = -760.59 + 0.6913\,(-176.99) = -882.9\ \text{kip}$$
+>
+> **6 · Relación demanda/capacidad.**
+> $$\frac{D}{C} = \frac{P_u}{\phi P_{n,C}} = \frac{-670}{-882.9} = 0.7588 = \mathbf{75.88\ \%} \le 1 \ \checkmark$$
+> Comprobación con momentos: $M_x/\phi M_{n,C}$ = 2,400/3,162.8 = 0.7588. Con la misma excentricidad, las cargas podrían crecer 1.32 veces antes de llegar a C ($t = 1/(D/C)$).
+>
+> **Lectura.** C queda entre los puntos notables D y F de la rama $+M_x$, en la zona controlada por tensión. $P_u < 0$ (tensión) y $M_x > 0$: $e < 0$ y el rayo baja hacia el cuarto cuadrante. El corte está entre D y F, donde la capacidad depende casi solo del acero.
+
+> [!example]- Caso 3 · eje Y · rama $+M_y$ · D/C = 74.01 %
+> **1 · Carga y rama.** $U = (M_y ;\ P_u) = (2{,}000 ;\ -670)$. $M_y > 0$ → rama $+M_y$; $P_u < 0$ → tensión: el corte está entre D y F.
+>
+> **2 · Excentricidad.**
+> $$e = \frac{M_y}{P_u} = \frac{2{,}000}{-670} = -2.9851\ \text{in}$$
+>
+> **3 · Tramo que corta el rayo.** Hoja, sección 9: eje Y, rama +, filas con $c$ = 1.567 y 1.254 in.
+>
+> | Punto | $c$ (in) | $\varepsilon_t$ | $\phi$ | Zona | $\phi P_n$ (kip) | $\phi M_n$ (kip·in) | $e_i = \phi M_n/\phi P_n$ (in) |
+> |---|--:|--:|--:|---|--:|--:|--:|
+> | **p1** | 1.567 | 0.05211 | 0.9000 | Tens. | −899.87 | 2,765.42 | −3.0731 |
+> | **p2** | 1.254 | 0.06587 | 0.9000 | Tens. | −937.58 | 2,320.00 | −2.4745 |
+>
+> $e$ = −2.9851 in está entre $e_1$ = −3.0731 in y $e_2$ = −2.4745 in: el rayo pasa entre p1 y p2. Se nombra $p_1 = (x_1 ; y_1)$ y $p_2 = (x_2 ; y_2)$ con $x = \phi M_n$ y $y = \phi P_n$.
+>
+> **4 · Interpolación.** $\Delta x = x_2 - x_1 = -445.42$ kip·in · $\Delta y = y_2 - y_1 = -37.71$ kip
+> $$s = \frac{e\,y_1 - x_1}{\Delta x - e\,\Delta y} = \frac{(-2.9851)(-899.87) - 2{,}765.42}{-445.42 - (-2.9851)(-37.71)} = \frac{-79.24}{-557.98} = 0.1420$$
+>
+> **5 · Punto de capacidad C.**
+> $$\phi M_{n,C} = x_1 + s\,\Delta x = 2{,}765.42 + 0.1420\,(-445.42) = 2{,}702.2\ \text{kip}\cdot\text{in}$$
+> $$\phi P_{n,C} = y_1 + s\,\Delta y = -899.87 + 0.1420\,(-37.71) = -905.2\ \text{kip}$$
+>
+> **6 · Relación demanda/capacidad.**
+> $$\frac{D}{C} = \frac{P_u}{\phi P_{n,C}} = \frac{-670}{-905.2} = 0.7401 = \mathbf{74.01\ \%} \le 1 \ \checkmark$$
+> Comprobación con momentos: $M_y/\phi M_{n,C}$ = 2,000/2,702.2 = 0.7401. Con la misma excentricidad, las cargas podrían crecer 1.35 veces antes de llegar a C ($t = 1/(D/C)$).
+>
+> **Lectura.** C queda entre los puntos notables D y F de la rama $+M_y$, en la zona controlada por tensión. Igual que en X: tensión con momento positivo, rayo hacia el cuarto cuadrante y corte entre D y F.
+
+> [!example]- Caso 4 · eje X · rama $+M_x$ · D/C = 86.77 %
+> **1 · Carga y rama.** $U = (M_x ;\ P_u) = (1{,}000 ;\ -880)$. $M_x > 0$ → rama $+M_x$; $P_u < 0$ → tensión: el corte está entre D y F.
+>
+> **2 · Excentricidad.**
+> $$e = \frac{M_x}{P_u} = \frac{1{,}000}{-880} = -1.1364\ \text{in}$$
+>
+> **3 · Tramo que corta el rayo.** Hoja, sección 9: eje X, rama +, filas con $c$ = 0.785 y 0.394 in.
+>
+> | Punto | $c$ (in) | $\varepsilon_t$ | $\phi$ | Zona | $\phi P_n$ (kip) | $\phi M_n$ (kip·in) | $e_i = \phi M_n/\phi P_n$ (in) |
+> |---|--:|--:|--:|---|--:|--:|--:|
+> | **p1** | 0.785 | 0.13711 | 0.9000 | Tens. | −1,012.99 | 1,171.65 | −1.1566 |
+> | **p2** | 0.394 | 0.27635 | 0.9000 | Tens. | −1,050.70 | 553.01 | −0.5263 |
+>
+> $e$ = −1.1364 in está entre $e_1$ = −1.1566 in y $e_2$ = −0.5263 in: el rayo pasa entre p1 y p2. Se nombra $p_1 = (x_1 ; y_1)$ y $p_2 = (x_2 ; y_2)$ con $x = \phi M_n$ y $y = \phi P_n$.
+>
+> **4 · Interpolación.** $\Delta x = x_2 - x_1 = -618.64$ kip·in · $\Delta y = y_2 - y_1 = -37.71$ kip
+> $$s = \frac{e\,y_1 - x_1}{\Delta x - e\,\Delta y} = \frac{(-1.1364)(-1{,}012.99) - 1{,}171.65}{-618.64 - (-1.1364)(-37.71)} = \frac{-20.53}{-661.49} = 0.0310$$
+>
+> **5 · Punto de capacidad C.**
+> $$\phi M_{n,C} = x_1 + s\,\Delta x = 1{,}171.65 + 0.0310\,(-618.64) = 1{,}152.5\ \text{kip}\cdot\text{in}$$
+> $$\phi P_{n,C} = y_1 + s\,\Delta y = -1{,}012.99 + 0.0310\,(-37.71) = -1{,}014.2\ \text{kip}$$
+>
+> **6 · Relación demanda/capacidad.**
+> $$\frac{D}{C} = \frac{P_u}{\phi P_{n,C}} = \frac{-880}{-1{,}014.2} = 0.8677 = \mathbf{86.77\ \%} \le 1 \ \checkmark$$
+> Comprobación con momentos: $M_x/\phi M_{n,C}$ = 1,000/1,152.5 = 0.8677. Con la misma excentricidad, las cargas podrían crecer 1.15 veces antes de llegar a C ($t = 1/(D/C)$).
+>
+> **Lectura.** C queda entre los puntos notables D y F de la rama $+M_x$, en la zona controlada por tensión. $s$ = 0.031 es casi cero: C queda prácticamente sobre p1. Es el D/C más alto en X; por este caso se eligieron barras #10 en el inciso 1.
+
+> [!example]- Caso 4 · eje Y · rama $+M_y$ · D/C = 85.69 %
+> **1 · Carga y rama.** $U = (M_y ;\ P_u) = (1{,}050 ;\ -880)$. $M_y > 0$ → rama $+M_y$; $P_u < 0$ → tensión: el corte está entre D y F.
+>
+> **2 · Excentricidad.**
+> $$e = \frac{M_y}{P_u} = \frac{1{,}050}{-880} = -1.1932\ \text{in}$$
+>
+> **3 · Tramo que corta el rayo.** Hoja, sección 9: eje Y, rama +, filas con $c$ = 0.628 y 0.315 in.
+>
+> | Punto | $c$ (in) | $\varepsilon_t$ | $\phi$ | Zona | $\phi P_n$ (kip) | $\phi M_n$ (kip·in) | $e_i = \phi M_n/\phi P_n$ (in) |
+> |---|--:|--:|--:|---|--:|--:|--:|
+> | **p1** | 0.628 | 0.13452 | 0.9000 | Tens. | −1,012.99 | 1,400.83 | −1.3829 |
+> | **p2** | 0.315 | 0.27119 | 0.9000 | Tens. | −1,050.70 | 927.08 | −0.8823 |
+>
+> $e$ = −1.1932 in está entre $e_1$ = −1.3829 in y $e_2$ = −0.8823 in: el rayo pasa entre p1 y p2. Se nombra $p_1 = (x_1 ; y_1)$ y $p_2 = (x_2 ; y_2)$ con $x = \phi M_n$ y $y = \phi P_n$.
+>
+> **4 · Interpolación.** $\Delta x = x_2 - x_1 = -473.75$ kip·in · $\Delta y = y_2 - y_1 = -37.71$ kip
+> $$s = \frac{e\,y_1 - x_1}{\Delta x - e\,\Delta y} = \frac{(-1.1932)(-1{,}012.99) - 1{,}400.83}{-473.75 - (-1.1932)(-37.71)} = \frac{-192.15}{-518.74} = 0.3704$$
+>
+> **5 · Punto de capacidad C.**
+> $$\phi M_{n,C} = x_1 + s\,\Delta x = 1{,}400.83 + 0.3704\,(-473.75) = 1{,}225.3\ \text{kip}\cdot\text{in}$$
+> $$\phi P_{n,C} = y_1 + s\,\Delta y = -1{,}012.99 + 0.3704\,(-37.71) = -1{,}027.0\ \text{kip}$$
+>
+> **6 · Relación demanda/capacidad.**
+> $$\frac{D}{C} = \frac{P_u}{\phi P_{n,C}} = \frac{-880}{-1{,}027.0} = 0.8569 = \mathbf{85.69\ \%} \le 1 \ \checkmark$$
+> Comprobación con momentos: $M_y/\phi M_{n,C}$ = 1,050/1,225.3 = 0.8569. Con la misma excentricidad, las cargas podrían crecer 1.17 veces antes de llegar a C ($t = 1/(D/C)$).
+>
+> **Lectura.** C queda entre los puntos notables D y F de la rama $+M_y$, en la zona controlada por tensión. En Y el momento es un poco mayor que en X y aun así el D/C es menor, porque con esta tensión la rama $+M_y$ resiste más momento ($\phi M_{n,C}$ = 1,225.3 contra 1,152.5 kip·in en X).
+
+> [!example]- Caso 5 · eje X · rama $-M_x$ · D/C = 62.38 %
+> **1 · Carga y rama.** $U = (M_x ;\ P_u) = (-1{,}125 ;\ -630)$. $M_x < 0$ → rama $-M_x$; $P_u < 0$ → tensión: el corte está entre D y F.
+>
+> **2 · Excentricidad.**
+> $$e = \frac{M_x}{P_u} = \frac{-1{,}125}{-630} = 1.7857\ \text{in}$$
+>
+> **3 · Tramo que corta el rayo.** Hoja, sección 9: eje X, rama −, filas con $c$ = 1.567 y 1.176 in.
+>
+> | Punto | $c$ (in) | $\varepsilon_t$ | $\phi$ | Zona | $\phi P_n$ (kip) | $\phi M_n$ (kip·in) | $e_i = \phi M_n/\phi P_n$ (in) |
+> |---|--:|--:|--:|---|--:|--:|--:|
+> | **p1** | 1.567 | 0.06717 | 0.9000 | Tens. | −1,003.67 | −1,939.40 | 1.9323 |
+> | **p2** | 1.176 | 0.09051 | 0.9000 | Tens. | −1,024.88 | −1,485.62 | 1.4496 |
+>
+> $e$ = 1.7857 in está entre $e_1$ = 1.9323 in y $e_2$ = 1.4496 in: el rayo pasa entre p1 y p2. Se nombra $p_1 = (x_1 ; y_1)$ y $p_2 = (x_2 ; y_2)$ con $x = \phi M_n$ y $y = \phi P_n$.
+>
+> **4 · Interpolación.** $\Delta x = x_2 - x_1 = 453.78$ kip·in · $\Delta y = y_2 - y_1 = -21.21$ kip
+> $$s = \frac{e\,y_1 - x_1}{\Delta x - e\,\Delta y} = \frac{(1.7857)(-1{,}003.67) - (-1{,}939.40)}{453.78 - (1.7857)(-21.21)} = \frac{147.14}{491.66} = 0.2993$$
+>
+> **5 · Punto de capacidad C.**
+> $$\phi M_{n,C} = x_1 + s\,\Delta x = -1{,}939.40 + 0.2993\,(453.78) = -1{,}803.6\ \text{kip}\cdot\text{in}$$
+> $$\phi P_{n,C} = y_1 + s\,\Delta y = -1{,}003.67 + 0.2993\,(-21.21) = -1{,}010.0\ \text{kip}$$
+>
+> **6 · Relación demanda/capacidad.**
+> $$\frac{D}{C} = \frac{P_u}{\phi P_{n,C}} = \frac{-630}{-1{,}010.0} = 0.6238 = \mathbf{62.38\ \%} \le 1 \ \checkmark$$
+> Comprobación con momentos: $M_x/\phi M_{n,C}$ = −1,125/−1,803.6 = 0.6238. Con la misma excentricidad, las cargas podrían crecer 1.60 veces antes de llegar a C ($t = 1/(D/C)$).
+>
+> **Lectura.** C queda entre los puntos notables D y F de la rama $-M_x$, en la zona controlada por tensión. $M_x$ y $P_u$ son negativos: $e > 0$ aunque ambos sean negativos, y el rayo va al tercer cuadrante (rama $-M_x$, tensión).
+
+> [!example]- Caso 5 · eje Y · rama $-M_y$ · D/C = 82.04 %
+> **1 · Carga y rama.** $U = (M_y ;\ P_u) = (-4{,}000 ;\ -630)$. $M_y < 0$ → rama $-M_y$; $P_u < 0$ → tensión: el corte está entre D y F.
+>
+> **2 · Excentricidad.**
+> $$e = \frac{M_y}{P_u} = \frac{-4{,}000}{-630} = 6.3492\ \text{in}$$
+>
+> **3 · Tramo que corta el rayo.** Hoja, sección 9: eje Y, rama −, filas con $c$ = 2.819 y 2.506 in.
+>
+> | Punto | $c$ (in) | $\varepsilon_t$ | $\phi$ | Zona | $\phi P_n$ (kip) | $\phi M_n$ (kip·in) | $e_i = \phi M_n/\phi P_n$ (in) |
+> |---|--:|--:|--:|---|--:|--:|--:|
+> | **p1** | 2.819 | 0.02764 | 0.9000 | Tens. | −733.93 | −5,421.37 | 7.3867 |
+> | **p2** | 2.506 | 0.03146 | 0.9000 | Tens. | −784.18 | −4,615.33 | 5.8855 |
+>
+> $e$ = 6.3492 in está entre $e_1$ = 7.3867 in y $e_2$ = 5.8855 in: el rayo pasa entre p1 y p2. Se nombra $p_1 = (x_1 ; y_1)$ y $p_2 = (x_2 ; y_2)$ con $x = \phi M_n$ y $y = \phi P_n$.
+>
+> **4 · Interpolación.** $\Delta x = x_2 - x_1 = 806.04$ kip·in · $\Delta y = y_2 - y_1 = -50.25$ kip
+> $$s = \frac{e\,y_1 - x_1}{\Delta x - e\,\Delta y} = \frac{(6.3492)(-733.93) - (-5{,}421.37)}{806.04 - (6.3492)(-50.25)} = \frac{761.48}{1{,}125.08} = 0.6768$$
+>
+> **5 · Punto de capacidad C.**
+> $$\phi M_{n,C} = x_1 + s\,\Delta x = -5{,}421.37 + 0.6768\,(806.04) = -4{,}875.8\ \text{kip}\cdot\text{in}$$
+> $$\phi P_{n,C} = y_1 + s\,\Delta y = -733.93 + 0.6768\,(-50.25) = -767.9\ \text{kip}$$
+>
+> **6 · Relación demanda/capacidad.**
+> $$\frac{D}{C} = \frac{P_u}{\phi P_{n,C}} = \frac{-630}{-767.9} = 0.8204 = \mathbf{82.04\ \%} \le 1 \ \checkmark$$
+> Comprobación con momentos: $M_y/\phi M_{n,C}$ = −4,000/−4,875.8 = 0.8204. Con la misma excentricidad, las cargas podrían crecer 1.22 veces antes de llegar a C ($t = 1/(D/C)$).
+>
+> **Lectura.** C queda entre los puntos notables D y F de la rama $-M_y$, en la zona controlada por tensión. Mismo cuadrante que en X (rama $-M_y$, tensión). El momento es mayor y por eso el D/C sube a 82.04 %.
+
+> [!example]- Caso 6 · eje X · rama $+M_x$ · D/C = 67.53 %
+> **1 · Carga y rama.** $U = (M_x ;\ P_u) = (3{,}300 ;\ 1{,}800)$. $M_x > 0$ → rama $+M_x$; $P_u > 0$ → compresión: el corte está entre A y D.
+>
+> **2 · Excentricidad.**
+> $$e = \frac{M_x}{P_u} = \frac{3{,}300}{1{,}800} = 1.8333\ \text{in}$$
+>
+> **3 · Tramo que corta el rayo.** Hoja, sección 9: eje X, rama +, filas con $c$ = 46.560 y 46.169 in.
+>
+> | Punto | $c$ (in) | $\varepsilon_t$ | $\phi$ | Zona | $\phi P_n$ (kip) | $\phi M_n$ (kip·in) | $e_i = \phi M_n/\phi P_n$ (in) |
+> |---|--:|--:|--:|---|--:|--:|--:|
+> | **p1** | 46.560 | −0.00064 | 0.6500 | Comp. · techo | 2,665.43 | 4,721.99 | 1.7716 |
+> | **p2** | 46.169 | −0.00062 | 0.6500 | Comp. · techo | 2,665.43 | 5,066.72 | 1.9009 |
+>
+> $e$ = 1.8333 in está entre $e_1$ = 1.7716 in y $e_2$ = 1.9009 in: el rayo pasa entre p1 y p2. Se nombra $p_1 = (x_1 ; y_1)$ y $p_2 = (x_2 ; y_2)$ con $x = \phi M_n$ y $y = \phi P_n$.
+>
+> **4 · Interpolación.** $\Delta x = x_2 - x_1 = 344.73$ kip·in · $\Delta y = y_2 - y_1 = 0.00$ kip
+> $$s = \frac{e\,y_1 - x_1}{\Delta x - e\,\Delta y} = \frac{(1.8333)(2{,}665.43) - 4{,}721.99}{344.73 - (1.8333)(0.00)} = \frac{164.64}{344.73} = 0.4776$$
+>
+> **5 · Punto de capacidad C.**
+> $$\phi M_{n,C} = x_1 + s\,\Delta x = 4{,}721.99 + 0.4776\,(344.73) = 4{,}886.6\ \text{kip}\cdot\text{in}$$
+> $$\phi P_{n,C} = y_1 + s\,\Delta y = 2{,}665.43 + 0.4776\,(0.00) = 2{,}665.4\ \text{kip}$$
+>
+> **6 · Relación demanda/capacidad.**
+> $$\frac{D}{C} = \frac{P_u}{\phi P_{n,C}} = \frac{1{,}800}{2{,}665.4} = 0.6753 = \mathbf{67.53\ \%} \le 1 \ \checkmark$$
+> Comprobación con momentos: $M_x/\phi M_{n,C}$ = 3,300/4,886.6 = 0.6753. Con la misma excentricidad, las cargas podrían crecer 1.48 veces antes de llegar a C ($t = 1/(D/C)$).
+>
+> **Lectura.** C queda entre los puntos notables A y E de la rama $+M_x$, en la zona controlada por compresión. **p1 y p2 están en el techo** ($\phi P_n = \phi P_{n,máx}$). Sobre el techo la capacidad no depende del momento: $D/C = P_u/\phi P_{n,máx}$ = 1,800/2,665.43 = 0.6753. Por eso con solo los puntos A–F sale el mismo valor.
+
+> [!example]- Caso 6 · eje Y · rama $+M_y$ · D/C = 89.60 %
+> **1 · Carga y rama.** $U = (M_y ;\ P_u) = (11{,}400 ;\ 1{,}800)$. $M_y > 0$ → rama $+M_y$; $P_u > 0$ → compresión: el corte está entre A y D.
+>
+> **2 · Excentricidad.**
+> $$e = \frac{M_y}{P_u} = \frac{11{,}400}{1{,}800} = 6.3333\ \text{in}$$
+>
+> **3 · Tramo que corta el rayo.** Hoja, sección 9: eje Y, rama +, filas con $c$ = 20.033 y 19.720 in.
+>
+> | Punto | $c$ (in) | $\varepsilon_t$ | $\phi$ | Zona | $\phi P_n$ (kip) | $\phi M_n$ (kip·in) | $e_i = \phi M_n/\phi P_n$ (in) |
+> |---|--:|--:|--:|---|--:|--:|--:|
+> | **p1** | 20.033 | 0.00131 | 0.6500 | Comp. | 2,015.82 | 12,692.14 | 6.2963 |
+> | **p2** | 19.720 | 0.00138 | 0.6500 | Comp. | 1,977.36 | 12,867.50 | 6.5074 |
+>
+> $e$ = 6.3333 in está entre $e_1$ = 6.2963 in y $e_2$ = 6.5074 in: el rayo pasa entre p1 y p2. Se nombra $p_1 = (x_1 ; y_1)$ y $p_2 = (x_2 ; y_2)$ con $x = \phi M_n$ y $y = \phi P_n$.
+>
+> **4 · Interpolación.** $\Delta x = x_2 - x_1 = 175.36$ kip·in · $\Delta y = y_2 - y_1 = -38.46$ kip
+> $$s = \frac{e\,y_1 - x_1}{\Delta x - e\,\Delta y} = \frac{(6.3333)(2{,}015.82) - 12{,}692.14}{175.36 - (6.3333)(-38.46)} = \frac{74.73}{418.94} = 0.1784$$
+>
+> **5 · Punto de capacidad C.**
+> $$\phi M_{n,C} = x_1 + s\,\Delta x = 12{,}692.14 + 0.1784\,(175.36) = 12{,}723.4\ \text{kip}\cdot\text{in}$$
+> $$\phi P_{n,C} = y_1 + s\,\Delta y = 2{,}015.82 + 0.1784\,(-38.46) = 2{,}009.0\ \text{kip}$$
+>
+> **6 · Relación demanda/capacidad.**
+> $$\frac{D}{C} = \frac{P_u}{\phi P_{n,C}} = \frac{1{,}800}{2{,}009.0} = 0.8960 = \mathbf{89.60\ \%} \le 1 \ \checkmark$$
+> Comprobación con momentos: $M_y/\phi M_{n,C}$ = 11,400/12,723.4 = 0.8960. Con la misma excentricidad, las cargas podrían crecer 1.12 veces antes de llegar a C ($t = 1/(D/C)$).
+>
+> **Lectura.** C queda entre los puntos notables E y B de la rama $+M_y$, en la zona controlada por compresión. Es el **D/C más alto del examen** y gobierna el inciso 3. $P_u$ es la carga axial más alta y $M_y$ es el mayor momento del caso.
+
+### 9.5 Revisiones axiales
 
 $$P_{u,máx} = 1{,}800\ \text{kip} \le \phi P_{n,máx} = 2{,}665.434\ \text{kip} \quad \checkmark \qquad P_{u,mín} = -880\ \text{kip} \ge \phi P_{nt} = -1{,}088.640\ \text{kip} \quad \checkmark$$
 
