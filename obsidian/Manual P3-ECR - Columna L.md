@@ -1186,6 +1186,21 @@ $$P_{u,máx} = 1{,}800\ \text{kip} \le \phi P_{n,máx} = 2{,}665.434\ \text{kip}
 
 $$\phi_v = 0.75 \quad\text{(ACI 21.2.1)} \qquad \phi_l = \#10 = 1.270\ \text{in} \qquad \phi_{l,mín} = \#9 = 1.128\ \text{in}$$
 
+**Eje fuerte y eje débil** (hoja: sección 8.2). Como en la hoja de clase, el cortante se revisa en los dos ejes. Para saber cuál es el fuerte se comparan las inercias de la sección bruta respecto a $G$, con el teorema de Steiner (distancias medidas desde $\bar x$ = 12.941 in y $\bar y$ = 22.492 in; inercias en in⁴):
+
+| Rectángulo | $b$ (in) | $h$ (in) | $A$ (in²) | $x_i-\bar x$ (in) | $y_i-\bar y$ (in) | $bh^3/12$ | $A(y_i-\bar y)^2$ | $I_{x,i}$ | $hb^3/12$ | $A(x_i-\bar x)^2$ | $I_{y,i}$ | $A(x_i-\bar x)(y_i-\bar y)$ |
+|---|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|
+| R1 · ala | 31.496 | 17.717 | 558.001 | 2.807 | 8.020 | 14,595.2 | 35,889.3 | 50,484.6 | 46,128.2 | 4,396.4 | 50,524.6 | 12,561.3 |
+| R2 · alma | 17.717 | 21.654 | 383.626 | −4.083 | −11.665 | 14,989.4 | 52,202.7 | 67,192.1 | 10,034.2 | 6,394.8 | 16,429.1 | 18,270.9 |
+| **Σ** |  |  | **941.627** |  |  |  |  | **117,676.7** |  |  | **66,953.7** | **30,832.2** |
+
+$$I_x = \sum\left(\frac{b h^3}{12} + A\,(y_i-\bar y)^2\right) = 117{,}676.7\ \text{in}^4 \qquad I_y = \sum\left(\frac{h b^3}{12} + A\,(x_i-\bar x)^2\right) = 66{,}953.7\ \text{in}^4$$
+
+Como $I_x > I_y$, el **eje x es el eje fuerte**: $M_x$ y $V_x$ trabajan con el peralte de 100 cm. El eje y es el débil: $M_y$ y $V_y$ trabajan con los 80 cm. Es la misma asignación de la hoja de clase: eje fuerte con $d_x$, eje débil con $d_y$.
+
+> [!note] Ejes principales girados
+> La L no es simétrica: $I_{xy} = \sum A(x_i-\bar x)(y_i-\bar y)$ = 30,832.2 in⁴ ≠ 0, así que sus ejes principales están girados $\theta_p$ = −25.3° respecto a x ($I_1$ = 132,238.0 in⁴, $I_2$ = 52,392.4 in⁴). La hoja trabaja en x y y, como en clase. Ese giro es el origen del momento perpendicular $M_\perp$ de [[#2.4 Por qué la L es distinta de la rectangular|§2.4]].
+
 **Qué parte de la L resiste cada cortante.** Cada cortante lo resiste la pata paralela a la fuerza; la otra pata no se cuenta (igual que el ala de una viga T):
 
 $$d_0 = rec + \phi_{es} + \frac{\phi_l}{2} = 1.575 + 0.500 + 0.635 = 2.710\ \text{in}$$
@@ -1203,7 +1218,7 @@ $$V_y:\ b_{w,y} = t_f = 17.717\ \text{in},\quad d_y = B - d_0 = 28.786\ \text{in
 $$\frac{l_u}{c_1} = \frac{206.69}{17.717} = 11.67 > 5$$
 
 > [!info] ACI 318-19, 18.3.3
-> El cortante por capacidad de pórticos ordinarios se exige para columnas con $l_u \le 5c_1$. Aquí no aplica, así que $V_u$ es el que da el análisis (el del enunciado).
+> El cortante por capacidad de pórticos ordinarios se exige para columnas con $l_u \le 5c_1$. Aquí no aplica, así que $V_u$ es el que da el análisis (el del enunciado). En la hoja de clase este paso es $V_{pr} = 2M_{pr}/l_u$ y $V_u = \min(V_a,\ V_{pr})$; la hoja lo hace igual si se ingresan $M_{pr,x}$ y $M_{pr,y}$ en la sección 8.1. El enunciado no da $M_{pr}$, así que se dejan en 0.
 
 **Cuantía para $V_c$.** Con el criterio de la hoja de clase ($A_l\cdot$No.$\phi_l$ = 1.27·18 = 22.86 in²):
 
@@ -1302,6 +1317,36 @@ No controla (9 cm < 45.0 cm).
 > - Refuerzo transversal **#4 @ 9.0 cm** en toda la altura: 2 estribos rectangulares (ala y alma), 1 eslabón horizontal en el ala (rama extra para $V_y$) y 2 eslabones horizontales en el alma (soporte lateral de s6–s7).
 > - $s$ = 9.0 cm ≤ $s_{máx}$ = 18.28 cm y ≤ $s_x$ = 45.0 cm.
 
+### 10.8 Comparación con la hoja de clase (Mathcad y Excel)
+
+La sección 8 de la hoja sigue el mismo procedimiento que *Cortante en Columnas* (Mathcad) y la hoja IC de *Diseño de Columnas* (Excel):
+
+| Paso | Hoja de clase | Esta hoja |
+|---|---|---|
+| Cortante de diseño | $V_{pr} = 2M_{pr}/l_u$; $V_u = \min(V_a,\ V_{pr})$ | Igual si se ingresa $M_{pr}$. En el P3 no hay $M_{pr}$: $V_u$ = cortante de cada combinación |
+| Ejes | Eje fuerte: $b_w = b$, $d = d_x$. Eje débil: $b_w = h$, $d = d_y$ | Igual. El eje fuerte se identifica con $I_x$ e $I_y$; en la L, $b_w$ es el espesor de la pata paralela al cortante |
+| $\rho_w$ | $A_l\cdot$No.$\phi_l/(b_w d)$ | Igual (opcional: $A_{st}$ real o barras a más de $2D/3$) |
+| $N_u$ en $V_c$ | Un solo $P_{u,mín}$ | $P_u$ de cada combinación (opcional: $P_{u,mín}$ o un valor fijo) |
+| $V_c$ | Tabla 22.5.5.1(b), $N_u/6A_g \le 0.05f'_c$, $V_c \ge 0$ | Igual, más el tope $V_c \le 5\lambda\sqrt{f'_c}\,b_w d$ (22.5.5.1.1) |
+| $A_v/s$, $s_v$, $s_{máx}$, límite $8\sqrt{f'_c}\,b_wd$ | ACI 22.5.8.5.3, 10.6.2.2, 10.7.6.5.2, 22.5.1.2 | Igual |
+| Separación | Floor(mín($s_v$, $s_{máx}$), 0.5 cm) | Igual, sobre todas las combinaciones y los dos ejes |
+| $s_x$ | Floor(mín($16\phi_{l,mín}$, $48\phi_{es}$, mín($b$, $h$)), 0.5 cm) | Igual; en la L la menor dimensión es el espesor de las patas |
+| Soporte lateral | $h_x = [h - (2rec + 2\phi_{es} + N\phi_l)]/(N-1)$ | Igual en la rectangular; en la L se mide por segmento con el diámetro real de cada barra |
+
+**Verificación.** Con el ejemplo de clase 80×80 (botón *Ejemplo de clase · 80×80*: $M_{pr,x}$ = 10,000 y $M_{pr,y}$ = 8,000 kip·in, $l_u$ = 2.90 m, $P_{u,mín}$ = 0, estribo #4 con 3 ramas) la hoja da los mismos valores de Mathcad y Excel: $V_{pr,x}$ = 175.172 kip, $V_c$ = 110.943 kip, $\phi V_c$ = 83.207 kip, $A_v/s$ = 0.0705 in²/in, $s$ = 21.5 cm, $s_x$ = 35.5 cm y $h_x$ = 14.285 cm. Además se compararon 64 casos (cuatro secciones rectangulares, cuatro cargas $P_{u,mín}$, estribos #3 y #4 y los dos criterios de $\rho_w$): todos los valores coinciden hasta el último decimal, salvo cuando la compresión es tan alta que $V_c$ pasa el tope de 22.5.5.1.1, que la hoja de clase no aplica.
+
+**Qué cambia en el P3 según el criterio** ($n_x$ = 2, $n_y$ = 3):
+
+| Criterio | $N_u$ en $V_c$ | Tope de $V_c$ | $s$ |
+|---|---|:-:|--:|
+| Esta hoja (ACI) | $P_u$ de cada combinación | Sí | **9.0 cm** |
+| Sin el tope | $P_u$ de cada combinación | No | 10.5 cm |
+| Hoja de clase | $P_{u,mín}$ = −880 kip para todas | — | 6.0 cm |
+| Sin carga axial | 0 para todas | — | 7.0 cm |
+
+> [!warning] Por qué la hoja usa el tope y la carga de cada combinación
+> ACI 318-19 22.5.5.1 pide la carga axial que actúa **junto con** el cortante, y 22.5.5.1.1 limita $V_c$ a $5\lambda\sqrt{f'_c}\,b_w d$. Sin el tope, el caso 1 (1,200 kip de compresión) daría $V_{c,y}$ = 210.8 kip en vez de 180.3 kip y la separación saldría en 10.5 cm, del lado inseguro. Usar $P_{u,mín}$ para todas es más conservador (6.0 cm) porque supone que el cortante mayor llega con la tensión del caso 4. Para reproducir el criterio de clase, elige *P_u,mín de todas las combinaciones* en la sección 8.1 de la hoja.
+
 ---
 
 ## 11. Resumen de resultados
@@ -1384,6 +1429,7 @@ No controla (9 cm < 45.0 cm).
 
 - **Verificación del motor de la hoja:** el cálculo exacto por rectángulos coincide con un modelo de fibras de 0.02 in en menos de 0.1 %, y con la sección rectangular 80×80 de clase reproduce los mismos resultados que la hoja v4.
 - **Momento perpendicular:** la revisión ignora $M_\perp$ (27 %–56 % de $M$ en el punto B). Es la simplificación de clase; una revisión más rigurosa giraría el eje neutro hasta anular $M_\perp$ o usaría la superficie de interacción biaxial.
+- **Cortante:** la sección 8 reproduce la hoja de clase (Mathcad y Excel) en el ejemplo 80×80 y en 64 casos de prueba; la única diferencia es el tope de $V_c$ de 22.5.5.1.1, que aquí sí se aplica (§10.8).
 - **Columna corta:** no se revisó esbeltez.
 - **$\rho_w$ en $V_c$:** se usó el criterio de la hoja de clase ($A_l\cdot$No.$\phi_l$ con la barra mayor). La hoja permite cambiarlo a $A_{st}$ real o a las barras a más de $2D/3$ (comentario R22.5.5.1); el resultado de este examen no cambia.
 

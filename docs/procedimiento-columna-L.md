@@ -359,12 +359,18 @@ medida sobre la recta que pasa por el origen y por $`(M_u, P_u)`$. Cumple si $`D
 
 ### 6.9 Cortante
 
-Se revisa cada combinación con su propia carga axial ($`N_u = P_u`$, positiva en compresión y negativa en tensión):
+Es el procedimiento de las hojas de clase *Cortante en Columnas* (Mathcad) y *Diseño de Columnas* (Excel, hoja IC), aplicado a cada combinación y en los dos ejes.
 
-| Cortante | Lo resiste | $`b_w`$ | $`d`$ |
-|---|---|---|---|
-| $`V_x`$ (asociado a $`M_x`$) | alma vertical | $`t_w`$ | $`d_x = H - rec - \phi_{es} - \phi_l/2`$ |
-| $`V_y`$ (asociado a $`M_y`$) | ala horizontal | $`t_f`$ | $`d_y = B - rec - \phi_{es} - \phi_l/2`$ |
+**Eje fuerte y eje débil.** La hoja calcula $`I_x`$, $`I_y`$ e $`I_{xy}`$ de la sección bruta respecto a $`G`$ (Steiner, rectángulo por rectángulo). El eje con mayor inercia es el fuerte. En el P3, $`I_x`$ = 117,676.7 in⁴ > $`I_y`$ = 66,953.7 in⁴: x es el eje fuerte. Como $`I_{xy} \ne 0`$, los ejes principales de la L están girados −25.3°; la hoja trabaja en x y y, como en clase.
+
+| Cortante | Eje | Lo resiste | $`b_w`$ | $`d`$ |
+|---|---|---|---|---|
+| $`V_x`$ (acompaña a $`M_x`$) | fuerte en el P3 | alma vertical | $`t_w`$ | $`d_x = H - rec - \phi_{es} - \phi_l/2`$ |
+| $`V_y`$ (acompaña a $`M_y`$) | débil en el P3 | ala horizontal | $`t_f`$ | $`d_y = B - rec - \phi_{es} - \phi_l/2`$ |
+
+**Cortante de diseño.** Si se ingresan $`M_{pr,x}`$ y $`M_{pr,y}`$: $`V_{pr} = 2M_{pr}/l_u`$ y $`V_u = \min(V_a,\ V_{pr})`$, como en la hoja de clase (ACI 18.3.3). Si no, $`V_u`$ es el cortante de cada combinación.
+
+**Carga axial en $`V_c`$.** Por defecto $`N_u = P_u`$ de cada combinación (la carga simultánea, ACI 22.5.5.1). Para reproducir la hoja de clase se puede elegir $`P_{u,mín}`$ de todas las combinaciones o un valor fijo.
 
 ```math
 V_c = \left[8\lambda\,\rho_w^{1/3}\sqrt{f'_c} + \min\!\left(\frac{N_u}{6A_g},\ 0.05f'_c\right)\right] b_w d \;\ge 0,
@@ -385,6 +391,10 @@ s_v = \frac{n\,A_{es}}{A_v/s}
 - Separación de diseño: $`s = \text{Floor}\big(\min(s_v,\ s_{máx},\ s_x),\ 0.5\ \text{cm}\big)`$ sobre todas las combinaciones.
 - **Eslabones** (ACI 25.7.2.3): en cada segmento, las barras principales están soportadas por esquinas de estribo. Si la separación libre entre barras es $`\le 6`$ in basta soportar barras alternas ($`\lfloor n/2 \rfloor`$ eslabones); si es mayor, cada barra intermedia necesita su eslabón ($`n`$ eslabones).
 - $`l_u/c_1`$: si $`l_u > 5c_1`$ no aplica el cortante por capacidad de ACI 18.3.3 y $`V_u`$ es el del análisis.
+- En la sección rectangular la hoja también muestra la separación libre por cara con la fórmula de clase, $`h_x = [h - (2rec + 2\phi_{es} + N\phi_l)]/(N-1)`$.
+- La hoja muestra todos los cálculos: una tabla por eje con $`N_u/6A_g`$, $`v_c`$, $`V_c`$ calculado y usado, $`\phi V_c`$, $`V_u`$, $`A_{vn}/s`$, $`A_v/s`$, $`s_v`$, $`V_s`$, $`s_{máx}`$ y la revisión $`8\sqrt{f'_c}\,b_wd`$ de cada combinación, y el desarrollo paso a paso de la combinación elegida.
+
+**Diferencia con la hoja de clase.** La hoja aplica el tope $`V_c \le 5\lambda\sqrt{f'_c}\,b_w d`$ (ACI 22.5.5.1.1), que la hoja de clase no aplica. Solo se activa con compresión alta: en el P3, sin el tope la separación saldría en 10.5 cm en vez de 9 cm.
 
 ## 7. Secciones de ACI 318-19 utilizadas
 
@@ -493,6 +503,7 @@ La elección final de ramas y eslabones queda a criterio del estudiante (lo perm
 | Prueba | Qué se compara | Estado |
 |---|---|---|
 | Método exacto vs. fibras | Motor de rectángulos recortados contra una malla de fibras de 0.02 in, 16 estados de la L del P3 | Diferencias < 0.1 % en $`P_n`$, $`M_x`$ y $`M_y`$ |
+| Cortante vs. hoja de clase | Ejemplo 80×80 con $`M_{pr}`$ y $`P_{u,mín}`$ = 0, y 64 casos (4 secciones, 4 cargas $`P_{u,mín}`$, estribos #3 y #4, 2 criterios de $`\rho_w`$) contra el motor de la hoja v4, igual a Mathcad y Excel | Idénticos ($`V_c`$ = 110.943 kip, $`s`$ = 21.5 cm, $`s_x`$ = 35.5 cm, $`h_x`$ = 14.285 cm). Solo difiere cuando actúa el tope de 22.5.5.1.1 |
 | Rectangular v4 vs. v5 | Ejemplo de clase 80×80 (4 #8 + 12 #7): puntos A–F en X y Y, D/C y cortante | Idénticos (p. ej. $`P_{nB} = 1{,}572.265`$ kip, $`M_{nB} = 18{,}934.560`$ kip·in, $`M_{nD} = 8{,}548.096`$ kip·in, $`V_c = 110.943`$ kip) |
 | Hoja vs. motor de referencia | P3 completo: centroide, capas, puntos A–F y $`M_\perp`$ en las 4 direcciones, D/C | Coinciden a 4 decimales; D/C dentro de 0.1 % (muestreo de la curva) |
 | Formas y orientaciones | L en sus 4 orientaciones, sección personalizada con los mismos rectángulos, ancho de teléfono y modo oscuro | Mismos resultados; sin errores de consola |
@@ -519,3 +530,4 @@ La elección final de ramas y eslabones queda a criterio del estudiante (lo perm
 | v4 | Columna rectangular, puntos A–F, cortante con detalle ordinario |
 | v5 | Sección como unión de rectángulos (L), 4 direcciones, $`M_\perp`$, combinaciones con $`M_x`$, $`M_y`$, $`V_x`$, $`V_y`$, eslabones por segmento; instrucciones movidas a este documento |
 | v5.1 | Perfil de cálculo (deformaciones, esfuerzos y fuerzas alineados con la sección), planta con cotas y unidades, rayos D/C, región segura, cursor de lectura, zoom y resaltado de combinaciones enlazado con las tablas |
+| v5.2 | Cortante revisado contra la hoja de clase: ejes fuerte y débil por inercias, $`V_{pr} = 2M_{pr}/l_u`$, criterio de $`N_u`$ para $`V_c`$, tabla de todos los cálculos por eje, fórmula de clase de $`h_x`$, revisión de $`P_{u,máx}`$ |

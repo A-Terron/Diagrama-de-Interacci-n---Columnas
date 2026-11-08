@@ -239,6 +239,14 @@ tr[data-cbi]{cursor:pointer}
 .seg button:disabled{color:var(--ink-3);cursor:default}
 .seg button:disabled[aria-pressed="true"]{background:var(--accent);color:var(--sheet)}
 .svgbox svg{user-select:none;-webkit-user-select:none}
+.lead{margin:2px 18px 8px;font-size:13px;color:var(--ink-2);max-width:86ch}
+.tbl td.gv{background:color-mix(in srgb,var(--calc-bg) 80%,transparent);font-weight:600}
+.tbl td.cap{color:var(--trans)}
+.tbl tr.sep td{border-top:2px solid var(--rule)}
+.axline{margin:6px 18px 2px;font-size:13px}
+.axline b{font-family:var(--f-mono);font-weight:500;color:var(--calc)}
+.kvt{margin:4px 0 6px}
+.tbl td.tl{text-align:left}
 
 .legend a,.foot a{color:var(--accent);text-underline-offset:2px}
 </style>
@@ -391,6 +399,12 @@ tr[data-cbi]{cursor:pointer}
 
       <section class="sec" id="s8">
         <h2><span class="secno">8</span><span>Cortante y refuerzo transversal</span></h2>
+        <p class="lead">Mismo procedimiento que las hojas de clase <i>Cortante en Columnas</i> (Mathcad) y <i>Diseño de Columnas</i> (Excel, hoja IC), revisado en el eje fuerte y en el eje débil, para cada combinación.</p>
+        <h4 class="subh">8.1 Datos de cortante</h4>
+        <div class="step input"><div class="mline"><span class="lhs"><var>M</var><sub>pr,x</sub></span><span class="op">:=</span><span class="inbox"><input id="i-Mprx" class="in" data-k="Mprx" data-q="moment" inputmode="decimal" autocomplete="off"><select class="iu" data-k="Mprx" data-q="moment" aria-label="Unidad"></select></span></div><div class="note"><span class="tag in">ingresado</span>Momento probable en los extremos para <var>V</var><sub>x</sub>; con 0 no se usa y <var>V</var><sub>u</sub> = <var>V</var><sub>x</sub> de cada combinación <span class="ref">ACI 18.3.3</span></div></div>
+        <div class="step input"><div class="mline"><span class="lhs"><var>M</var><sub>pr,y</sub></span><span class="op">:=</span><span class="inbox"><input id="i-Mpry" class="in" data-k="Mpry" data-q="moment" inputmode="decimal" autocomplete="off"><select class="iu" data-k="Mpry" data-q="moment" aria-label="Unidad"></select></span></div><div class="note"><span class="tag in">ingresado</span>Momento probable en los extremos para <var>V</var><sub>y</sub>; con 0 no se usa</div></div>
+        <div class="step input"><div class="mline"><span class="lhs"><var>N</var><sub>u</sub> en <var>V</var><sub>c</sub></span><span class="op">:=</span><span class="inbox"><select id="i-nuMode" class="insel" data-k="nuMode" aria-label="Carga axial para Vc"><option value="combo">P_u de cada combinación (ACI 22.5.5.1)</option><option value="min">P_u,mín de todas las combinaciones</option><option value="fixed">Valor fijo (P_u,mín de la hoja de clase)</option></select></span></div><div class="note"><span class="tag in">ingresado</span>Carga axial que acompaña al cortante. La hoja de clase usa un solo <var>P</var><sub>u,mín</sub>; ACI pide la carga simultánea de cada combinación</div></div>
+        <div class="step input" data-nufixed><div class="mline"><span class="lhs"><var>P</var><sub>u,mín</sub></span><span class="op">:=</span><span class="inbox"><input id="i-nuFixed" class="in" data-k="nuFixed" data-q="force" inputmode="decimal" autocomplete="off"><select class="iu" data-k="nuFixed" data-q="force" aria-label="Unidad"></select></span></div><div class="note"><span class="tag in">ingresado</span>Carga axial mínima para <var>V</var><sub>c</sub> (+ compresión, − tensión)</div></div>
         <div class="step input"><div class="mline"><span class="lhs"><var>n</var><sub>x</sub></span><span class="op">:=</span><span class="inbox narrow"><input id="i-nVx" class="in" data-k="nVx" inputmode="decimal" autocomplete="off"></span></div><div class="note"><span class="tag in">ingresado</span>Ramas que resisten <var>V</var><sub>x</sub> (paralelas a Y, cruzan <span data-bwx>el alma</span>)</div></div>
         <div class="step input"><div class="mline"><span class="lhs"><var>n</var><sub>y</sub></span><span class="op">:=</span><span class="inbox narrow"><input id="i-nVy" class="in" data-k="nVy" inputmode="decimal" autocomplete="off"></span></div><div class="note"><span class="tag in">ingresado</span>Ramas que resisten <var>V</var><sub>y</sub> (paralelas a X, cruzan <span data-bwy>el ala</span>)</div></div>
         <div data-shape="custom">
@@ -399,10 +413,13 @@ tr[data-cbi]{cursor:pointer}
           <div class="step input"><div class="mline"><span class="lhs"><var>b</var><sub>w,y</sub></span><span class="op">:=</span><span class="inbox"><input id="i-bwy" class="in" data-k="shearMan.bwy" data-q="len" inputmode="decimal" autocomplete="off"><select class="iu" data-k="shearMan.bwy" data-q="len" aria-label="Unidad"></select></span></div><div class="note"><span class="tag in">ingresado</span>Ancho que resiste <var>V</var><sub>y</sub></div></div>
           <div class="step input"><div class="mline"><span class="lhs"><var>d</var><sub>y</sub></span><span class="op">:=</span><span class="inbox"><input id="i-dy" class="in" data-k="shearMan.dy" data-q="len" inputmode="decimal" autocomplete="off"><select class="iu" data-k="shearMan.dy" data-q="len" aria-label="Unidad"></select></span></div><div class="note"><span class="tag in">ingresado</span>Peralte para <var>V</var><sub>y</sub></div></div>
         </div>
+        <div class="slot" data-slot="shearAxes"></div>
         <div class="slot" data-slot="shearGeo"></div>
-        <h4 class="subh">Resultados por combinación</h4>
+        <h4 class="subh">8.5 Resultados por combinación</h4>
         <div class="tscroll" id="shear-wrap"></div>
-        <div class="selrow"><label for="i-shCombo"><span class="tag in">ingresado</span>Desarrollo de la combinación <select id="i-shCombo" class="insel"></select></label><span class="mini">Por defecto, la que controla la separación</span></div>
+        <div class="slot" data-slot="shearAll"></div>
+        <h4 class="subh">8.7 Desarrollo paso a paso de una combinación</h4>
+        <div class="selrow"><label for="i-shCombo"><span class="tag in">ingresado</span>Combinación <select id="i-shCombo" class="insel"></select></label><span class="mini">Por defecto, la que controla la separación</span></div>
         <div class="slot" data-slot="shearDetail"></div>
         <div class="slot" data-slot="shearSum"></div>
       </section>
@@ -494,7 +511,7 @@ tr[data-cbi]{cursor:pointer}
       </section>
     </aside>
   </div>
-  <p class="foot">Versión 5. Procedimiento de las clases de Diseño de Columnas (octubre de 2026) generalizado a secciones formadas por rectángulos, ACI 318-19 y tabla de varillas ASTM. Columna corta, flexión uniaxial con eje neutro paralelo al eje de flexión; el momento perpendicular inducido se reporta pero no se revisa. Detalles en el <a href="docs/procedimiento-columna-L.html" target="_blank" rel="noopener">procedimiento</a>.</p>
+  <p class="foot">Versión 5.2. Procedimiento de las clases de Diseño de Columnas (octubre de 2026) generalizado a secciones formadas por rectángulos, ACI 318-19 y tabla de varillas ASTM. Columna corta, flexión uniaxial con eje neutro paralelo al eje de flexión; el momento perpendicular inducido se reporta pero no se revisa. Detalles en el <a href="docs/procedimiento-columna-L.html" target="_blank" rel="noopener">procedimiento</a>.</p>
 </div>
 <div class="tooltip" id="tip" hidden></div>
 <script>
@@ -854,6 +871,23 @@ function uniqueTies(R) {
   return out;
 }
 
+/* Inercias de la sección bruta respecto a su centroide (rectángulos que no se traslapan) */
+function sectionInertia(sec) {
+  let A = 0, Sx = 0, Sy = 0;
+  sec.rects.forEach(r => { const a = r.w * r.h; A += a; Sx += a * (r.x + r.w / 2); Sy += a * (r.y + r.h / 2); });
+  const xg = Sx / A, yg = Sy / A;
+  let Ix = 0, Iy = 0, Ixy = 0;
+  const parts = sec.rects.map(r => {
+    const a = r.w * r.h, xc = r.x + r.w / 2, yc = r.y + r.h / 2;
+    const Ixo = r.w * r.h ** 3 / 12, Iyo = r.h * r.w ** 3 / 12, dy = yc - yg, dx = xc - xg;
+    Ix += Ixo + a * dy * dy; Iy += Iyo + a * dx * dx; Ixy += a * dx * dy;
+    return { name: r.name, w: r.w, h: r.h, A: a, xc, yc, dx, dy, Ixo, Iyo, Ix: Ixo + a * dy * dy, Iy: Iyo + a * dx * dx, Ixy: a * dx * dy };
+  });
+  const avg = (Ix + Iy) / 2, R0 = Math.hypot((Ix - Iy) / 2, Ixy);
+  const thp = 0.5 * Math.atan2(-2 * Ixy, Ix - Iy);           // ángulo del eje principal mayor respecto a x (rad)
+  return { A, xg, yg, Ix, Iy, Ixy, I1: avg + R0, I2: avg - R0, thp, parts, strong: Ix >= Iy ? 'x' : 'y', rx: Math.sqrt(Ix / A), ry: Math.sqrt(Iy / A) };
+}
+
 /* ===== Cortante por combinación (detalle ordinario, ACI 318-19) ===== */
 const floorTo = (x, step) => Math.floor(x / step + 1e-9) * step;
 const floorCm = (x_in, step_cm) => floorTo(x_in * 2.54, step_cm) / 2.54;
@@ -876,15 +910,24 @@ function computeShear(inp, R) {
   const AsVx = inp.rhoArea === 'r2255' ? far('X') : area[inp.rhoArea === 'real' ? 'real' : 'sheet'];
   const AsVy = inp.rhoArea === 'r2255' ? far('Y') : area[inp.rhoArea === 'real' ? 'real' : 'sheet'];
   const Ag = R.Ag, phiv = 0.75;
-  const one = (g, AsV, Vu, Nu, nLeg) => {
+  const In = sectionInertia(R.sec);
+  // Cortante por capacidad (hoja de clase): V_pr = 2·M_pr/l_u ; V_u = mín(V_a , V_pr) si se da M_pr
+  const Vprx = inp.Mprx > 0 ? 2 * inp.Mprx / inp.lu : null, Vpry = inp.Mpry > 0 ? 2 * inp.Mpry / inp.lu : null;
+  // Carga axial N_u para V_c: la de cada combinación (ACI 22.5.5.1), la mínima de todas o un valor fijo (P_u,mín de la hoja de clase)
+  const PuList = (inp.combos || []).map(c => c.Pu);
+  const PuMin = PuList.length ? Math.min(...PuList) : 0, PuMax = PuList.length ? Math.max(...PuList) : 0;
+  const nuMode = inp.nuMode || 'combo';
+  const NuOf = cb => nuMode === 'min' ? PuMin : (nuMode === 'fixed' ? (inp.nuFixed || 0) : cb.Pu);
+  const one = (g, AsV, Va, Vpr, Nu, nLeg) => {
     const bw = g.bw, d = g.d;
+    const Vu = Vpr !== null ? Math.min(Va, Vpr) : Va;
     const rho = AsV / (bw * d);
     const nuRaw = Nu * 1000 / (6 * Ag);
     const nuT = Math.min(nuRaw, 0.05 * fc_psi);
     const vc = 8 * lam * Math.cbrt(rho) * sq + nuT;
     const VcRaw = vc * bw * d / 1000;
     const Vcmax = 5 * lam * sq * bw * d / 1000;
-    const Vc = Math.min(Math.max(0, VcRaw), Vcmax);
+    const Vc = Math.min(Math.max(0, VcRaw), Vcmax), capped = VcRaw > Vcmax, neg = VcRaw < 0;
     const Avn = (Vu / phiv - Vc) / (fyt * d);
     const Avmin = Math.max(0.75 * sq * bw / (fyt * 1000), 50 * bw / (fyt * 1000));
     const Av = Math.max(Avn, Avmin);
@@ -893,10 +936,11 @@ function computeShear(inp, R) {
     const lim4 = 4 * sq * bw * d / 1000, lim8 = 8 * sq * bw * d / 1000;
     const Vsreq = Math.max(0, Vu / phiv - Vc);
     const smax = Vs <= lim4 ? Math.min(d / 2, 24) : Math.min(d / 4, 12);
-    return { bw, d, AsV, rho, nuRaw, nuT, vc, VcRaw, Vcmax, Vc, phiVc: phiv * Vc, Avn, Avmin, Av, sv, Vs, Vsreq, lim4, lim8, smax, smaxCase: Vs <= lim4 ? 'd/2' : 'd/4', Vu, Nu, nLeg, ok8: Vsreq <= lim8 + 1e-9 };
+    return { bw, d, AsV, rho, nuRaw, nuT, vc, VcRaw, Vcmax, Vc, capped, neg, phiVc: phiv * Vc, Avn, Avmin, Av, avGov: Avn >= Avmin ? 'Avn' : 'Avmin', sv, Vs, Vsreq, lim4, lim8, smax, smaxCase: Vs <= lim4 ? 'd/2' : 'd/4',
+      sAx: Math.min(sv, smax), Va, Vpr, Vu, Nu, nLeg, ok8: Vsreq <= lim8 + 1e-9, needSteel: Vu > phiv * Vc };
   };
-  const rows = (inp.combos || []).map(cb => ({ name: cb.name, Pu: cb.Pu,
-    x: one(gx, AsVx, Math.abs(cb.Vx || 0), cb.Pu, inp.nVx), y: one(gy, AsVy, Math.abs(cb.Vy || 0), cb.Pu, inp.nVy) }));
+  const rows = (inp.combos || []).map(cb => ({ name: cb.name, Pu: cb.Pu, Nu: NuOf(cb),
+    x: one(gx, AsVx, Math.abs(cb.Vx || 0), Vprx, NuOf(cb), inp.nVx), y: one(gy, AsVy, Math.abs(cb.Vy || 0), Vpry, NuOf(cb), inp.nVy) }));
   let gov = null;
   rows.forEach((r, i) => ['x', 'y'].forEach(k => { const v = Math.min(r[k].sv, r[k].smax); if (!gov || v < gov.v) gov = { v, i, k }; }));
   const sRaw = gov ? gov.v : Infinity;
@@ -904,8 +948,17 @@ function computeShear(inp, R) {
   const sxRaw = Math.min(16 * phlmin, 48 * phes, R.sec.least);
   const sx = floorCm(sxRaw, 0.5);
   const s = Math.min(sShear, sx);
+  // Separación libre por cara con la fórmula de la hoja de clase (solo sección rectangular):
+  // h_x = [H − (2·rec + 2·ϕes + N·ϕl)] / (N − 1), N = barras por cara
+  let faceCls = null;
+  if (inp.shape === 'rect' && inp.faces) {
+    const nI = k => Math.max(0, Math.floor((inp.faces[k] || {}).n || 0));
+    const NY = Math.max(nI('left'), nI('right')) + 2, NX = Math.max(nI('bot'), nI('top')) + 2;
+    const fcl = (N, len) => ({ N, len, clear: (len - (2 * inp.rec + 2 * phes + N * phl)) / (N - 1) });
+    faceCls = { hx: fcl(NY, inp.H), hy: fcl(NX, inp.B) };
+  }
   return { fc_psi, sq, lam, fyt, phl, phlmin, noL, noLmin, phes, Aes, Nl, d0, gx, gy, AsVx, AsVy, Ag, phiv, rows, gov, sRaw, sShear, sxRaw, sx, s,
-    least: R.sec.least, luc1: inp.lu / R.sec.least };
+    least: R.sec.least, luc1: inp.lu / R.sec.least, In, Vprx, Vpry, nuMode, PuMin, PuMax, faceCls };
 }
 
 
@@ -948,7 +1001,7 @@ function P3inp() {
     segs: { s1: seg(1, 9), s2: seg(1, 9), s3: seg(1, 9), s4: seg(1, 9), s5: seg(1, 9), s6: seg(2, 9), s7: seg(2, 9), s8: seg(1, 9), s9: seg(0, 9), s10: seg(0, 9) },
     faces: { bot: seg(3, 7), top: seg(3, 7), left: seg(3, 7), right: seg(3, 7) },
     barsTbl: [], etyMode: 'fy/Es', tcMode: 'ety+0.003',
-    nVx: 2, nVy: 2, rhoArea: 'sheet', shearMan: { bwx: 45 * CM, dx: 93 * CM, bwy: 45 * CM, dy: 73 * CM },
+    nVx: 2, nVy: 2, rhoArea: 'sheet', Mprx: 0, Mpry: 0, nuMode: 'combo', nuFixed: 0, shearMan: { bwx: 45 * CM, dx: 93 * CM, bwy: 45 * CM, dy: 73 * CM },
     combos: [[1200, 8800, 14200, 250, 345], [1600, -5075, -8600, -175, -240], [-670, 2400, 2000, 120, 115], [-880, 1000, 1050, 80, 78], [-630, -1125, -4000, -85, -160], [1800, 3300, 11400, 150, 325]]
       .map((r, i) => ({ name: 'Caso ' + (i + 1), Pu: r[0], Mx: r[1], My: r[2], Vx: r[3], Vy: r[4] }))
   };
@@ -956,6 +1009,7 @@ function P3inp() {
 function RECTinp() {
   const b = P3inp();
   return { ...b, fc: 4, shape: 'rect', B: 80 * CM, H: 80 * CM, rec: 1.5, est: 4, prin: 8, Hcol: 350 * CM, lu: 290 * CM, nVx: 3, nVy: 3,
+    Mprx: 10000, Mpry: 8000, nuMode: 'fixed', nuFixed: 0,   // como la hoja de clase: V_pr = 2·M_pr/l_u y P_u,mín = 0
     faces: { bot: { n: 3, bar: 7 }, top: { n: 3, bar: 7 }, left: { n: 3, bar: 7 }, right: { n: 3, bar: 7 } },
     combos: [{ name: 'CR1 (ejemplo)', Pu: 1500, Mx: 8000, My: 8000, Vx: 175, Vy: 140 }, { name: 'CR2 (ejemplo)', Pu: 900, Mx: 6500, My: -6500, Vx: 120, Vy: 100 },
       { name: 'CR3 (ejemplo)', Pu: 1800, Mx: 7000, My: 5000, Vx: 90, Vy: 80 }, { name: 'CR4 sismo (ejemplo)', Pu: 350, Mx: -12500, My: 9000, Vx: 200, Vy: 175 }] };
@@ -964,7 +1018,7 @@ function DEF() {
   return {
     inp: P3inp(),
     inU: { fc: 'psi', fy: 'ksi', fyt: 'ksi', Es: 'ksi', B: 'cm', H: 'cm', tf: 'cm', tw: 'cm', rec: 'cm', Hcol: 'm', lu: 'm', coord: 'cm',
-      'shearMan.bwx': 'cm', 'shearMan.dx': 'cm', 'shearMan.bwy': 'cm', 'shearMan.dy': 'cm', Pu: 'kip', Mx: 'kip·in', My: 'kip·in', Vx: 'kip', Vy: 'kip' },
+      'shearMan.bwx': 'cm', 'shearMan.dx': 'cm', 'shearMan.bwy': 'cm', 'shearMan.dy': 'cm', Mprx: 'kip·in', Mpry: 'kip·in', nuFixed: 'kip', Pu: 'kip', Mx: 'kip·in', My: 'kip·in', Vx: 'kip', Vy: 'kip' },
     out: { len: 'in', area: 'in²', force: 'kip', moment: 'kip·in', stress: 'ksi', strain: '—', ratio: '%', avs: 'in²/in' },
     over: Object.fromEntries(['sh.sv', 'sh.s', 'sh.sx', 'sh.sf', 'sh.smax', 'sh.d', 'sc.s', 'sg-sc', 'sg-cl', 'sg-req', 'g.xg', 'g.yg', 'g.xp', 'g.yp', 'dim', 'g.r'].map(k => [k, { u: 'cm', q: 'len' }])),
     dec: 3, dir: '+X', sel: 'B', cFree: null, iterNeg: true, itAx: 'X', shCombo: null,
@@ -1110,11 +1164,14 @@ function applyVisibility() {
   $('#prin-note').textContent = sh === 'rect' ? 'Varilla en las 4 esquinas del estribo' : 'Barras "rojas": esquinas de los dos estribos, incluida la esquina entrante N5';
   $$('[data-bwx]').forEach(el => { el.textContent = sh === 'L' ? 'el alma' : (sh === 'rect' ? 'la sección' : 'el ancho b_w,x'); });
   $$('[data-bwy]').forEach(el => { el.textContent = sh === 'L' ? 'el ala' : (sh === 'rect' ? 'la sección' : 'el ancho b_w,y'); });
+  $$('[data-nufixed]').forEach(el => { el.hidden = S.inp.nuMode !== 'fixed'; });
 }
 function validIn(k, v) {
   if (k.endsWith('.n')) return v >= 0 && v <= 30;
   if (k === 'nVx' || k === 'nVy') return v >= 1 && v <= 20;
   if (k === 'rec') return v >= 0;
+  if (k === 'Mprx' || k === 'Mpry') return v >= 0;
+  if (k === 'nuFixed') return isFinite(v);
   if (k === 'ecu') return v > 0 && v < 0.02;
   if (k === 'tf') return v > 0 && v < S.inp.H;
   if (k === 'tw') return v > 0 && v < S.inp.B;
@@ -1201,7 +1258,9 @@ const SLOTS = {
       { ok: pmax <= R.phiPnmax + 1e-9, t: `P<sub>u,máx</sub> = ${fu(pmax, 'force')} ${pmax <= R.phiPnmax ? '≤' : '&gt;'} φP<sub>n,máx</sub> = ${fu(R.phiPnmax, 'force')}`, ref: 'ACI 22.4.2.1' },
       { ok: pmin >= 0.9 * R.Pnt - 1e-9, t: `P<sub>u,mín</sub> = ${fu(pmin, 'force')} ${pmin >= 0.9 * R.Pnt ? '≥' : '&lt;'} φP<sub>nt</sub> = ${fu(0.9 * R.Pnt, 'force')}`, ref: 'ACI 22.4.3.1' }]);
   },
+  shearAxes: () => shearAxes(),
   shearGeo: () => shearGeo(),
+  shearAll: () => shearAll(),
   shearDetail: () => shearDetail(),
   shearSum: () => shearSum()
 };
@@ -1374,29 +1433,83 @@ function renderCombosOut() {
 }
 
 /* ---------- Cortante ---------- */
+const AXN = a => (R.V.In.strong === a ? 'eje fuerte' : 'eje débil');
+const AXM = a => (a === 'x' ? 'M<sub>x</sub>' : 'M<sub>y</sub>');
+function shearAxes() {
+  const v = R.V, In = v.In, uI = 'in⁴';
+  const fI = x => fmt(x, 1);
+  let h = '<h4 class="subh">8.2 Ejes fuerte y débil de la sección</h4>';
+  const rows = In.parts.map(p => `<tr><td class="t">${esc(p.name || '')}</td><td>${fmt(p.w, 3)}</td><td>${fmt(p.h, 3)}</td><td>${fmt(p.A, 3)}</td><td>${fmt(p.dx, 3)}</td><td>${fmt(p.dy, 3)}</td><td>${fI(p.Ixo)}</td><td>${fI(p.A * p.dy * p.dy)}</td><td>${fI(p.Ix)}</td><td>${fI(p.Iyo)}</td><td>${fI(p.A * p.dx * p.dx)}</td><td>${fI(p.Iy)}</td><td>${fI(p.Ixy)}</td></tr>`).join('');
+  h += `<div class="tscroll"><table class="tbl"><thead><tr><th>Rectángulo</th><th><var>b</var><span class="hu">in</span></th><th><var>h</var><span class="hu">in</span></th><th><var>A</var><span class="hu">in²</span></th><th><var>x</var><sub>i</sub> − <var>x̄</var><span class="hu">in</span></th><th><var>y</var><sub>i</sub> − <var>ȳ</var><span class="hu">in</span></th><th><var>b h</var>³/12<span class="hu">${uI}</span></th><th><var>A</var>(<var>y</var><sub>i</sub> − <var>ȳ</var>)²<span class="hu">${uI}</span></th><th><var>I</var><sub>x,i</sub><span class="hu">${uI}</span></th><th><var>h b</var>³/12<span class="hu">${uI}</span></th><th><var>A</var>(<var>x</var><sub>i</sub> − <var>x̄</var>)²<span class="hu">${uI}</span></th><th><var>I</var><sub>y,i</sub><span class="hu">${uI}</span></th><th><var>A</var>(<var>x</var><sub>i</sub>−<var>x̄</var>)(<var>y</var><sub>i</sub>−<var>ȳ</var>)<span class="hu">${uI}</span></th></tr></thead>
+    <tbody>${rows}</tbody><tfoot><tr><td class="t">Σ</td><td></td><td></td><td>${fmt(In.A, 3)}</td><td></td><td></td><td></td><td></td><td>${fI(In.Ix)}</td><td></td><td></td><td>${fI(In.Iy)}</td><td>${fI(In.Ixy)}</td></tr></tfoot></table></div>`;
+  h += step({ lhs: V('I', 'x'), def: `Σ(<var>b h</var>³/12 + <var>A</var>·(<var>y</var><sub>i</sub> − <var>ȳ</var>)²)`, res: `${n(In.Ix, 1)}<span class="uu">${uI}</span>`, note: 'Inercia bruta respecto al eje x que pasa por G (teorema de Steiner)' });
+  h += step({ lhs: V('I', 'y'), def: `Σ(<var>h b</var>³/12 + <var>A</var>·(<var>x</var><sub>i</sub> − <var>x̄</var>)²)`, res: `${n(In.Iy, 1)}<span class="uu">${uI}</span>`, note: 'Inercia bruta respecto al eje y que pasa por G' });
+  const sym = Math.abs(In.Ixy) < 1e-6 * Math.max(In.Ix, In.Iy);
+  if (!sym) {
+    h += step({ lhs: V('I', 'xy'), def: `Σ <var>A</var>·(<var>x</var><sub>i</sub> − <var>x̄</var>)·(<var>y</var><sub>i</sub> − <var>ȳ</var>)`, res: `${n(In.Ixy, 1)}<span class="uu">${uI}</span>`, note: 'Producto de inercia: no es cero porque la sección no es simétrica' });
+    h += step({ lhs: `${V('I', '1')} , ${V('I', '2')}`, def: `(${V('I', 'x')} + ${V('I', 'y')})/2 ± √[((${V('I', 'x')} − ${V('I', 'y')})/2)² + ${V('I', 'xy')}²]`, res: `${n(In.I1, 1)} , ${n(In.I2, 1)}<span class="uu">${uI}</span>`, note: `Inercias principales; el eje mayor está girado θ<sub>p</sub> = ${fmt(In.thp * 180 / Math.PI, 2)}° respecto a x` });
+  }
+  const st = In.strong, wk = st === 'x' ? 'y' : 'x';
+  h += chipsHTML([{ ok: true, t: `${V('I', 'x')} = ${fmt(In.Ix, 1)} ${In.Ix >= In.Iy ? '≥' : '&lt;'} ${V('I', 'y')} = ${fmt(In.Iy, 1)} in⁴ → <b>eje fuerte: ${st}</b> (${AXM(st)}, ${V('V', st)}) · eje débil: ${wk} (${AXM(wk)}, ${V('V', wk)})` }]);
+  h += `<p class="axline">Como en la hoja de clase, cada cortante se revisa con el alma paralela a su fuerza: ${V('V', 'x')} acompaña a ${AXM('x')} y actúa a lo largo de Y; ${V('V', 'y')} acompaña a ${AXM('y')} y actúa a lo largo de X.${sym ? '' : ' La hoja trabaja en x y y, como en clase; los ejes principales girados explican el M<sub>⊥</sub> de la sección 5.'}</p>`;
+  return h;
+}
 function shearGeo() {
   const v = R.V, inp = R.inp, sh = inp.shape;
-  let h = '';
+  let h = '<h4 class="subh">8.3 Geometría y cuantía para cortante</h4>';
   h += step({ lhs: V('ϕ', 'l'), def: 'mayor Ø longitudinal', sub: `#${v.noL}`, res: rv('phl', v.phl, 'len'), note: 'Barra longitudinal más grande' }) +
-    step({ lhs: V('ϕ', 'l,mín'), def: 'menor Ø longitudinal', sub: `#${v.noLmin}`, res: rv('phlmin', v.phlmin, 'len'), note: 'Barra longitudinal más pequeña' });
+    step({ lhs: V('ϕ', 'l,mín'), def: 'menor Ø longitudinal', sub: `#${v.noLmin}`, res: rv('phlmin', v.phlmin, 'len'), note: 'Barra longitudinal más pequeña' }) +
+    step({ lhs: V('ϕ', 'es') + ' , ' + V('A', 'es'), def: `estribo #${inp.est}`, res: `${rv('phes', v.phes, 'len')} , ${rv('Aes', v.Aes, 'area')}`, note: 'Diámetro y área de una rama del estribo' });
   if (sh !== 'custom') {
     h += step({ lhs: V('d', '0'), def: `<var>rec</var> + ${V('ϕ', 'es')} + ${V('ϕ', 'l')}/2`, sub: `${n(inp.rec)} + ${n(v.phes)} + ${n(v.phl)}/2`, res: rv('sh.d0', v.d0, 'len'), note: 'Del borde al centro de la barra extrema' });
-    h += step({ lhs: V('d', 'x'), def: `<var>H</var> − ${V('d', '0')}`, sub: `${n(inp.H)} − ${n(v.d0)}`, res: rv('sh.dx', v.gx.d, 'len'), note: `Peralte para V<sub>x</sub> (asociado a M<sub>x</sub>, fuerza a lo largo de Y)` }) +
-      step({ lhs: V('b', 'w,x'), def: v.gx.bwS, res: rv('sh.bwx', v.gx.bw, 'len'), note: sh === 'L' ? 'Ancho del alma vertical, que resiste V<sub>x</sub>' : 'Ancho de la sección' }) +
-      step({ lhs: V('d', 'y'), def: `<var>B</var> − ${V('d', '0')}`, sub: `${n(inp.B)} − ${n(v.d0)}`, res: rv('sh.dy', v.gy.d, 'len'), note: 'Peralte para V<sub>y</sub> (asociado a M<sub>y</sub>, fuerza a lo largo de X)' }) +
-      step({ lhs: V('b', 'w,y'), def: v.gy.bwS, res: rv('sh.bwy', v.gy.bw, 'len'), note: sh === 'L' ? 'Espesor del ala horizontal, que resiste V<sub>y</sub>' : 'Alto de la sección' });
+    h += step({ lhs: V('d', 'x'), def: `<var>H</var> − ${V('d', '0')}`, sub: `${n(inp.H)} − ${n(v.d0)}`, res: rv('sh.dx', v.gx.d, 'len'), note: `Peralte para V<sub>x</sub> (${AXN('x')}: acompaña a M<sub>x</sub>, fuerza a lo largo de Y)` }) +
+      step({ lhs: V('b', 'w,x'), def: v.gx.bwS, res: rv('sh.bwx', v.gx.bw, 'len'), note: sh === 'L' ? 'Ancho del alma vertical: es la pata paralela a V<sub>x</sub>' : 'Ancho de la sección perpendicular a V<sub>x</sub>' }) +
+      step({ lhs: V('d', 'y'), def: `<var>B</var> − ${V('d', '0')}`, sub: `${n(inp.B)} − ${n(v.d0)}`, res: rv('sh.dy', v.gy.d, 'len'), note: `Peralte para V<sub>y</sub> (${AXN('y')}: acompaña a M<sub>y</sub>, fuerza a lo largo de X)` }) +
+      step({ lhs: V('b', 'w,y'), def: v.gy.bwS, res: rv('sh.bwy', v.gy.bw, 'len'), note: sh === 'L' ? 'Espesor del ala horizontal: es la pata paralela a V<sub>y</sub>' : 'Alto de la sección perpendicular a V<sub>y</sub>' });
   }
   const sel = `<select class="insel" data-k="rhoArea" aria-label="Área de acero en ρw"><option value="sheet"${inp.rhoArea === 'sheet' ? ' selected' : ''}>A_l·No.ϕl (hoja de clase)</option><option value="real"${inp.rhoArea === 'real' ? ' selected' : ''}>A_st real</option><option value="r2255"${inp.rhoArea === 'r2255' ? ' selected' : ''}>Barras a más de 2D/3 (R22.5.5.1)</option></select>`;
   h += step({ lhs: V('A', 's') + ' en ' + V('ρ', 'w'), def: inp.rhoArea === 'sheet' ? `${V('A', 'l')}·No.${V('ϕ', 'l')} = ${n(BARS[v.noL].A, 2)}·${v.Nl}` : (inp.rhoArea === 'real' ? V('A', 'st') : 'Σ barras con d &gt; 2D/3, rama menor'),
     res: inp.rhoArea === 'r2255' ? `${rv('sh.AsVx', v.AsVx, 'area')} (x) · ${rv('sh.AsVy', v.AsVy, 'area')} (y)` : rv('sh.AsV', v.AsVx, 'area'), note: `Área usada: ${sel}` });
+  const rhoS = BARS[v.noL].A * v.Nl / v.Ag;
+  h += step({ lhs: V('ρ', 'hoja'), def: `${V('A', 'l')}·No.${V('ϕ', 'l')} / ${V('A', 'g')}`, sub: `${n(BARS[v.noL].A * v.Nl, 2)} / ${n(v.Ag)}`, res: rv('rhoS', rhoS, 'ratio'), note: `Cuantía como la calcula la hoja de clase: ${rhoS >= 0.01 && rhoS <= 0.08 ? 'entre 1 % y 8 %' : 'fuera de 1 %–8 %'}`, ref: 'ACI 10.6.1.1' });
+  [['x', v.gx, v.AsVx], ['y', v.gy, v.AsVy]].forEach(([a, g, As]) => {
+    const rho = As / (g.bw * g.d);
+    h += step({ lhs: V('ρ', 'w,' + a), def: `${V('A', 's')} / (${V('b', 'w,' + a)}·${V('d', a)})`, sub: `${n(As, 2)} / (${n(g.bw)}·${n(g.d)})`, res: rv('rhow' + a, rho, 'ratio'), note: `Cuantía para V<sub>c</sub> en el ${AXN(a)} (como el PDF de clase: b<sub>w</sub>·d de cada eje, no A<sub>g</sub>)` });
+  });
+  h += '<h4 class="subh">8.4 Cortante de diseño</h4>';
+  [['x', v.Vprx, 'Mprx'], ['y', v.Vpry, 'Mpry']].forEach(([a, Vpr, k]) => {
+    if (Vpr !== null) h += step({ lhs: V('V', 'pr,' + a), def: `2·${V('M', 'pr,' + a)} / ${V('l', 'u')}`, sub: `2·${n(inp[k])} / ${n(inp.lu)}`, res: rv('sh.Vpr' + a, Vpr, 'force'), note: `Cortante asociado a los momentos probables. En cada combinación V<sub>u,${a}</sub> = mín(V<sub>${a}</sub> , V<sub>pr,${a}</sub>), como en la hoja de clase`, ref: 'ACI 18.3.3' });
+    else h += step({ lhs: V('V', 'u,' + a), def: `|${V('V', a)}| de cada combinación`, note: `Sin M<sub>pr,${a}</sub>: el cortante de diseño es el del análisis` });
+  });
   h += step({ lhs: `${V('l', 'u')} / ${V('c', '1')}`, def: `${V('l', 'u')} / menor dimensión`, sub: `${n(inp.lu)} / ${n(v.least)}`, res: rv('luc1', v.luc1),
-    note: v.luc1 <= 5 ? 'l<sub>u</sub> ≤ 5c<sub>1</sub>: revisa también el cortante por capacidad de ACI 18.3.3' : 'l<sub>u</sub> &gt; 5c<sub>1</sub>: V<sub>u</sub> es el del análisis (no aplica 18.3.3)', ref: 'ACI 18.3.3' });
+    note: v.luc1 <= 5 ? 'l<sub>u</sub> ≤ 5c<sub>1</sub>: aplica el cortante por capacidad de 18.3.3 (ingresa M<sub>pr</sub>)' : 'l<sub>u</sub> &gt; 5c<sub>1</sub>: 18.3.3 no lo exige; V<sub>u</sub> es el del análisis salvo que ingreses M<sub>pr</sub>', ref: 'ACI 18.3.3' });
+  const nuTxt = v.nuMode === 'combo' ? 'N<sub>u</sub> = P<sub>u</sub> de cada combinación (la carga que actúa junto con su cortante)' :
+    (v.nuMode === 'min' ? `N<sub>u</sub> = P<sub>u,mín</sub> de las combinaciones = ${fu(v.PuMin, 'force')} para todas` : `N<sub>u</sub> = P<sub>u,mín</sub> = ${fu(inp.nuFixed || 0, 'force')} para todas (hoja de clase)`);
+  h += step({ lhs: V('N', 'u'), def: v.nuMode === 'combo' ? V('P', 'u') + ' de la combinación' : V('P', 'u,mín'), note: nuTxt + '. Compresión positiva, tensión negativa', ref: 'ACI 22.5.5.1' });
   h += step({ lhs: V('ϕ', 'v'), def: '0.75', res: rv('phiv', v.phiv), note: 'Factor de reducción a cortante', ref: 'ACI 21.2.1' });
+  return h;
+}
+function shearAll() {
+  const v = R.V, inp = R.inp; if (!v.rows.length) return '';
+  const uF = unitOf('st.F', 'force'), uA = unitOf('st.A', 'avs'), uL = unitOf('sh.sv', 'len');
+  const F = x => (x === null || x === undefined) ? '—' : fmt(cv(x, 'force', uF), S.dec), A_ = x => fmt(cv(x, 'avs', uA), S.dec), L_ = x => fmt(cv(x, 'len', uL), 2);
+  let h = '<h4 class="subh">8.6 Todos los cálculos, combinación por combinación</h4>';
+  [['x', v.gx], ['y', v.gy]].forEach(([a, g]) => {
+    const r0 = v.rows[0][a];
+    h += `<p class="axline"><b>V<sub>${a}</sub></b> · ${AXN(a)} · b<sub>w</sub> = ${fu(g.bw, 'len')} · d = ${fu(g.d, 'len')} · ρ<sub>w</sub> = ${fmt(r0.rho * 100, 3)} % · 8λρ<sub>w</sub><sup>1/3</sup>√f′c = <b>${fmt(8 * v.lam * Math.cbrt(r0.rho) * v.sq, 2)}</b> psi · V<sub>c,máx</sub> = 5λ√f′c·b<sub>w</sub>d = <b>${F(r0.Vcmax)}</b> ${uF} · A<sub>v,mín</sub>/s = <b>${A_(r0.Avmin)}</b> ${uA} · 4√f′c·b<sub>w</sub>d = ${F(r0.lim4)} · 8√f′c·b<sub>w</sub>d = ${F(r0.lim8)} ${uF}</p>`;
+    const head = `<tr><th>Combinación</th><th>N<sub>u</sub><span class="hu">${uF}</span></th><th>N<sub>u</sub>/6A<sub>g</sub> (≤ 0.05f′c)<span class="hu">psi</span></th><th>v<sub>c</sub><span class="hu">psi</span></th><th>V<sub>c</sub> calculado<span class="hu">${uF}</span></th><th>V<sub>c</sub> usado<span class="hu">${uF}</span></th><th>φV<sub>c</sub><span class="hu">${uF}</span></th><th>V<sub>${a}</sub><span class="hu">${uF}</span></th><th>V<sub>pr</sub><span class="hu">${uF}</span></th><th>V<sub>u</sub><span class="hu">${uF}</span></th><th>A<sub>vn</sub>/s<span class="hu">${uA}</span></th><th>A<sub>v</sub>/s<span class="hu">${uA}</span></th><th>s<sub>v</sub><span class="hu">${uL}</span></th><th>V<sub>s</sub><span class="hu">${uF}</span></th><th>s<sub>máx</sub><span class="hu">${uL}</span></th><th>mín(s<sub>v</sub>, s<sub>máx</sub>)<span class="hu">${uL}</span></th><th>V<sub>u</sub>/φ − V<sub>c</sub> ≤ 8√f′c·b<sub>w</sub>d</th></tr>`;
+    const body = v.rows.map((r, i) => {
+      const A = r[a], gov = v.gov && v.gov.i === i && v.gov.k === a;
+      return `<tr data-cbi="${i}"><td class="t">${esc(r.name)}</td><td>${F(A.Nu)}</td><td>${fmt(A.nuT, 1)}${A.nuRaw > A.nuT + 1e-9 ? '*' : ''}</td><td>${fmt(A.vc, 1)}</td><td>${F(A.VcRaw)}</td><td class="${A.capped || A.neg ? 'cap' : ''}">${F(A.Vc)}${A.capped ? ' (tope)' : (A.neg ? ' (0)' : '')}</td><td>${F(A.phiVc)}</td><td>${F(A.Va)}</td><td>${F(A.Vpr)}</td><td>${F(A.Vu)}</td><td>${A_(A.Avn)}</td><td>${A_(A.Av)}${A.avGov === 'Avmin' ? ' (mín)' : ''}</td><td>${L_(A.sv)}</td><td>${F(A.Vs)}</td><td>${L_(A.smax)} (${A.smaxCase})</td><td class="${gov ? 'gv' : ''}">${L_(A.sAx)}</td><td class="t">${A.ok8 ? '<span class="chip ok">Cumple</span>' : '<span class="chip bad">Agrandar sección</span>'}</td></tr>`;
+    }).join('');
+    h += `<div class="tscroll kvt"><table class="tbl sumtbl"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
+  });
+  h += `<p class="lead">* N<sub>u</sub>/6A<sub>g</sub> limitado a 0.05f′c = ${fmt(0.05 * v.fc_psi, 1)} psi (ACI 22.5.5.1.2). <b>(tope)</b>: V<sub>c</sub> limitado a 5λ√f′c·b<sub>w</sub>d (ACI 22.5.5.1.1); la hoja de clase no aplica este tope, solo se activa con compresión alta. <b>(0)</b>: con tensión V<sub>c</sub> no puede ser negativo. <b>(mín)</b>: controla A<sub>v,mín</sub>. La celda resaltada es la separación que controla.</p>`;
   return h;
 }
 function renderShearTable() {
   const v = R.V, uF = unitOf('st.F', 'force'), uA = unitOf('st.A', 'avs'), uL = unitOf('sh.sv', 'len');
-  const head = `<tr><th>Combinación</th><th><var>P</var><sub>u</sub><span class="hu">${usel('st.F', 'force', uF)}</span></th><th><var>V</var><sub>x</sub><span class="hu">${uF}</span></th><th><var>φV</var><sub>c,x</sub><span class="hu">${uF}</span></th><th><var>A</var><sub>v</sub>/<var>s</var> x<span class="hu">${usel('st.A', 'avs', uA)}</span></th><th><var>s</var><sub>v,x</sub><span class="hu">${usel('sh.sv', 'len', uL)}</span></th><th><var>V</var><sub>y</sub><span class="hu">${uF}</span></th><th><var>φV</var><sub>c,y</sub><span class="hu">${uF}</span></th><th><var>A</var><sub>v</sub>/<var>s</var> y<span class="hu">${uA}</span></th><th><var>s</var><sub>v,y</sub><span class="hu">${uL}</span></th><th>Estado</th></tr>`;
+  const head = `<tr><th>Combinación</th><th><var>P</var><sub>u</sub><span class="hu">${usel('st.F', 'force', uF)}</span></th><th><var>V</var><sub>u,x</sub> · ${AXN('x')}<span class="hu">${uF}</span></th><th><var>φV</var><sub>c,x</sub><span class="hu">${uF}</span></th><th><var>A</var><sub>v</sub>/<var>s</var> x<span class="hu">${usel('st.A', 'avs', uA)}</span></th><th><var>s</var><sub>v,x</sub><span class="hu">${usel('sh.sv', 'len', uL)}</span></th><th><var>V</var><sub>u,y</sub> · ${AXN('y')}<span class="hu">${uF}</span></th><th><var>φV</var><sub>c,y</sub><span class="hu">${uF}</span></th><th><var>A</var><sub>v</sub>/<var>s</var> y<span class="hu">${uA}</span></th><th><var>s</var><sub>v,y</sub><span class="hu">${uL}</span></th><th>Estado</th></tr>`;
   const rows = v.rows.map((r, i) => {
     const gov = v.gov && v.gov.i === i;
     const ok = r.x.ok8 && r.y.ok8;
@@ -1412,40 +1525,58 @@ function shearDetail() {
   const i = Math.min(S.shCombo || 0, v.rows.length - 1), r = v.rows[i];
   const fc = v.fc_psi, sq = `√(${FC}·psi)`;
   let h = '';
-  [['x', r.x, v.gx, inp.nVx], ['y', r.y, v.gy, inp.nVy]].forEach(([a, A, g, nl]) => {
-    h += `<h4 class="subh">Dirección ${a} · ${esc(r.name)}</h4>`;
-    h += step({ lhs: V('V', 'u' + a), def: `|${V('V', a)}|`, res: rv('sd.Vu' + a, A.Vu, 'force', true), note: 'Cortante de diseño de la combinación' });
-    h += step({ lhs: V('ρ', 'w' + a), def: `${V('A', 's')} / (${V('b', 'w,' + a)}·${V('d', a)})`, sub: `${n(A.AsV)} / (${n(A.bw)}·${n(A.d)})`, res: rv('sd.rho' + a, A.rho, 'ratio'), note: 'Cuantía longitudinal para V<sub>c</sub>' });
-    h += step({ lhs: `${V('N', 'u')}/(6·${V('A', 'g')})`, def: `mín(${V('P', 'u')}/(6·${V('A', 'g')}) , 0.05·${FC})`, sub: `mín(${n(r.Pu * 1000, 1)} lb/(6·${n(v.Ag)}) , ${n(0.05 * fc, 1)})`, res: `${n(A.nuT, 2)}<span class="uu">psi</span>`, note: r.Pu < 0 ? 'Tensión: el término es negativo y reduce V<sub>c</sub>' : 'Compresión: aumenta V<sub>c</sub>', ref: 'ACI 22.5.5.1.2' });
-    h += step({ lhs: V('V', 'c' + a), def: `[8·<var>λ</var>·${V('ρ', 'w')}<sup>1/3</sup>·${sq} + ${V('N', 'u')}/(6${V('A', 'g')})]·${V('b', 'w')}·${V('d', a)}`, sub: `[8·${n(v.lam, 2)}·${n(A.rho, 5)}<sup>1/3</sup>·${n(v.sq, 2)} + (${n(A.nuT, 2)})]·${n(A.bw)}·${n(A.d)} / 1000`, res: rv('sd.Vcr' + a, A.VcRaw, 'force'), note: 'Resistencia del concreto con carga axial (psi·in²/1000 = kip)', ref: 'ACI Tabla 22.5.5.1(b)' });
-    h += step({ lhs: V('V', 'c' + a) + ' usado', def: `mín(máx(${V('V', 'c')} , 0) , 5·<var>λ</var>·${sq}·${V('b', 'w')}·${V('d', a)})`, sub: `mín(máx(${n(A.VcRaw)} , 0) , ${n(A.Vcmax)})`, res: rv('sd.Vc' + a, A.Vc, 'force', true), note: 'V<sub>c</sub> no es negativo ni mayor que el límite', ref: 'ACI 22.5.5.1.1' });
-    h += step({ lhs: `${V('ϕ', 'v')}·${V('V', 'c' + a)}`, def: `0.75·${n(A.Vc)}`, res: rv('sd.phiVc' + a, A.phiVc, 'force'), note: 'Resistencia de diseño del concreto' });
-    h += step({ lhs: `${V('A', 'vn' + a)}/<var>s</var>`, def: `(${V('V', 'u')}/${V('ϕ', 'v')} − ${V('V', 'c')}) / (${FYT}·${V('d', a)})`, sub: `(${n(A.Vu)}/0.75 − ${n(A.Vc)}) / (${n(inp.fyt)}·${n(A.d)})`, res: rv('sd.Avn' + a, A.Avn, 'avs'), note: 'Área requerida por cortante' });
-    h += step({ lhs: `${V('A', 'v,mín' + a)}/<var>s</var>`, def: `máx(0.75·${sq}·${V('b', 'w')}/${FYT} , 50·${V('b', 'w')}/${FYT})`, sub: `máx(0.75·${n(v.sq, 2)}·${n(A.bw)}/${n(inp.fyt * 1000, 0)} , 50·${n(A.bw)}/${n(inp.fyt * 1000, 0)})`, res: rv('sd.Avmin' + a, A.Avmin, 'avs'), note: 'Área mínima', ref: 'ACI 10.6.2.2' });
-    h += step({ lhs: `${V('A', 'v' + a)}/<var>s</var>`, def: `máx(${V('A', 'vn')} , ${V('A', 'v,mín')})/<var>s</var>`, res: rv('sd.Av' + a, A.Av, 'avs', true), note: 'Área de diseño por unidad de longitud' });
-    h += step({ lhs: V('s', 'v' + a), def: `${V('n', a)}·${V('A', 'es')} / (${V('A', 'v')}/<var>s</var>)`, sub: `${nl}·${n(v.Aes, 2)} / ${n(A.Av, 5)}`, res: rv('sh.sv', A.sv, 'len'), note: 'Separación requerida' });
-    h += step({ lhs: V('V', 's' + a), def: `(${V('A', 'v')}/<var>s</var>)·${FYT}·${V('d', a)}`, sub: `${n(A.Av, 5)}·${n(inp.fyt)}·${n(A.d)}`, res: rv('sd.Vs' + a, A.Vs, 'force'), note: `${A.Vs <= A.lim4 ? '≤' : '&gt;'} 4√f′c·b<sub>w</sub>d = ${fu(A.lim4, 'force')} → ${A.smaxCase === 'd/2' ? 'mín(d/2, 24 in)' : 'mín(d/4, 12 in)'}` });
-    h += step({ lhs: V('s', 'máx' + a), def: A.smaxCase === 'd/2' ? `mín(${V('d', a)}/2 , 24 in)` : `mín(${V('d', a)}/4 , 12 in)`, sub: A.smaxCase === 'd/2' ? `mín(${n(A.d)}/2 , 24)` : `mín(${n(A.d)}/4 , 12)`, res: rv('sh.smax', A.smax, 'len'), note: 'Separación máxima', ref: 'ACI 10.7.6.5.2' });
-    h += chipsHTML([{ ok: A.ok8, t: `V<sub>u</sub>/φ − V<sub>c</sub> = ${fu(A.Vsreq, 'force')} ${A.ok8 ? '≤' : '&gt;'} 8√f′c·b<sub>w</sub>d = ${fu(A.lim8, 'force')}`, ref: 'ACI 22.5.1.2' }]);
+  [['x', r.x, v.gx, inp.nVx, v.Vprx], ['y', r.y, v.gy, inp.nVy, v.Vpry]].forEach(([a, A, g, nl, Vpr]) => {
+    h += `<h4 class="subh">${esc(r.name)} · V<sub>${a}</sub> · ${AXN(a)}</h4>`;
+    if (Vpr !== null) h += step({ lhs: V('V', 'u,' + a), def: `mín(|${V('V', a)}| , ${V('V', 'pr,' + a)})`, sub: `mín(${n(A.Va)} , ${n(Vpr)})`, res: rv('sd.Vu' + a, A.Vu, 'force', true), note: A.Vu < A.Va ? 'Controla el cortante por capacidad' : 'Controla el cortante del análisis', ref: 'ACI 18.3.3' });
+    else h += step({ lhs: V('V', 'u,' + a), def: `|${V('V', a)}|`, res: rv('sd.Vu' + a, A.Vu, 'force', true), note: 'Cortante de diseño de la combinación' });
+    h += step({ lhs: `${V('N', 'u')}/(6·${V('A', 'g')})`, def: `mín(${V('N', 'u')}/(6·${V('A', 'g')}) , 0.05·${FC})`, sub: `mín(${n(A.Nu * 1000, 1)} lb / (6·${n(v.Ag)} in²) , ${n(0.05 * fc, 1)})`, res: `${n(A.nuT, 2)}<span class="uu">psi</span>`, note: A.Nu < 0 ? 'Tensión: el término es negativo y reduce V<sub>c</sub>' : (A.Nu > 0 ? 'Compresión: aumenta V<sub>c</sub>' : 'Sin carga axial'), ref: 'ACI 22.5.5.1.2' });
+    h += step({ lhs: V('v', 'c,' + a), def: `8·<var>λ</var>·${V('ρ', 'w')}<sup>1/3</sup>·${sq} + ${V('N', 'u')}/(6${V('A', 'g')})`, sub: `8·${n(v.lam, 2)}·(${n(A.rho, 5)})<sup>1/3</sup>·${n(v.sq, 2)} + (${n(A.nuT, 2)})`, res: `${n(A.vc, 2)}<span class="uu">psi</span>`, note: 'Esfuerzo cortante del concreto', ref: 'ACI Tabla 22.5.5.1(b)' });
+    h += step({ lhs: V('V', 'c,' + a), def: `${V('v', 'c')}·${V('b', 'w')}·${V('d', a)}`, sub: `${n(A.vc, 2)}·${n(A.bw)}·${n(A.d)} / 1000`, res: rv('sd.Vcr' + a, A.VcRaw, 'force'), note: 'psi·in² / 1000 = kip' });
+    h += step({ lhs: V('V', 'c,máx'), def: `5·<var>λ</var>·${sq}·${V('b', 'w')}·${V('d', a)}`, sub: `5·${n(v.lam, 2)}·${n(v.sq, 2)}·${n(A.bw)}·${n(A.d)} / 1000`, res: rv('sd.Vcm' + a, A.Vcmax, 'force'), note: 'Tope de V<sub>c</sub>', ref: 'ACI 22.5.5.1.1' });
+    h += step({ lhs: V('V', 'c,' + a) + ' usado', def: `mín(máx(${V('V', 'c')} , 0) , ${V('V', 'c,máx')})`, sub: `mín(máx(${n(A.VcRaw)} , 0) , ${n(A.Vcmax)})`, res: rv('sd.Vc' + a, A.Vc, 'force', true),
+      note: A.capped ? 'Controla el tope: con esta compresión V<sub>c</sub> no puede pasar de 5λ√f′c·b<sub>w</sub>d (la hoja de clase no lo aplica)' : (A.neg ? 'La tensión anula V<sub>c</sub>: se toma 0' : 'V<sub>c</sub> está entre 0 y el tope'), ref: 'ACI 22.5.5.1.1' });
+    h += step({ lhs: `${V('ϕ', 'v')}·${V('V', 'c,' + a)}`, def: `0.75·${n(A.Vc)}`, res: rv('sd.phiVc' + a, A.phiVc, 'force'), note: A.needSteel ? `V<sub>u</sub> = ${fu(A.Vu, 'force')} &gt; φV<sub>c</sub>: el acero transversal toma la diferencia` : `V<sub>u</sub> ≤ φV<sub>c</sub>: basta el refuerzo mínimo` });
+    h += step({ lhs: `${V('A', 'vn,' + a)}/<var>s</var>`, def: `(${V('V', 'u')}/${V('ϕ', 'v')} − ${V('V', 'c')}) / (${FYT}·${V('d', a)})`, sub: `(${n(A.Vu)}/0.75 − ${n(A.Vc)}) / (${n(inp.fyt)}·${n(A.d)})`, res: rv('sd.Avn' + a, A.Avn, 'avs'), note: 'Área requerida por cortante (de V<sub>s</sub> = A<sub>v</sub>f<sub>yt</sub>d/s)', ref: 'ACI 22.5.8.5.3' });
+    h += step({ lhs: `${V('A', 'v,mín,' + a)}/<var>s</var>`, def: `máx(0.75·${sq}·${V('b', 'w')}/${FYT} , 50·${V('b', 'w')}/${FYT})`, sub: `máx(0.75·${n(v.sq, 2)}·${n(A.bw)}/${n(inp.fyt * 1000, 0)} , 50·${n(A.bw)}/${n(inp.fyt * 1000, 0)})`, res: rv('sd.Avmin' + a, A.Avmin, 'avs'), note: 'Área mínima', ref: 'ACI 10.6.2.2' });
+    h += step({ lhs: `${V('A', 'v,' + a)}/<var>s</var>`, def: `máx(${V('A', 'vn')}/<var>s</var> , ${V('A', 'v,mín')}/<var>s</var>)`, sub: `máx(${n(A.Avn, 5)} , ${n(A.Avmin, 5)})`, res: rv('sd.Av' + a, A.Av, 'avs', true), note: A.avGov === 'Avmin' ? 'Controla el área mínima' : 'Controla el cortante' });
+    h += step({ lhs: V('s', 'v,' + a), def: `${V('n', a)}·${V('A', 'es')} / (${V('A', 'v')}/<var>s</var>)`, sub: `${nl}·${n(v.Aes, 2)} / ${n(A.Av, 5)}`, res: rv('sh.sv', A.sv, 'len'), note: `Separación que da el área requerida con ${nl} ramas` });
+    h += step({ lhs: V('V', 's,' + a), def: `(${V('A', 'v')}/<var>s</var>)·${FYT}·${V('d', a)}`, sub: `${n(A.Av, 5)}·${n(inp.fyt)}·${n(A.d)}`, res: rv('sd.Vs' + a, A.Vs, 'force'), note: `${A.Vs <= A.lim4 ? '≤' : '&gt;'} 4√f′c·b<sub>w</sub>d = ${fu(A.lim4, 'force')} → ${A.smaxCase === 'd/2' ? 'mín(d/2, 24 in)' : 'mín(d/4, 12 in)'}` });
+    h += step({ lhs: V('s', 'máx,' + a), def: A.smaxCase === 'd/2' ? `mín(${V('d', a)}/2 , 24 in)` : `mín(${V('d', a)}/4 , 12 in)`, sub: A.smaxCase === 'd/2' ? `mín(${n(A.d)}/2 , 24)` : `mín(${n(A.d)}/4 , 12)`, res: rv('sh.smax', A.smax, 'len'), note: 'Separación máxima', ref: 'ACI 10.7.6.5.2' });
+    h += step({ lhs: V('s', 'req,' + a), def: `mín(${V('s', 'v')} , ${V('s', 'máx')})`, sub: `mín(${n(cv(A.sv, 'len', unitOf('sh.sv', 'len')), 2)} , ${n(cv(A.smax, 'len', unitOf('sh.sv', 'len')), 2)}) ${unitOf('sh.sv', 'len')}`, res: rv('sh.sv', A.sAx, 'len', true), note: `Separación que pide V<sub>${a}</sub> en esta combinación` });
+    h += chipsHTML([{ ok: A.ok8, t: `V<sub>u</sub>/φ − V<sub>c</sub> = ${fu(A.Vsreq, 'force')} ${A.ok8 ? '≤' : '&gt;'} 8√f′c·b<sub>w</sub>d = ${fu(A.lim8, 'force')}${A.ok8 ? ': la sección es suficiente' : ': agrandar la sección'}`, ref: 'ACI 22.5.1.2' }]);
   });
   return h;
 }
 function shearSum() {
-  const v = R.V, inp = R.inp, uL = unitOf('sh.s', 'len');
+  const v = R.V, inp = R.inp;
   const ncm = x => n(x * 2.54, 2);
   const totTies = uniqueTies(R).length;
   const g = v.gov;
-  let h = '<h4 class="subh">Separación de diseño</h4>';
-  h += step({ lhs: V('s', 'cortante'), def: 'Floor(mín de todas las combinaciones (s<sub>v</sub> , s<sub>máx</sub>) , 0.5 cm)', sub: g ? `Floor(${ncm(v.sRaw)} cm , 0.5 cm)` : '', res: rv('sh.s', v.sShear, 'len', true), note: g ? `Controla ${esc(v.rows[g.i].name)}, dirección ${g.k}` : '' });
-  h += step({ lhs: V('s', 'x'), def: `Floor(mín(16·${V('ϕ', 'l,mín')} , 48·${V('ϕ', 'es')} , menor dimensión) , 0.5 cm)`, sub: `Floor(mín(${ncm(16 * v.phlmin)} , ${ncm(48 * v.phes)} , ${ncm(v.least)}) cm , 0.5 cm)`, res: rv('sh.sx', v.sx, 'len'), note: 'Separación por soporte lateral de las barras', ref: 'ACI 25.7.2.1' });
+  let h = '<h4 class="subh">8.8 Separación de diseño</h4>';
+  h += step({ lhs: V('s', 'cortante'), def: 'Floor(mín de todas las combinaciones y ejes (s<sub>v</sub> , s<sub>máx</sub>) , 0.5 cm)', sub: g ? `Floor(${ncm(v.sRaw)} cm , 0.5 cm)` : '', res: rv('sh.s', v.sShear, 'len', true), note: g ? `Controla ${esc(v.rows[g.i].name)}, V<sub>${g.k}</sub> (${AXN(g.k)})` : '' });
+  h += step({ lhs: V('s', 'x'), def: `Floor(mín(16·${V('ϕ', 'l,mín')} , 48·${V('ϕ', 'es')} , menor dimensión) , 0.5 cm)`, sub: `Floor(mín(${ncm(16 * v.phlmin)} , ${ncm(48 * v.phes)} , ${ncm(v.least)}) cm , 0.5 cm)`, res: rv('sh.sx', v.sx, 'len'), note: 'Separación por pandeo de las barras longitudinales', ref: 'ACI 25.7.2.1' });
   h += step({ lhs: '<var>s</var>', def: `mín(${V('s', 'cortante')} , ${V('s', 'x')})`, res: rv('sh.sf', v.s, 'len', true), note: 'Separación de estribos y eslabones' });
-  if (R.sp.length) {
-    h += chipsHTML(R.sp.filter(s => s.n).map(s => ({ ok: s.ties === 0, warn: true, t: `${s.k}: ${s.ties ? s.ties + ' barra(s) por amarrar' : 'sin eslabones'} · libre ${fu(s.sclear, 'len', 'sg-cl')} ${s.over6 ? '&gt;' : '≤'} ${fu(6, 'len', 'sg-cl')} (6 in)`, ref: 'ACI 25.7.2.3' })));
+  h += '<h4 class="subh">8.9 Soporte lateral de las barras (ramas y eslabones)</h4>';
+  if (v.faceCls) {
+    [['x', v.faceCls.hx, 'H', 'izquierda y derecha'], ['y', v.faceCls.hy, 'B', 'inferior y superior']].forEach(([a, f, L, caras]) => {
+      h += step({ lhs: V('h', a), def: `[<var>${L}</var> − (2·<var>rec</var> + 2·${V('ϕ', 'es')} + N·${V('ϕ', 'l')})] / (N − 1)`, sub: `[${n(f.len)} − (2·${n(inp.rec)} + 2·${n(v.phes)} + ${f.N}·${n(v.phl)})] / (${f.N} − 1)`, res: rv('sh.h' + a, f.clear, 'len'),
+        note: `Separación libre entre barras de las caras ${caras} (fórmula de la hoja de clase, N = ${f.N} barras por cara): ${f.clear > 6 ? '&gt; 6 in, cada barra necesita rama' : '≤ 6 in, basta amarrar barras alternas'}`, ref: 'ACI 25.7.2.3' });
+    });
   }
+  if (R.sp.length) {
+    const uL = unitOf('sg-cl', 'len');
+    const rows = R.sp.map(sp => `<tr><td class="t">${sp.k}</td><td class="t tl">${esc(sp.name || '')}</td><td>${sp.n}</td><td>${fmt(cv(sp.sc, 'len', uL), 2)}</td><td>${fmt(cv(sp.sclear, 'len', uL), 2)}</td><td class="t">${sp.n ? (sp.over6 ? '&gt; 6 in: todas' : '≤ 6 in: alternas') : '—'}</td><td>${sp.ties}</td></tr>`).join('');
+    h += `<div class="tscroll"><table class="tbl"><thead><tr><th>Segmento</th><th>Ubicación</th><th>Barras intermedias</th><th>s<sub>centro a centro</sub><span class="hu">${uL}</span></th><th>Libre<span class="hu">${uL}</span></th><th>Barras que se amarran</th><th>Eslabones</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    h += `<p class="lead">Libre = s<sub>cc</sub> − (ϕ<sub>esquina</sub>/2 + ϕ<sub>intermedia</sub>/2) con el diámetro real de cada barra. Si pasa de 6 in, cada barra intermedia necesita rama o eslabón; si no, basta con barras alternas (ACI 25.7.2.3). Eslabones físicos: ${totTies}${inp.shape === 'L' ? ' (un eslabón que une dos barras enfrentadas se cuenta una vez)' : ''}.</p>`;
+  }
+  const PuMax = v.PuMax;
+  h += '<h4 class="subh">8.10 Revisión de la carga axial máxima</h4>';
+  h += step({ lhs: V('P', 'u,máx'), def: 'mayor P<sub>u</sub> de las combinaciones', res: rv('sh.Pumax', PuMax, 'force'), note: `${PuMax <= R.phiPnmax ? '≤' : '&gt;'} φP<sub>n,máx</sub> = ${fu(R.phiPnmax, 'force')}`, ref: 'ACI 22.4.2.1' });
+  h += chipsHTML([{ ok: PuMax <= R.phiPnmax, t: `P<sub>u,máx</sub> ${PuMax <= R.phiPnmax ? '≤' : '&gt;'} φP<sub>n,máx</sub>${PuMax <= R.phiPnmax ? ': cumple' : ': no cumple, aumentar sección o acero'}` }]);
   h += `<div class="tscroll"><table class="tbl"><tbody>
     <tr><td class="t">Refuerzo transversal</td><td class="t">${inp.shape === 'L' ? '2 estribos rectangulares' : (inp.shape === 'rect' ? '1 estribo perimetral' : 'según tabla')} #${inp.est}${totTies ? ` + ${totTies} eslabón(es) #${inp.est}` : ''}</td></tr>
-    <tr><td class="t">Ramas que resisten V<sub>x</sub> / V<sub>y</sub></td><td class="t">${inp.nVx} / ${inp.nVy}</td></tr>
-    <tr><td class="t">Separación</td><td class="t">${fmt(cv(v.s, 'len', uL), 2)} ${uL}</td></tr></tbody></table></div>`;
+    <tr><td class="t">Ramas que resisten V<sub>x</sub> (${AXN('x')}) / V<sub>y</sub> (${AXN('y')})</td><td class="t">${inp.nVx} / ${inp.nVy}</td></tr>
+    <tr><td class="t">Separación</td><td class="t">${fu(v.s, 'len', 'sh.sf')}</td></tr></tbody></table></div>`;
   return h;
 }
 function renderShearCard() {
@@ -2214,6 +2345,7 @@ function onChange(e) {
     setK(k, v);
     if (k === 'shape') { buildTables(); syncInputs(); }
     if (k === 'barMode') { buildTables(); applyVisibility(); }
+    if (k === 'nuMode') applyVisibility();
     renderAll(); return;
   }
   if (el.id === 'preset') {

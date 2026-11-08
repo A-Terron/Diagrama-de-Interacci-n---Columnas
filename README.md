@@ -2,7 +2,7 @@
 
 ![Norma](https://img.shields.io/badge/norma-ACI%20318--19-660004)
 ![Unidades](https://img.shields.io/badge/c%C3%A1lculo-kip%20%C2%B7%20in%20%C2%B7%20ksi-234E7A)
-![Versión](https://img.shields.io/badge/hoja-v5.1-08665F)
+![Versión](https://img.shields.io/badge/hoja-v5.2-08665F)
 ![Licencia](https://img.shields.io/badge/licencia-MIT%20%2F%20CC%20BY%204.0-4A5765)
 
 Hoja de cálculo interactiva para construir el diagrama de interacción **P–M** de columnas de concreto reforzado, revisar combinaciones de carga y diseñar el refuerzo transversal por cortante según **ACI 318-19**. Es un solo archivo HTML, sin instalación ni dependencias. Resuelve secciones **rectangulares**, en **L** y cualquier sección formada por rectángulos.
@@ -32,7 +32,7 @@ Hoja de cálculo interactiva para construir el diagrama de interacción **P–M*
 - Desarrolla los puntos notables **A, E, B, C, D y F** por **compatibilidad de deformaciones**, capa por capa, como en la hoja de clase.
 - Dibuja las curvas **nominal** y **de diseño** ($`\phi P_n`$, $`\phi M_n`$) en las cuatro direcciones: $`+M_x`$, $`-M_x`$, $`+M_y`$, $`-M_y`$.
 - Revisa cada combinación $`(P_u, M_x, M_y)`$ con el método **radial D/C** y reporta el momento perpendicular inducido $`M_\perp`$ de las secciones asimétricas.
-- Diseña el refuerzo transversal: $`V_c`$ con carga axial, $`A_v/s`$, separación máxima, soporte lateral y **eslabones** por segmento.
+- Diseña el refuerzo transversal en el **eje fuerte y el eje débil** (identificados con $`I_x`$ e $`I_y`$): $`V_{pr}`$, $`V_c`$ con carga axial, $`A_v/s`$, separación máxima, soporte lateral y **eslabones** por segmento, con todos los cálculos a la vista. El procedimiento es el de las hojas de clase de Mathcad y Excel.
 
 ## Cómo usarla
 
